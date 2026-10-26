@@ -1,0 +1,1497 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#06152c">
+  <title>Solvia.Nova — Digital Solution &amp; 3D Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#06152b;--panel:#041226;--blue:#12a9ff;--cyan:#4bcaff;--ink:#07172d;--muted:#9bb1cf;--line:#1266a4;--white:#f7fbff}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;scroll-padding-top:20px}
+    body{margin:0;background:radial-gradient(ellipse at 10% 20%,#0c4a85 0,transparent 34%),#06152b;color:var(--white);font-family:'DM Sans',sans-serif}
+    .layout{max-width:1700px;margin:auto;padding:21px 24px;position:relative;min-height:100vh}
+    .sidebar{height:calc(100vh - 42px);min-height:560px;max-height:calc(100vh - 42px);position:fixed;top:21px;left:max(24px,calc((100vw - 1700px)/2 + 24px));width:136px;border:1px solid #1687d5;border-radius:24px;background:linear-gradient(165deg,#041225f7,#031327f7);display:flex;flex-direction:column;align-items:center;padding:22px 12px;z-index:50;box-shadow:0 20px 50px #0005;overflow-y:auto;scrollbar-width:none}
+    .sidebar::-webkit-scrollbar{display:none}
+    .logo-icon{font:700 34px 'Space Grotesk';margin-bottom:36px;letter-spacing:-3px;color:#fff;text-decoration:none}
+    .logo-icon span,.wordmark span{color:var(--blue)}
+    .nav{display:grid;gap:7px;width:100%}
+    .nav a{padding:10px 4px;border-radius:13px;display:flex;align-items:center;flex-direction:column;gap:5px;color:#d4e4f7;font-size:11px;text-decoration:none;transition:.2s}
+    .nav a svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+    .nav a:hover,.nav a.active{background:linear-gradient(135deg,#12a8f8,#4ac9ff);color:#fff;box-shadow:0 8px 22px #078de955}
+    .side-bottom{margin-top:auto;width:100%;border-top:1px solid #16446a;padding-top:18px}
+    .side-label{text-align:center;font-size:10px;letter-spacing:1.5px;color:#c5d7ec;margin-bottom:13px;font-weight:700}
+    .kelora{display:flex;align-items:center;justify-content:center;gap:9px;font-size:13px;font-weight:700;color:#fff;text-decoration:none}
+    .kmark{width:24px;height:24px;border:2px solid var(--blue);border-radius:5px;transform:rotate(30deg);display:inline-block}
+    .socials{display:flex;justify-content:center;gap:13px;margin-top:42px;color:#c9dcf1;font-size:13px;font-weight:700}
+    .socials a{color:#c9dcf1;text-decoration:none;transition:.2s}
+    .socials a:hover{color:var(--blue)}
+    .main{min-width:0;margin-left:160px;width:calc(100% - 160px)}
+    .topbar{height:82px;border:1px solid #147bc0;border-radius:23px;background:#031226eF;display:flex;align-items:center;justify-content:space-between;padding:0 24px;margin-bottom:18px}
+    .wordmark{font:700 27px 'Space Grotesk';letter-spacing:-1.1px;color:#fff;text-decoration:none}
+    .actions{display:flex;align-items:center;gap:38px}
+    .search{display:flex;align-items:center;gap:10px;width:263px;padding:10px 13px;background:#10294a;border-radius:13px;color:#92aac8;font-size:12px}
+    .search svg{width:18px;stroke:currentColor;fill:none;stroke-width:2}
+    .search kbd{margin-left:auto;background:#1b3659;padding:5px 7px;border-radius:6px;font-size:10px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:13px;padding:15px 22px;border-radius:13px;font-size:13px;font-weight:700;border:1px solid transparent;cursor:pointer;text-decoration:none;transition:.2s}
+    .primary{background:linear-gradient(110deg,#0ba4f5,#4dc8ff);color:#03172a}
+    .outline{border-color:#1688d1;color:#f5fbff;background:#06172c}
+    .btn:hover{transform:translateY(-2px);filter:brightness(1.08)}
+    .hero{height:520px;position:relative;overflow:hidden;border:1px solid #1286d6;border-radius:25px;background:radial-gradient(ellipse at 75% 50%,#0757a6,#04152d 60%,#031225);display:grid;grid-template-columns:46% 54%;isolation:isolate}
+    .hero:before{content:"";position:absolute;inset:0;background-image:linear-gradient(#1683d51a 1px,transparent 1px),linear-gradient(90deg,#1683d51a 1px,transparent 1px);background-size:42px 42px;z-index:-1}
+    .hero-copy{padding:34px 0 24px 44px;position:relative;z-index:2}
+    .eyebrow{display:inline-flex;align-items:center;gap:9px;border:1px solid #12578c;background:#061a32;border-radius:22px;padding:7px 11px;font-size:10px;letter-spacing:.7px;color:#43c7ff;font-weight:700}
+    .dot{height:8px;width:8px;border-radius:50%;background:#0bb5ff;box-shadow:0 0 12px #0bb5ff}
+    .hero h1{font:700 clamp(32px,3.5vw,52px)/.98 'Space Grotesk';letter-spacing:-2px;margin:16px 0 12px}
+    .hero h1 span{color:#12aaff}
+    .hero-copy p{font-size:14px;line-height:1.5;color:#d1dfef;max-width:470px;margin:0 0 16px}
+    .hero-buttons{display:flex;gap:12px;flex-wrap:wrap}
+    .hero-buttons .btn{padding:14px 18px}
+    .chips{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+    .chip{padding:5px 10px;border-radius:10px;background:#0f2b52;border:1px solid #1b538c;font-size:10px;font-weight:700;color:#92cdff}
+    .stats-row{display:flex;gap:20px;padding-top:14px;border-top:1px solid #144975}
+    .stats-row div strong{font-size:20px;color:#fff;display:block}
+    .stats-row div span{font-size:10px;color:#9ab5d5}
+    .hero-art{position:absolute;right:0;top:0;width:58%;height:100%;z-index:1;display:flex;align-items:center;justify-content:center}
+    .hero-art img{height:100%;width:auto;max-height:460px;object-fit:contain;filter:drop-shadow(0 20px 40px rgba(18,169,255,0.45))}
+    .hero-badge-top{position:absolute;top:20px;right:20px;background:#10b98122;border:1px solid #10b98166;padding:6px 12px;border-radius:12px;font-size:11px;font-weight:700;color:#34d399;backdrop-filter:blur(8px)}
+    .hero-badge-bot{position:absolute;bottom:20px;left:20px;background:#eab30822;border:1px solid #eab30866;padding:6px 12px;border-radius:12px;font-size:11px;font-weight:700;color:#facc15;backdrop-filter:blur(8px)}
+    .trust{background:#f7fbff;color:#506a8d;margin-top:13px;border-radius:22px 22px 0 0;padding:23px 28px 15px;overflow:hidden}
+    .trust-head{display:flex;align-items:center;justify-content:space-between;gap:20px;font-size:12px;margin-bottom:17px}
+    .trust-head strong{color:#147fda}
+    .trust-head a{color:#078be4;font-weight:700;text-decoration:none;white-space:nowrap}
+    .marquee{overflow:hidden;position:relative;border-bottom:1px solid #e4edf7;padding-bottom:17px}
+    .marquee-track{display:flex;align-items:center;width:max-content;animation:slide 24s linear infinite}
+    .marquee:hover .marquee-track{animation-play-state:paused}
+    .industry{min-width:155px;padding:0 24px;display:flex;align-items:center;justify-content:center;gap:9px;font-size:12px;border-right:1px solid #e5edf7;white-space:nowrap;color:#334155;font-weight:600}
+    .industry b{width:26px;height:26px;display:grid;place-items:center;background:#e5f2ff;color:#2474ba;border-radius:8px;font-size:14px}
+    @keyframes slide{to{transform:translateX(-50%)}}
+    .about{background:#f7fbff;color:var(--ink);display:grid;grid-template-columns:.9fr 1.08fr .9fr;gap:26px;padding:24px 28px 32px;border-radius:0 0 22px 22px;align-items:center}
+    .kicker{color:#078be4;font-size:11px;font-weight:700;letter-spacing:.6px}
+    .about h2{font:700 32px/1.03 'Space Grotesk';letter-spacing:-1px;margin:12px 0;color:#03152c}
+    .about h2 span{color:#078fe8}
+    .about p{font-size:13px;line-height:1.55;color:#5c7290}
+    .about .btn{margin-top:3px;padding:13px 17px;font-size:12px}
+    .team-image{height:260px;width:100%;object-fit:cover;border-radius:18px;display:block}
+    .values{display:grid;gap:10px}
+    .value{display:flex;align-items:center;gap:13px;background:#fff;border-radius:16px;padding:14px;box-shadow:0 5px 20px #15385c09;border:1px solid #e2e8f0}
+    .value-icon{flex:0 0 48px;width:48px;height:48px;border-radius:15px;background:#dff1ff;color:#087ed8;display:grid;place-items:center;font-size:22px}
+    .value strong{font-size:12px;display:block;margin-bottom:4px;color:#03172c}
+    .value p{font-size:11px;line-height:1.4;margin:0;color:#64748b}
+    .section{padding:75px 24px}
+    .section-head{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:24px}
+    .section h2{font:700 34px/1.05 'Space Grotesk';margin:10px 0 0;letter-spacing:-1px;color:#fff}
+    .section-head p{max-width:450px;color:#a8bbd4;font-size:13px;line-height:1.6}
+    .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .card{border:1px solid #145687;background:linear-gradient(145deg,#0b2442,#06162c);border-radius:18px;padding:23px;min-height:220px;display:flex;flex-direction:column;justify-content:space-between;transition:.2s}
+    .card:hover{transform:translateY(-4px);border-color:#1fa2f7}
+    .card .icon{font-size:28px;color:#32c1ff;margin-bottom:10px}
+    .card h3{font:600 18px 'Space Grotesk';color:#fff;margin:0 0 8px}
+    .card p{font-size:12px;line-height:1.65;color:#adc1da;margin:0 0 12px}
+    .card ul{list-style:none;padding:0;margin:0 0 14px}
+    .card ul li{font-size:11px;color:#92cdff;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+    .card ul li:before{content:"•";color:#38bdf8}
+    .card a{font-size:12px;color:#47c5ff;font-weight:700;text-decoration:none}
+    .portfolio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .portfolio-card{padding:24px;min-height:200px;border:1px solid #1763a0;border-radius:18px;background:linear-gradient(135deg,#0a3765,#06152b);display:flex;flex-direction:column;justify-content:space-between;transition:.2s}
+    .portfolio-card:hover{transform:translateY(-4px);border-color:#38bdf8}
+    .portfolio-card small{color:#48c7ff;letter-spacing:1px;font-size:10px;font-weight:700;text-transform:uppercase}
+    .portfolio-card h3{font:600 20px 'Space Grotesk';color:#fff;margin:6px 0}
+    .portfolio-card p{font-size:13px;color:#b1c8e3;line-height:1.6;margin:0 0 14px}
+    .portfolio-tech{display:flex;gap:6px;flex-wrap:wrap;border-top:1px solid #144975;padding-top:12px}
+    .portfolio-tech span{font-size:10px;padding:3px 8px;border-radius:6px;background:#0d3561;color:#bae6fd}
+    .team-list{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .team-item{padding:24px;border:1px solid #145687;border-radius:18px;background:#081d36;transition:.2s}
+    .team-item:hover{border-color:#1fa2f7}
+    .team-item .avatar{width:48px;height:48px;border-radius:14px;background:#1e40af;color:#38bdf8;display:grid;place-items:center;font-weight:700;font-size:18px;margin-bottom:12px}
+    .team-item strong{display:block;margin:0 0 4px;color:#fff;font-size:16px}
+    .team-item small{color:#9db7d5;font-size:12px;display:block;margin-bottom:8px}
+    .team-item p{color:#cbd5e1;font-size:11px;line-height:1.5;margin:0}
+    .contact{display:flex;align-items:center;justify-content:space-between;gap:25px;padding:35px;border:1px solid #1674b7;border-radius:22px;background:radial-gradient(ellipse at 85% 50%,#07559b,transparent 50%),#071a33}
+    .contact h2{font:700 30px 'Space Grotesk';margin:0 0 10px;color:#fff}
+    .contact p{color:#bdd0e7;font-size:13px;max-width:650px;line-height:1.6;margin:0}
+    .footer{display:flex;justify-content:space-between;gap:20px;color:#8ca8c9;font-size:11px;padding:25px 5px}
+    .footer a{color:#8ca8c9;text-decoration:none}
+    .footer a:hover{color:#fff}
+    @media(max-width:1100px){
+      .layout{padding:14px}
+      .sidebar{left:14px;width:100px}
+      .main{margin-left:114px;width:calc(100% - 114px)}
+      .hero{grid-template-columns:50% 50%}
+      .hero-copy{padding-left:30px}
+      .hero-art{width:55%}
+      .about{grid-template-columns:1fr 1fr}
+      .values{grid-column:1/-1;grid-template-columns:repeat(3,1fr)}
+      .cards{grid-template-columns:repeat(2,1fr)}
+      .team-list{grid-template-columns:repeat(2,1fr)}
+    }
+    @media(max-width:720px){
+      .layout{display:block;padding:10px}
+      .sidebar{position:fixed;top:auto;bottom:8px;left:8px;right:8px;width:auto;height:auto;min-height:0;max-height:none;padding:8px;border-radius:18px;flex-direction:row;justify-content:center;background:#031327f5;backdrop-filter:blur(12px);z-index:50}
+      .main{margin-left:0;width:100%}
+      .logo-icon,.side-bottom{display:none}
+      .nav{display:flex;justify-content:space-around;gap:2px}
+      .nav a{font-size:9px;padding:8px 4px;flex:1}
+      .topbar{height:66px;padding:0 15px;margin-bottom:12px}
+      .wordmark{font-size:22px}
+      .actions{gap:8px}
+      .search{width:40px;padding:10px;justify-content:center}
+      .search span,.search kbd{display:none}
+      .hero{height:auto;min-height:660px;display:block}
+      .hero-copy{padding:24px 20px}
+      .hero-art{top:auto;bottom:0;width:100%;height:45%}
+      .about{grid-template-columns:1fr;padding:24px 18px}
+      .cards,.portfolio-grid,.team-list{grid-template-columns:1fr}
+      .contact{display:block;padding:25px 20px}
+      .footer{padding-bottom:100px;display:block;line-height:2}
+    }
+
+    /* CAROUSEL & SLIDER ENHANCEMENTS */
+    .slider-header-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+    .filter-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .filter-btn {
+      padding: 7px 15px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      border: 1px solid rgba(18, 169, 255, 0.25);
+      background: #081d36;
+      color: #bae6fd;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .filter-btn:hover {
+      border-color: #38bdf8;
+      color: #fff;
+    }
+    .filter-btn.active {
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      color: #fff;
+      border-color: #7dd3fc;
+      box-shadow: 0 4px 14px rgba(56, 189, 248, 0.35);
+      transform: scale(1.03);
+    }
+    .nav-arrows {
+      display: flex;
+      gap: 8px;
+    }
+    .nav-arrow-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: #081d36;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #bae6fd;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .nav-arrow-btn:hover {
+      background: rgba(14, 165, 233, 0.25);
+      border-color: #38bdf8;
+      color: #fff;
+    }
+    .carousel-viewport {
+      overflow: hidden;
+      border-radius: 20px;
+      position: relative;
+    }
+    .carousel-track {
+      display: flex;
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform;
+    }
+    .carousel-item {
+      flex: 0 0 calc(33.333% - 14px);
+      margin-right: 14px;
+      box-sizing: border-box;
+    }
+    @media(max-width: 1024px) {
+      .carousel-item {
+        flex: 0 0 calc(50% - 10px);
+        margin-right: 10px;
+      }
+    }
+    @media(max-width: 640px) {
+      .carousel-item {
+        flex: 0 0 100%;
+        margin-right: 0;
+      }
+    }
+    .portfolio-slide-card {
+      border: 1px solid rgba(22, 135, 213, 0.35);
+      border-radius: 18px;
+      background: linear-gradient(160deg, #0a274d, #04152d);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      transition: all 0.3s ease;
+    }
+    .portfolio-slide-card:hover {
+      transform: translateY(-5px);
+      border-color: #38bdf8;
+      box-shadow: 0 12px 30px rgba(7, 141, 233, 0.2);
+    }
+    .portfolio-img-wrap {
+      position: relative;
+      width: 100%;
+      height: 180px;
+      overflow: hidden;
+      background: #020611;
+      border-bottom: 1px solid rgba(56, 189, 248, 0.15);
+    }
+    .portfolio-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .portfolio-slide-card:hover .portfolio-img-wrap img {
+      transform: scale(1.06);
+    }
+    .portfolio-cat-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      background: rgba(3, 18, 38, 0.88);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #38bdf8;
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      backdrop-filter: blur(4px);
+    }
+    .portfolio-meta-bar {
+      position: absolute;
+      bottom: 8px;
+      left: 10px;
+      right: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: #e0f2fe;
+      font-weight: 600;
+      text-shadow: 0 1px 4px #000;
+    }
+    .portfolio-slide-body {
+      padding: 18px 20px 14px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .portfolio-slide-body h3 {
+      font: 700 17px 'Space Grotesk', sans-serif;
+      color: #fff;
+      margin: 0 0 6px;
+      line-height: 1.3;
+    }
+    .portfolio-slide-body p {
+      font-size: 12px;
+      color: #cbd5e1;
+      line-height: 1.55;
+      margin: 0 0 12px;
+      flex: 1;
+    }
+    .portfolio-slide-footer {
+      padding: 0 20px 18px;
+    }
+    .portfolio-pill-stack {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .portfolio-pill-stack span {
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: rgba(12, 45, 82, 0.7);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      color: #bae6fd;
+    }
+    .portfolio-detail-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #38bdf8;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .portfolio-detail-btn:hover {
+      color: #fff;
+    }
+
+    /* TEAM SLIDER */
+    .team-slide-card {
+      border: 1px solid rgba(20, 86, 135, 0.45);
+      border-radius: 18px;
+      background: linear-gradient(160deg, #0a274d, #04152d);
+      padding: 22px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.3s ease;
+    }
+    .team-slide-card:hover {
+      transform: translateY(-5px);
+      border-color: #38bdf8;
+      box-shadow: 0 12px 30px rgba(7, 141, 233, 0.2);
+    }
+    .team-card-top {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+    .team-photo-wrap {
+      width: 62px;
+      height: 62px;
+      border-radius: 16px;
+      border: 2px solid #38bdf8;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: #020611;
+      box-shadow: 0 4px 14px rgba(56, 189, 248, 0.25);
+    }
+    .team-photo-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .team-role-pill {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 800;
+      color: #38bdf8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: rgba(14, 165, 233, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 3px 8px;
+      border-radius: 9999px;
+      margin-bottom: 4px;
+    }
+    .team-card-top h3 {
+      font: 700 16px 'Space Grotesk', sans-serif;
+      color: #fff;
+      margin: 0;
+    }
+    .team-card-bio {
+      font-size: 12px;
+      color: #cbd5e1;
+      line-height: 1.55;
+      margin: 0 0 14px;
+      flex: 1;
+    }
+    .team-skills-title {
+      font-size: 10px;
+      font-weight: 800;
+      color: #38bdf8;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 6px;
+    }
+    .team-skills-list {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+    .team-skills-list span {
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: rgba(12, 45, 82, 0.7);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      color: #bae6fd;
+    }
+    .slider-dots {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 16px;
+    }
+    .slider-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 9999px;
+      background: rgba(18, 169, 255, 0.25);
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .slider-dot.active {
+      width: 24px;
+      background: #38bdf8;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
+    }
+
+    
+      50% { transform: translateY(-12px) rotate(0.6deg); }
+    }
+    .hero-art img {
+      animation: none !important;
+      transition: transform 0.5s ease;
+    }
+    .hero-badge-top, .hero-badge-bot {
+      transition: all 0.3s ease;
+    }
+    .hero-badge-top:hover, .hero-badge-bot:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(56, 189, 248, 0.45);
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(11, 164, 245, 0.4);
+    }
+    .card {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    .card:hover {
+      transform: translateY(-5px) !important;
+      border-color: #38bdf8 !important;
+      box-shadow: 0 16px 36px rgba(7, 141, 233, 0.25) !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <a class="logo-icon" href="#beranda" title="Solvia Nova" style="display:flex;flex-direction:column;align-items:center;gap:6px;margin-bottom:24px;text-decoration:none">
+        <div style="width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#0b294e,#04152d);border:1px solid rgba(56,189,248,0.4);padding:6px;display:grid;place-items:center;box-shadow:0 4px 14px rgba(56,189,248,0.25)">
+          <img src="/assets/images/Solvia.png" alt="Solvia Nova" style="width:100%;height:100%;object-fit:contain" />
+        </div>
+        <span style="font:700 13px 'Space Grotesk';color:#fff">Solvia<span style="color:#12a9ff">.</span></span>
+      </a>
+      <nav class="nav" aria-label="Navigasi utama">
+        <a class="active" href="#beranda"><svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7M5 9v12h14V9M9 21v-7h6v7"/></svg><span>Beranda</span></a>
+        <a href="#tentang"><svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>Tentang</span></a>
+        <a href="#layanan"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg><span>Layanan</span></a>
+        <a href="#portfolio"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v5"/></svg><span>Portfolio</span></a>
+        <a href="#tim"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2 20a7 7 0 0 1 14 0M16 5.5a3 3 0 0 1 0 5.8M18 14a5 5 0 0 1 4 5"/></svg><span>Tim</span></a>
+        <a href="#testimoni"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><span>Testimoni</span></a>
+        <a href="#kontak"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg><span>Kontak</span></a>
+      </nav>
+      <div class="side-bottom">
+        <div class="side-label">PRODUCT</div>
+        <a class="kelora" href="#layanan"><i class="kmark"></i>Kelora ›</a>
+        <div class="socials">
+          <a href="https://linkedin.com" target="_blank" rel="noreferrer">in</a>
+          <a href="https://instagram.com" target="_blank" rel="noreferrer">◎</a>
+          <a href="https://youtube.com" target="_blank" rel="noreferrer">▶</a>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <a class="wordmark" href="#beranda" style="display:inline-flex;align-items:center;gap:12px;text-decoration:none">
+          <img src="/assets/images/Solvia.png" alt="Solvia Nova Logo" style="height:38px;width:auto;object-fit:contain;filter:drop-shadow(0 2px 10px rgba(18,169,255,0.35))" />
+          <span>Solvia<span>.Nova</span></span>
+        </a>
+        <div class="actions">
+          <label class="search">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg>
+            <span>Cari apa hari ini?</span>
+            <kbd>Ctrl K</kbd>
+          </label>
+          <a class="btn primary" href="#kontak">Mulai Proyek <b>→</b></a>
+        </div>
+      </header>
+
+      <!-- HERO SECTION (With Mascot at the Top) -->
+      <section class="hero" id="beranda">
+        <div class="hero-copy">
+          <div class="eyebrow" style="display:inline-flex;align-items:center;gap:8px"><img src="/assets/images/Solvia.png" alt="Solvia" style="height:16px;width:auto;object-fit:contain" /><i class="dot"></i> DIGITAL SOLUTION &amp; 3D STUDIO</div>
+          <h1>Understand<br>Problems First,<br><span>Build Solutions.</span></h1>
+          <p>Konsep, teknologi, dan solusi digital dalam satu ekosistem yang dirancang untuk berkembang. Solvia Nova membantu bisnis membangun sistem digital, website, aplikasi, dan branding modern dengan visual premium dan performa profesional.</p>
+          <div class="hero-buttons">
+            <a class="btn primary" href="#kontak">Konsultasi Gratis <b>→</b></a>
+            <a class="btn outline" href="#portfolio">◉ &nbsp; Lihat Portofolio</a>
+          </div>
+          <div class="chips">
+            <div class="chip">Web Development</div>
+            <div class="chip">Custom System</div>
+            <div class="chip">IoT &amp; Smart Tech</div>
+            <div class="chip">Digital Branding</div>
+          </div>
+          <div class="stats-row">
+            <div><strong>50+</strong><span>Proyek Selesai</span></div>
+            <div><strong>20+</strong><span>Klien &amp; Mitra</span></div>
+            <div><strong>100%</strong><span>Custom Architecture</span></div>
+            <div><strong>3+</strong><span>Tahun Pengalaman</span></div>
+          </div>
+        </div>
+        <div class="hero-art">
+          <img src="/assets/images/maskot.png" alt="Solvia.Nova 3D Mascot">
+          <div class="hero-badge-top">✓ 100% On-Time Delivery</div>
+          <div class="hero-badge-bot">⚡ 3D Interactive Ecosystem</div>
+        </div>
+      </section>
+
+      <!-- TRUST MARQUEE -->
+      <section class="trust" aria-label="Industri dan mitra kerja sama">
+        <div class="trust-head">
+          <span>Dipercaya oleh berbagai<br>bisnis dan organisasi</span>
+          <strong>Kolaborasi untuk solusi nyata</strong>
+          <a href="#kontak">Jalin Kerja Sama →</a>
+        </div>
+        <div class="marquee">
+          <div class="marquee-track">
+            <div class="industry"><b>⌘</b> E-Commerce &amp; Retail</div>
+            <div class="industry"><b>▤</b> Manufacturing &amp; Supply Chain</div>
+            <div class="industry"><b>▦</b> FinTech &amp; Banking</div>
+            <div class="industry"><b>◉</b> Education &amp; EdTech</div>
+            <div class="industry"><b>⚡</b> Healthcare &amp; MedTech</div>
+            <div class="industry"><b>◈</b> Smart Logistics &amp; IoT</div>
+            <div class="industry"><b>◎</b> Hospitality &amp; Tourism</div>
+            <div class="industry"><b>❖</b> Corporate Enterprise</div>
+            <!-- Loop track -->
+            <div class="industry"><b>⌘</b> E-Commerce &amp; Retail</div>
+            <div class="industry"><b>▤</b> Manufacturing &amp; Supply Chain</div>
+            <div class="industry"><b>▦</b> FinTech &amp; Banking</div>
+            <div class="industry"><b>◉</b> Education &amp; EdTech</div>
+            <div class="industry"><b>⚡</b> Healthcare &amp; MedTech</div>
+            <div class="industry"><b>◈</b> Smart Logistics &amp; IoT</div>
+            <div class="industry"><b>◎</b> Hospitality &amp; Tourism</div>
+            <div class="industry"><b>❖</b> Corporate Enterprise</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABOUT SECTION (With hero-art.jpg) -->
+      <section class="about" id="tentang">
+        <div>
+          <span class="kicker">ABOUT SOLVIA.NOVA</span>
+          <h2>Teknologi untuk<br><span>Solusi Nyata.</span></h2>
+          <p>Kami percaya bahwa teknologi harus menjawab masalah nyata. Solvia.Nova hadir untuk membantu bisnis dan organisasi merancang, membangun, dan mengimplementasikan solusi digital yang relevan dengan kebutuhan mereka.</p>
+          <p>Dari UMKM hingga perusahaan skala berkembang, kami mengintegrasikan konsep visual modern, arsitektur kode bersih, dan performa tinggi ke dalam setiap produk yang kami kembangkan.</p>
+          <a class="btn primary" href="/about">Pelajari Lebih Lanjut&nbsp; →</a>
+        </div>
+
+        <div>
+          <img class="team-image" src="/assets/images/hero-art.jpg" alt="Solvia.Nova Digital Studio">
+        </div>
+
+        <div class="values">
+          <div class="value">
+            <div class="value-icon">👁️</div>
+            <div>
+              <strong>Visi Kami</strong>
+              <p>Menjadi studio solusi digital terdepan yang mendefinisikan ulang standar kualitas, estetika, dan performa teknologi di Indonesia.</p>
+            </div>
+          </div>
+          <div class="value">
+            <div class="value-icon">💡</div>
+            <div>
+              <strong>Filosofi Kerja</strong>
+              <p>Understand Problems First, Build Solutions. Kami menganalisis akar masalah bisnis sebelum menulis sebaris kode.</p>
+            </div>
+          </div>
+          <div class="value">
+            <div class="value-icon">🛡️</div>
+            <div>
+              <strong>Komitmen Kualitas</strong>
+              <p>100% On-time delivery, transparansi proses development, dan support berkelanjutan pasca peluncuran.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SERVICES SECTION -->
+      <section class="section" id="layanan">
+        <div class="section-head">
+          <div>
+            <span class="kicker">SERVICES</span>
+            <h2>Layanan Unggulan Kami</h2>
+          </div>
+          <p>Solusi teknologi terpadu yang dirancang untuk mempercepat pertumbuhan bisnis Anda, dari perancangan arsitektur hingga deployment modern.</p>
+        </div>
+
+        <div class="cards">
+          <div class="card">
+            <div>
+              <div class="icon">⌘</div>
+              <h3>Web Development</h3>
+              <p>Aplikasi web custom, SaaS, mobile app, API integration dengan performa tinggi.</p>
+              <ul>
+                <li>Next.js &amp; React Modern</li>
+                <li>Mobile First &amp; Responsive</li>
+                <li>SEO &amp; Speed Optimized</li>
+                <li>Headless CMS Ready</li>
+              </ul>
+            </div>
+            <a href="/services">Pelajari Fitur →</a>
+          </div>
+
+          <div class="card">
+            <div>
+              <div class="icon">▤</div>
+              <h3>Custom System</h3>
+              <p>ERP, CRM, POS, dan sistem otomasi proses bisnis terpadu.</p>
+              <ul>
+                <li>Otomasi Alur Kerja</li>
+                <li>Multi-user &amp; Role Access</li>
+                <li>Laporan &amp; Analytics Real-time</li>
+                <li>Integrasi REST API &amp; Database</li>
+              </ul>
+            </div>
+            <a href="/services">Pelajari Fitur →</a>
+          </div>
+
+          <div class="card">
+            <div>
+              <div class="icon">▦</div>
+              <h3>IoT &amp; Smart Tech</h3>
+              <p>Integrasi sensor, monitoring data real-time, dan sistem kendali cerdas.</p>
+              <ul>
+                <li>Telemetri Sensor Real-time</li>
+                <li>MQTT Broker &amp; Cloud</li>
+                <li>Dashboard Monitoring Interaktif</li>
+                <li>Otomasi Kontrol Perangkat</li>
+              </ul>
+            </div>
+            <a href="/services">Pelajari Fitur →</a>
+          </div>
+
+          <div class="card">
+            <div>
+              <div class="icon">◉</div>
+              <h3>Digital Branding</h3>
+              <p>Desain visual modern, design system, identitas merek, dan pengalaman pengguna.</p>
+              <ul>
+                <li>UI/UX Research &amp; Wireframing</li>
+                <li>Design System Komprehensif</li>
+                <li>Identitas Visual &amp; Logo</li>
+                <li>Prototyping Interaktif</li>
+              </ul>
+            </div>
+            <a href="/services">Pelajari Fitur →</a>
+          </div>
+        </div>
+      </section>
+
+            <!-- PORTFOLIO SECTION -->
+      <section class="section" id="portfolio">
+        <div class="section-head">
+          <div>
+            <span class="kicker">PORTFOLIO</span>
+            <h2>Portofolio Solusi Digital</h2>
+          </div>
+          <p>Studi kasus implementasi sistem dan produk digital berkualitas tinggi yang telah dirasakan manfaatnya oleh para klien kami.</p>
+        </div>
+
+        <div class="slider-header-controls">
+          <div class="filter-pills" id="portfolio-filters">
+            <button type="button" class="filter-btn active" data-filter="all">Semua Kategori</button>
+            <button type="button" class="filter-btn" data-filter="web">Web App &amp; E-Commerce</button>
+            <button type="button" class="filter-btn" data-filter="system">Enterprise System</button>
+            <button type="button" class="filter-btn" data-filter="iot">IoT &amp; Otomasi</button>
+          </div>
+          <div class="nav-arrows">
+            <button type="button" class="nav-arrow-btn" id="porto-prev" aria-label="Sebelumnya">←</button>
+            <button type="button" class="nav-arrow-btn" id="porto-next" aria-label="Berikutnya">→</button>
+          </div>
+        </div>
+
+        <div class="carousel-viewport" id="porto-viewport">
+          <div class="carousel-track" id="porto-track">
+
+            <div class="carousel-item" data-category="web">
+              <div class="portfolio-slide-card">
+                <div class="portfolio-img-wrap">
+                  <img src="https://images.unsplash.com/photo-1556742049-0a675659e9cf?auto=format&fit=crop&w=800&q=80" alt="Katalog Pemesanan" loading="lazy" />
+                  <span class="portfolio-cat-badge">Web App / E-commerce</span>
+                  <div class="portfolio-meta-bar">
+                    <span>PT Pemesanan Nusantara</span>
+                    <span style="color:#34d399">2026</span>
+                  </div>
+                </div>
+                <div class="portfolio-slide-body">
+                  <h3>Katalog Pemesanan</h3>
+                  <p>Sistem katalog pemesanan online interaktif dengan manajemen produk dan pesanan instan.</p>
+                </div>
+                <div class="portfolio-slide-footer">
+                  <div class="portfolio-pill-stack">
+                    <span>React</span><span>Next.js</span><span>Node.js</span>
+                  </div>
+                  <a href="/portfolio/1" class="portfolio-detail-btn">
+                    Detail Studi Kasus →
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item" data-category="web">
+              <div class="portfolio-slide-card">
+                <div class="portfolio-img-wrap">
+                  <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80" alt="NovaDex – Direktori UMKM Salatiga" loading="lazy" />
+                  <span class="portfolio-cat-badge">Web App / Directory</span>
+                  <div class="portfolio-meta-bar">
+                    <span>Dinas UMKM Salatiga</span>
+                    <span style="color:#34d399">2026</span>
+                  </div>
+                </div>
+                <div class="portfolio-slide-body">
+                  <h3>NovaDex – Direktori UMKM Salatiga</h3>
+                  <p>Portal direktori digital terintegrasi untuk katalogisasi dan promosi UMKM di daerah Salatiga.</p>
+                </div>
+                <div class="portfolio-slide-footer">
+                  <div class="portfolio-pill-stack">
+                    <span>Next.js</span><span>Tailwind</span><span>MySQL</span>
+                  </div>
+                  <a href="/portfolio/2" class="portfolio-detail-btn">
+                    Detail Studi Kasus →
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item" data-category="web">
+              <div class="portfolio-slide-card">
+                <div class="portfolio-img-wrap">
+                  <img src="https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&w=800&q=80" alt="DasterKu – Website Grosir Daster Wanita" loading="lazy" />
+                  <span class="portfolio-cat-badge">E-Commerce</span>
+                  <div class="portfolio-meta-bar">
+                    <span>DasterKu Official</span>
+                    <span style="color:#34d399">2025</span>
+                  </div>
+                </div>
+                <div class="portfolio-slide-body">
+                  <h3>DasterKu – Website Grosir Daster Wanita</h3>
+                  <p>Platform toko grosir online daster wanita dengan fitur kalkulasi diskon grosir otomatis.</p>
+                </div>
+                <div class="portfolio-slide-footer">
+                  <div class="portfolio-pill-stack">
+                    <span>Laravel</span><span>Bootstrap</span><span>MySQL</span>
+                  </div>
+                  <a href="/portfolio/3" class="portfolio-detail-btn">
+                    Detail Studi Kasus →
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item" data-category="web">
+              <div class="portfolio-slide-card">
+                <div class="portfolio-img-wrap">
+                  <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80" alt="Dapur Ceria – Sistem Manajemen Bakery" loading="lazy" />
+                  <span class="portfolio-cat-badge">POS & Web App</span>
+                  <div class="portfolio-meta-bar">
+                    <span>Dapur Ceria Group</span>
+                    <span style="color:#34d399">2025</span>
+                  </div>
+                </div>
+                <div class="portfolio-slide-body">
+                  <h3>Dapur Ceria – Sistem Manajemen Bakery</h3>
+                  <p>Sistem Point of Sale (POS) dan manajemen stok bahan baku resep bakery terpadu.</p>
+                </div>
+                <div class="portfolio-slide-footer">
+                  <div class="portfolio-pill-stack">
+                    <span>React</span><span>Node.js</span><span>PostgreSQL</span>
+                  </div>
+                  <a href="/portfolio/4" class="portfolio-detail-btn">
+                    Detail Studi Kasus →
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item" data-category="system">
+              <div class="portfolio-slide-card">
+                <div class="portfolio-img-wrap">
+                  <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80" alt="MitraMan – Sistem Manajemen Mitra & Honorarium" loading="lazy" />
+                  <span class="portfolio-cat-badge">Enterprise Web App</span>
+                  <div class="portfolio-meta-bar">
+                    <span>PT Mitra Mandiri Utama</span>
+                    <span style="color:#34d399">2025</span>
+                  </div>
+                </div>
+                <div class="portfolio-slide-body">
+                  <h3>MitraMan – Sistem Manajemen Mitra & Honorarium</h3>
+                  <p>Platform otomatisasi penggajian, komisi, dan pencatatan kerja mitra lapangan.</p>
+                </div>
+                <div class="portfolio-slide-footer">
+                  <div class="portfolio-pill-stack">
+                    <span>Next.js</span><span>Express</span><span>PostgreSQL</span>
+                  </div>
+                  <a href="/portfolio/5" class="portfolio-detail-btn">
+                    Detail Studi Kasus →
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item" data-category="system">
+              <div class="portfolio-slide-card">
+                <div class="portfolio-img-wrap">
+                  <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=800&q=80" alt="WorkTrack – Sistem Manajemen Karyawan dan Payroll" loading="lazy" />
+                  <span class="portfolio-cat-badge">HR & Payroll System</span>
+                  <div class="portfolio-meta-bar">
+                    <span>WorkTrack Indonesia</span>
+                    <span style="color:#34d399">2024</span>
+                  </div>
+                </div>
+                <div class="portfolio-slide-body">
+                  <h3>WorkTrack – Sistem Manajemen Karyawan dan Payroll</h3>
+                  <p>Sistem pelacakan absensi GPS, klaim lembur, dan slip gaji terotomatisasi.</p>
+                </div>
+                <div class="portfolio-slide-footer">
+                  <div class="portfolio-pill-stack">
+                    <span>Vue.js</span><span>Laravel</span><span>MySQL</span>
+                  </div>
+                  <a href="/portfolio/6" class="portfolio-detail-btn">
+                    Detail Studi Kasus →
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item" data-category="iot">
+              <div class="portfolio-slide-card">
+                <div class="portfolio-img-wrap">
+                  <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80" alt="Sistem Monitoring Kualitas Air Berbasis IoT" loading="lazy" />
+                  <span class="portfolio-cat-badge">IoT & Web App</span>
+                  <div class="portfolio-meta-bar">
+                    <span>PT Tirta Bening Utama</span>
+                    <span style="color:#34d399">2026</span>
+                  </div>
+                </div>
+                <div class="portfolio-slide-body">
+                  <h3>Sistem Monitoring Kualitas Air Berbasis IoT</h3>
+                  <p>Dashboard pemantauan sensor pH, keruhan, dan TDS air secara real-time via MQTT.</p>
+                </div>
+                <div class="portfolio-slide-footer">
+                  <div class="portfolio-pill-stack">
+                    <span>React</span><span>Node.js</span><span>MQTT</span>
+                  </div>
+                  <a href="/portfolio/7" class="portfolio-detail-btn">
+                    Detail Studi Kasus →
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item" data-category="iot">
+              <div class="portfolio-slide-card">
+                <div class="portfolio-img-wrap">
+                  <img src="https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=800&q=80" alt="Sistem Otomasi Kontrol Kualitas & Penetral pH Air" loading="lazy" />
+                  <span class="portfolio-cat-badge">IoT Automation</span>
+                  <div class="portfolio-meta-bar">
+                    <span>Industri Pengolahan Limbah</span>
+                    <span style="color:#34d399">2026</span>
+                  </div>
+                </div>
+                <div class="portfolio-slide-body">
+                  <h3>Sistem Otomasi Kontrol Kualitas & Penetral pH Air</h3>
+                  <p>Sistem otomatisasi penambahan larutan penetral pH berbasis aktuator cerdas.</p>
+                </div>
+                <div class="portfolio-slide-footer">
+                  <div class="portfolio-pill-stack">
+                    <span>React</span><span>Python</span><span>C++</span>
+                  </div>
+                  <a href="/portfolio/8" class="portfolio-detail-btn">
+                    Detail Studi Kasus →
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item" data-category="system">
+              <div class="portfolio-slide-card">
+                <div class="portfolio-img-wrap">
+                  <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80" alt="ERP Manufacturing System" loading="lazy" />
+                  <span class="portfolio-cat-badge">Enterprise Software</span>
+                  <div class="portfolio-meta-bar">
+                    <span>PT Maju Industri Manufaktur</span>
+                    <span style="color:#34d399">2024</span>
+                  </div>
+                </div>
+                <div class="portfolio-slide-body">
+                  <h3>ERP Manufacturing System</h3>
+                  <p>Sistem ERP manufaktur untuk integrasi jadwal mesin, bahan baku, dan siklus produksi.</p>
+                </div>
+                <div class="portfolio-slide-footer">
+                  <div class="portfolio-pill-stack">
+                    <span>Next.js</span><span>Node.js</span><span>PostgreSQL</span>
+                  </div>
+                  <a href="/portfolio/9" class="portfolio-detail-btn">
+                    Detail Studi Kasus →
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item" data-category="system">
+              <div class="portfolio-slide-card">
+                <div class="portfolio-img-wrap">
+                  <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80" alt="HR Management System" loading="lazy" />
+                  <span class="portfolio-cat-badge">Enterprise Web App</span>
+                  <div class="portfolio-meta-bar">
+                    <span>CV Berkah Jaya Korpora</span>
+                    <span style="color:#34d399">2024</span>
+                  </div>
+                </div>
+                <div class="portfolio-slide-body">
+                  <h3>HR Management System</h3>
+                  <p>Portal HRD modern untuk pengelolaan performa karyawan, pelatihan, dan KPI.</p>
+                </div>
+                <div class="portfolio-slide-footer">
+                  <div class="portfolio-pill-stack">
+                    <span>React</span><span>Express</span><span>MySQL</span>
+                  </div>
+                  <a href="/portfolio/10" class="portfolio-detail-btn">
+                    Detail Studi Kasus →
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="slider-dots" id="porto-dots"></div>
+      </section>
+
+      <!-- TEAM SECTION -->
+      <section class="section" id="tim">
+        <div class="section-head">
+          <div>
+            <span class="kicker">OUR EXPERTS</span>
+            <h2>Tim Profesional Solvia Nova</h2>
+          </div>
+          <p>Didukung oleh para praktisi teknologi, pengembang sistem, dan desainer dengan integritas dan keahlian mendalam.</p>
+        </div>
+
+        <div class="slider-header-controls">
+          <div style="font-size:12px;color:#93c5fd;font-weight:600">Menggeser otomatis • Arahkan kursor untuk menjeda</div>
+          <div class="nav-arrows">
+            <button type="button" class="nav-arrow-btn" id="team-prev" aria-label="Sebelumnya">←</button>
+            <button type="button" class="nav-arrow-btn" id="team-next" aria-label="Berikutnya">→</button>
+          </div>
+        </div>
+
+        <div class="carousel-viewport" id="team-viewport">
+          <div class="carousel-track" id="team-track">
+
+            <div class="carousel-item">
+              <div class="team-slide-card">
+                <div>
+                  <div class="team-card-top">
+                    <div class="team-photo-wrap">
+                      <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80" alt="Solvia Nova" loading="lazy" />
+                    </div>
+                    <div>
+                      <span class="team-role-pill">Founder & CEO</span>
+                      <h3>Solvia Nova</h3>
+                    </div>
+                  </div>
+                  <p class="team-card-bio">Memimpin visi dan strategi Solvia Nova dalam membangun ekosistem digital yang berdampak. Berpengalaman lebih dari 5 tahun di industri teknologi dan digital business.</p>
+                </div>
+                
+                <div style="border-top:1px solid rgba(56, 189, 248, 0.18);padding-top:12px">
+                  <div class="team-skills-title">Keahlian Utama:</div>
+                  <div class="team-skills-list">
+                    <span>PHP</span><span>System Architecture</span><span>Business Strategy</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="team-slide-card">
+                <div>
+                  <div class="team-card-top">
+                    <div class="team-photo-wrap">
+                      <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80" alt="Dev Team Lead" loading="lazy" />
+                    </div>
+                    <div>
+                      <span class="team-role-pill">Lead Fullstack Developer</span>
+                      <h3>Dev Team Lead</h3>
+                    </div>
+                  </div>
+                  <p class="team-card-bio">Membangun sistem dan aplikasi web dengan standar kode yang bersih dan performa tinggi. Spesialis dalam membangun aplikasi yang scalable.</p>
+                </div>
+                
+                <div style="border-top:1px solid rgba(56, 189, 248, 0.18);padding-top:12px">
+                  <div class="team-skills-title">Keahlian Utama:</div>
+                  <div class="team-skills-list">
+                    <span>Laravel</span><span>React</span><span>Vue.js</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="team-slide-card">
+                <div>
+                  <div class="team-card-top">
+                    <div class="team-photo-wrap">
+                      <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80" alt="Design Team Lead" loading="lazy" />
+                    </div>
+                    <div>
+                      <span class="team-role-pill">UI/UX & Visual Designer</span>
+                      <h3>Design Team Lead</h3>
+                    </div>
+                  </div>
+                  <p class="team-card-bio">Merancang pengalaman pengguna yang intuitif dan visual yang premium untuk setiap produk digital yang kami bangun.</p>
+                </div>
+                
+                <div style="border-top:1px solid rgba(56, 189, 248, 0.18);padding-top:12px">
+                  <div class="team-skills-title">Keahlian Utama:</div>
+                  <div class="team-skills-list">
+                    <span>Figma</span><span>Framer</span><span>TailwindCSS</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="team-slide-card">
+                <div>
+                  <div class="team-card-top">
+                    <div class="team-photo-wrap">
+                      <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=600&q=80" alt="Content Strategist" loading="lazy" />
+                    </div>
+                    <div>
+                      <span class="team-role-pill">Content & Growth Specialist</span>
+                      <h3>Content Strategist</h3>
+                    </div>
+                  </div>
+                  <p class="team-card-bio">Membangun narasi brand yang kuat dan strategi konten yang menggerakkan audiens. Spesialis SEO dan digital marketing.</p>
+                </div>
+                
+                <div style="border-top:1px solid rgba(56, 189, 248, 0.18);padding-top:12px">
+                  <div class="team-skills-title">Keahlian Utama:</div>
+                  <div class="team-skills-list">
+                    <span>Copywriting</span><span>SEO</span><span>Social Media Strategy</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="team-slide-card">
+                <div>
+                  <div class="team-card-top">
+                    <div class="team-photo-wrap">
+                      <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=600&q=80" alt="System Analyst Lead" loading="lazy" />
+                    </div>
+                    <div>
+                      <span class="team-role-pill">Lead System Analyst</span>
+                      <h3>System Analyst Lead</h3>
+                    </div>
+                  </div>
+                  <p class="team-card-bio">Menjembatani kebutuhan bisnis dengan solusi teknis. Memastikan setiap sistem yang dibangun benar-benar menjawab masalah nyata.</p>
+                </div>
+                
+                <div style="border-top:1px solid rgba(56, 189, 248, 0.18);padding-top:12px">
+                  <div class="team-skills-title">Keahlian Utama:</div>
+                  <div class="team-skills-list">
+                    <span>Business Analysis</span><span>ERD</span><span>System Design</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="slider-dots" id="team-dots"></div>
+      </section>
+
+            <!-- TESTIMONIALS SECTION -->
+      <section class="section" id="testimoni">
+        <div class="section-head">
+          <div>
+            <span class="kicker">TESTIMONIALS</span>
+            <h2>Apa Kata Klien Kami</h2>
+          </div>
+          <p>Kepercayaan dan kepuasan klien adalah tolak ukur keberhasilan utama setiap proyek yang kami bangun.</p>
+        </div>
+
+        <div class="slider-header-controls">
+          <div style="font-size:12px;color:#93c5fd;font-weight:600">Menggeser otomatis • Arahkan kursor untuk menjeda</div>
+          <div class="nav-arrows">
+            <button type="button" class="nav-arrow-btn" id="testi-prev" aria-label="Sebelumnya">←</button>
+            <button type="button" class="nav-arrow-btn" id="testi-next" aria-label="Berikutnya">→</button>
+          </div>
+        </div>
+
+        <div class="carousel-viewport" id="testi-viewport">
+          <div class="carousel-track" id="testi-track">
+
+            <div class="carousel-item">
+              <div class="team-slide-card" style="padding:24px;justify-content:space-between;display:flex;flex-direction:column;height:100%">
+                <div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                    <div style="color:#facc15;font-size:15px;letter-spacing:2px">★★★★★</div>
+                    <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;background:rgba(12,45,82,0.8);border:1px solid rgba(56,189,248,0.25);color:#38bdf8">Enterprise ERP System</span>
+                  </div>
+                  <p style="font-style:italic;color:#e0f2fe;font-size:12px;line-height:1.6;margin:0 0 16px">
+                    &quot;Solvia Nova benar-benar mengubah cara kami beroperasi. Sistem ERP yang mereka bangun sangat intuitif dan tim kami langsung bisa adaptasi. Highly recommended!&quot;
+                  </p>
+                </div>
+                <div style="display:flex;align-items:center;gap:12px;padding-top:14px;border-top:1px solid rgba(56,189,248,0.18)">
+                  
+                  <div style="width:42px;height:42px;border-radius:12px;overflow:hidden;border:1.5px solid #38bdf8;flex-shrink:0">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80" alt="Budi Santoso" style="width:100%;height:100%;object-fit:cover" />
+                  </div>
+                  <div>
+                    <strong style="display:block;color:#fff;font-size:13px">Budi Santoso</strong>
+                    <span style="font-size:11px;color:#93c5fd">CEO, PT Maju Bersama</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="team-slide-card" style="padding:24px;justify-content:space-between;display:flex;flex-direction:column;height:100%">
+                <div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                    <div style="color:#facc15;font-size:15px;letter-spacing:2px">★★★★★</div>
+                    <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;background:rgba(12,45,82,0.8);border:1px solid rgba(56,189,248,0.25);color:#38bdf8">E-Commerce Platform</span>
+                  </div>
+                  <p style="font-style:italic;color:#e0f2fe;font-size:12px;line-height:1.6;margin:0 0 16px">
+                    &quot;Website e-commerce kami sekarang jauh lebih profesional. Penjualan meningkat 40% dalam 3 bulan pertama setelah launch. Tim Solvia Nova sangat responsif dan profesional.&quot;
+                  </p>
+                </div>
+                <div style="display:flex;align-items:center;gap:12px;padding-top:14px;border-top:1px solid rgba(56,189,248,0.18)">
+                  
+                  <div style="width:42px;height:42px;border-radius:12px;overflow:hidden;border:1.5px solid #38bdf8;flex-shrink:0">
+                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80" alt="Rina Wijaya" style="width:100%;height:100%;object-fit:cover" />
+                  </div>
+                  <div>
+                    <strong style="display:block;color:#fff;font-size:13px">Rina Wijaya</strong>
+                    <span style="font-size:11px;color:#93c5fd">Founder, Toko Online Nusantara</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="team-slide-card" style="padding:24px;justify-content:space-between;display:flex;flex-direction:column;height:100%">
+                <div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                    <div style="color:#facc15;font-size:15px;letter-spacing:2px">★★★★★</div>
+                    <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;background:rgba(12,45,82,0.8);border:1px solid rgba(56,189,248,0.25);color:#38bdf8">Digital Branding & Identity</span>
+                  </div>
+                  <p style="font-style:italic;color:#e0f2fe;font-size:12px;line-height:1.6;margin:0 0 16px">
+                    &quot;Branding yang mereka rancang benar-benar merepresentasikan nilai brand kami. Proses kerja sama sangat menyenangkan dan hasilnya melebihi ekspektasi.&quot;
+                  </p>
+                </div>
+                <div style="display:flex;align-items:center;gap:12px;padding-top:14px;border-top:1px solid rgba(56,189,248,0.18)">
+                  
+                  <div style="width:42px;height:42px;border-radius:12px;overflow:hidden;border:1.5px solid #38bdf8;flex-shrink:0">
+                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80" alt="Ahmad Fauzi" style="width:100%;height:100%;object-fit:cover" />
+                  </div>
+                  <div>
+                    <strong style="display:block;color:#fff;font-size:13px">Ahmad Fauzi</strong>
+                    <span style="font-size:11px;color:#93c5fd">Marketing Director, Brand Lokal</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="team-slide-card" style="padding:24px;justify-content:space-between;display:flex;flex-direction:column;height:100%">
+                <div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                    <div style="color:#facc15;font-size:15px;letter-spacing:2px">★★★★★</div>
+                    <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;background:rgba(12,45,82,0.8);border:1px solid rgba(56,189,248,0.25);color:#38bdf8">Smart Agriculture IoT</span>
+                  </div>
+                  <p style="font-style:italic;color:#e0f2fe;font-size:12px;line-height:1.6;margin:0 0 16px">
+                    &quot;Sistem monitoring IoT perkebunan dari Solvia Nova bekerja 24/7 tanpa kendala. Dashboard analitiknya sangat membantu tim lapangan kami mengambil keputusan secara instan.&quot;
+                  </p>
+                </div>
+                <div style="display:flex;align-items:center;gap:12px;padding-top:14px;border-top:1px solid rgba(56,189,248,0.18)">
+                  
+                  <div style="width:42px;height:42px;border-radius:12px;overflow:hidden;border:1.5px solid #38bdf8;flex-shrink:0">
+                    <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=300&q=80" alt="Dian Permata" style="width:100%;height:100%;object-fit:cover" />
+                  </div>
+                  <div>
+                    <strong style="display:block;color:#fff;font-size:13px">Dian Permata</strong>
+                    <span style="font-size:11px;color:#93c5fd">Operations Director, PT Agro Nusantara</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="team-slide-card" style="padding:24px;justify-content:space-between;display:flex;flex-direction:column;height:100%">
+                <div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                    <div style="color:#facc15;font-size:15px;letter-spacing:2px">★★★★★</div>
+                    <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;background:rgba(12,45,82,0.8);border:1px solid rgba(56,189,248,0.25);color:#38bdf8">Wholesale Web Platform</span>
+                  </div>
+                  <p style="font-style:italic;color:#e0f2fe;font-size:12px;line-height:1.6;margin:0 0 16px">
+                    &quot;Kecepatan load dan arsitektur database yang dirancang tim Solvia Nova sangat handal. Penanganan transaksi grosir ribuan item berjalan mulus tanpa lag.&quot;
+                  </p>
+                </div>
+                <div style="display:flex;align-items:center;gap:12px;padding-top:14px;border-top:1px solid rgba(56,189,248,0.18)">
+                  
+                  <div style="width:42px;height:42px;border-radius:12px;overflow:hidden;border:1.5px solid #38bdf8;flex-shrink:0">
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80" alt="Hendra Gunawan" style="width:100%;height:100%;object-fit:cover" />
+                  </div>
+                  <div>
+                    <strong style="display:block;color:#fff;font-size:13px">Hendra Gunawan</strong>
+                    <span style="font-size:11px;color:#93c5fd">CTO, DasterKu Official</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="team-slide-card" style="padding:24px;justify-content:space-between;display:flex;flex-direction:column;height:100%">
+                <div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                    <div style="color:#facc15;font-size:15px;letter-spacing:2px">★★★★★</div>
+                    <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;background:rgba(12,45,82,0.8);border:1px solid rgba(56,189,248,0.25);color:#38bdf8">UMKM Directory Portal</span>
+                  </div>
+                  <p style="font-style:italic;color:#e0f2fe;font-size:12px;line-height:1.6;margin:0 0 16px">
+                    &quot;Kolaborasi dengan Solvia Nova memberikan dampak nyata bagi ratusan UMKM di direktori kami. Desain UI/UX-nya sangat ramah pengguna dan modern.&quot;
+                  </p>
+                </div>
+                <div style="display:flex;align-items:center;gap:12px;padding-top:14px;border-top:1px solid rgba(56,189,248,0.18)">
+                  
+                  <div style="width:42px;height:42px;border-radius:12px;overflow:hidden;border:1.5px solid #38bdf8;flex-shrink:0">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" alt="Maya Anggraini" style="width:100%;height:100%;object-fit:cover" />
+                  </div>
+                  <div>
+                    <strong style="display:block;color:#fff;font-size:13px">Maya Anggraini</strong>
+                    <span style="font-size:11px;color:#93c5fd">Head of Digital, NovaDex UMKM</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="slider-dots" id="testi-dots"></div>
+      </section>
+
+      <!-- CONTACT SECTION -->
+      <section class="section" id="kontak">
+        <div class="contact">
+          <div>
+            <h2>Siap Membawa Bisnis Anda ke Level Berikutnya?</h2>
+            <p>Konsultasikan kebutuhan software, sistem bisnis, atau inovasi digital Anda bersama tim Solvia Nova sekarang.</p>
+          </div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <a class="btn primary" href="/contact">Konsultasi Sekarang <b>→</b></a>
+            <a class="btn outline" href="https://wa.me/6281234567890" target="_blank" rel="noreferrer">WhatsApp Chat</a>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div style="display:flex;align-items:center;gap:12px">
+          <img src="/assets/images/Solvia.png" alt="Solvia Nova" style="height:30px;width:auto;object-fit:contain" />
+          <div>© 2026 <strong>Solvia.Nova</strong> — Digital Solution &amp; 3D Studio. All rights reserved.</div>
+        </div>
+        <div style="display:flex;gap:16px">
+          <a href="/about">Tentang</a>
+          <a href="/services">Layanan</a>
+          <a href="/portfolio">Portofolio</a>
+          <a href="/articles">Artikel</a>
+          <a href="/contact">Kontak</a>
+          <a href="/sso">Admin Panel</a>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    // Universal Carousel Factory
+    function setupCarousel(options) {
+      const track = document.getElementById(options.trackId);
+      const viewport = document.getElementById(options.viewportId);
+      const dotsContainer = document.getElementById(options.dotsId);
+      const prevBtn = document.getElementById(options.prevBtnId);
+      const nextBtn = document.getElementById(options.nextBtnId);
+      
+      if (!track || !viewport) return;
+
+      let allItems = Array.from(track.children);
+      let visibleItems = [...allItems];
+      let currentIndex = 0;
+      let timer = null;
+      let isPaused = false;
+
+      function getItemsPerView() {
+        const w = window.innerWidth;
+        if (w < 640) return 1;
+        if (w < 1024) return 2;
+        return 3;
+      }
+
+      function getMaxIndex() {
+        return Math.max(0, visibleItems.length - getItemsPerView());
+      }
+
+      function renderDots() {
+        if (!dotsContainer) return;
+        dotsContainer.innerHTML = '';
+        const maxIdx = getMaxIndex();
+        if (maxIdx <= 0) return;
+
+        for (let i = 0; i <= maxIdx; i++) {
+          const dot = document.createElement('button');
+          dot.className = 'slider-dot' + (i === currentIndex ? ' active' : '');
+          dot.setAttribute('aria-label', 'Slide ' + (i + 1));
+          dot.onclick = () => {
+            currentIndex = i;
+            updateTrack();
+          };
+          dotsContainer.appendChild(dot);
+        }
+      }
+
+      function updateTrack() {
+        const maxIdx = getMaxIndex();
+        if (currentIndex > maxIdx) currentIndex = 0;
+        if (currentIndex < 0) currentIndex = maxIdx;
+
+        const itemWidth = 100 / getItemsPerView();
+        track.style.transform = 'translateX(-' + (currentIndex * itemWidth) + '%)';
+
+        // Update dots
+        if (dotsContainer) {
+          const dots = dotsContainer.querySelectorAll('.slider-dot');
+          dots.forEach((dot, idx) => {
+            if (idx === currentIndex) {
+              dot.classList.add('active');
+            } else {
+              dot.classList.remove('active');
+            }
+          });
+        }
+      }
+
+      function startAutoSlide() {
+        stopAutoSlide();
+        timer = setInterval(() => {
+          if (!isPaused) {
+            const maxIdx = getMaxIndex();
+            currentIndex = (currentIndex >= maxIdx) ? 0 : currentIndex + 1;
+            updateTrack();
+          }
+        }, options.interval || 3800);
+      }
+
+      function stopAutoSlide() {
+        if (timer) clearInterval(timer);
+      }
+
+      if (prevBtn) {
+        prevBtn.onclick = () => {
+          const maxIdx = getMaxIndex();
+          currentIndex = (currentIndex <= 0) ? maxIdx : currentIndex - 1;
+          updateTrack();
+        };
+      }
+
+      if (nextBtn) {
+        nextBtn.onclick = () => {
+          const maxIdx = getMaxIndex();
+          currentIndex = (currentIndex >= maxIdx) ? 0 : currentIndex + 1;
+          updateTrack();
+        };
+      }
+
+      viewport.addEventListener('mouseenter', () => { isPaused = true; });
+      viewport.addEventListener('mouseleave', () => { isPaused = false; });
+
+      // Touch swipe
+      let startX = 0;
+      viewport.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        isPaused = true;
+      }, { passive: true });
+
+      viewport.addEventListener('touchend', (e) => {
+        const diff = startX - e.changedTouches[0].clientX;
+        if (diff > 45) {
+          const maxIdx = getMaxIndex();
+          currentIndex = (currentIndex >= maxIdx) ? 0 : currentIndex + 1;
+          updateTrack();
+        } else if (diff < -45) {
+          const maxIdx = getMaxIndex();
+          currentIndex = (currentIndex <= 0) ? maxIdx : currentIndex - 1;
+          updateTrack();
+        }
+        isPaused = false;
+      }, { passive: true });
+
+      window.addEventListener('resize', () => {
+        renderDots();
+        updateTrack();
+      });
+
+      // Filter handling
+      if (options.filtersId) {
+        const filterContainer = document.getElementById(options.filtersId);
+        if (filterContainer) {
+          const buttons = filterContainer.querySelectorAll('.filter-btn');
+          buttons.forEach(btn => {
+            btn.onclick = () => {
+              buttons.forEach(b => b.classList.remove('active'));
+              btn.classList.add('active');
+              const filter = btn.getAttribute('data-filter');
+
+              allItems.forEach(item => {
+                const itemCat = item.getAttribute('data-category');
+                if (filter === 'all' || itemCat === filter) {
+                  item.style.display = 'block';
+                } else {
+                  item.style.display = 'none';
+                }
+              });
+
+              visibleItems = allItems.filter(item => item.style.display !== 'none');
+              currentIndex = 0;
+              renderDots();
+              updateTrack();
+            };
+          });
+        }
+      }
+
+      renderDots();
+      updateTrack();
+      startAutoSlide();
+    }
+
+    // Initialize carousels
+    document.addEventListener('DOMContentLoaded', () => {
+      setupCarousel({
+        trackId: 'porto-track',
+        viewportId: 'porto-viewport',
+        dotsId: 'porto-dots',
+        prevBtnId: 'porto-prev',
+        nextBtnId: 'porto-next',
+        filtersId: 'portfolio-filters',
+        interval: 3800
+      });
+
+      setupCarousel({
+        trackId: 'testi-track',
+        viewportId: 'testi-viewport',
+        dotsId: 'testi-dots',
+        prevBtnId: 'testi-prev',
+        nextBtnId: 'testi-next',
+        interval: 4000
+      });
+
+      setupCarousel({
+        trackId: 'team-track',
+        viewportId: 'team-viewport',
+        dotsId: 'team-dots',
+        prevBtnId: 'team-prev',
+        nextBtnId: 'team-next',
+        interval: 3600
+      });
+    });
+  </script>
+</body>
+</html>
