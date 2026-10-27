@@ -11,8 +11,8 @@ export default function Topbar({ onSearchOpen }: { onSearchOpen: () => void }) {
           alt="Solvia Nova Logo"
           className="h-10 sm:h-11 w-auto object-contain transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_2px_12px_rgba(18,169,255,0.35)]"
         />
-        <span>
-          Solvia<span>.Nova</span>
+        <span className="text-white font-bold font-['Space_Grotesk'] text-2xl tracking-tight">
+          Solvia<span className="text-[#38bdf8]">.Nova</span>
         </span>
       </Link>
 

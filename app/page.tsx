@@ -75,9 +75,9 @@ export default function Home() {
         {/* Right: Solvia Nova Mascot with Clean Transparency */}
         <div className="hero-art flex items-end justify-center px-4 pt-4 pb-0">
           <img
-            src="/assets/images/maskot-clean.png"
+            src="/assets/images/maskot-clean.png?v=20261027"
             alt="Solvia.Nova Mascot"
-            className="h-full w-auto max-h-[480px] object-contain object-bottom drop-shadow-[0_20px_40px_rgba(18,169,255,0.45)] select-none pointer-events-none"
+            className="h-full w-auto max-h-[485px] object-contain object-bottom drop-shadow-[0_20px_40px_rgba(18,169,255,0.45)] select-none pointer-events-none"
             loading="eager"
           />
           <div className="hero-badge-top">✓ 100% On-Time Delivery</div>
