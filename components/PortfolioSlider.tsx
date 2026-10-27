@@ -162,90 +162,96 @@ export default function PortfolioSlider() {
       </div>
 
       {/* Carousel Track Container */}
-      <div
-        className="overflow-hidden rounded-2xl"
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
-      >
+      {filteredItems.length === 0 ? (
+        <div className="py-12 text-center rounded-2xl border border-blue-400/20 bg-[#081d36]/40 text-blue-300">
+          <p className="text-sm font-medium">Belum ada portofolio untuk kategori ini.</p>
+        </div>
+      ) : (
         <div
-          className="flex transition-transform duration-500 ease-out"
-          style={{
-            transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)`,
-          }}
+          className="overflow-hidden rounded-2xl"
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
         >
-          {filteredItems.map((project) => (
-            <div
-              key={project.id}
-              className="px-2 shrink-0"
-              style={{ width: `${100 / itemsPerView}%` }}
-            >
-              <div className="group h-full bg-gradient-to-b from-[#0a274d] to-[#04152d] border border-blue-500/30 hover:border-cyan-400/70 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-blue-500/20 flex flex-col justify-between">
-                <div>
-                  {/* Photo Thumbnail Container */}
-                  <div className="relative h-44 sm:h-48 w-full bg-[#020611] overflow-hidden border-b border-blue-400/20">
-                    <img
-                      src={project.image}
-                      alt={project.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#04152d] via-transparent to-transparent opacity-80" />
-                    
-                    {/* Category Badge Floating Top Left */}
-                    <div className="absolute top-3 left-3">
-                      <span className="px-2.5 py-1 rounded-full bg-[#031226]/85 backdrop-blur-md border border-blue-400/40 text-cyan-300 text-[10px] font-extrabold uppercase tracking-wider">
-                        {project.category}
-                      </span>
+          <div
+            className="flex items-stretch transition-transform duration-500 ease-out"
+            style={{
+              transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)`,
+            }}
+          >
+            {filteredItems.map((project) => (
+              <div
+                key={project.id}
+                className="px-2 shrink-0 flex flex-col"
+                style={{ width: `${100 / itemsPerView}%` }}
+              >
+                <div className="group h-full bg-gradient-to-b from-[#0a274d] to-[#04152d] border border-blue-500/30 hover:border-cyan-400/70 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-blue-500/20 flex flex-col justify-between">
+                  <div>
+                    {/* Photo Thumbnail Container */}
+                    <div className="relative h-44 sm:h-48 w-full bg-[#020611] overflow-hidden border-b border-blue-400/20">
+                      <img
+                        src={project.image}
+                        alt={project.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#04152d] via-transparent to-transparent opacity-80" />
+                      
+                      {/* Category Badge Floating Top Left */}
+                      <div className="absolute top-3 left-3">
+                        <span className="px-2.5 py-1 rounded-full bg-[#031226]/85 backdrop-blur-md border border-blue-400/40 text-cyan-300 text-[10px] font-extrabold uppercase tracking-wider">
+                          {project.category}
+                        </span>
+                      </div>
+
+                      {/* Client / Status Tag Bottom Left */}
+                      <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-[11px] font-semibold text-blue-200">
+                        <span>{project.client}</span>
+                        <span className="text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                          {project.year}
+                        </span>
+                      </div>
                     </div>
 
-                    {/* Client / Status Tag Bottom Left */}
-                    <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-[11px] font-semibold text-blue-200">
-                      <span>{project.client}</span>
-                      <span className="text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-                        {project.year}
-                      </span>
+                    {/* Card Content Area */}
+                    <div className="p-4 sm:p-5 space-y-2">
+                      <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-cyan-300 transition-colors line-clamp-1">
+                        {project.name}
+                      </h3>
+                      <p className="text-xs text-slate-300 leading-relaxed line-clamp-2">
+                        {project.shortDesc}
+                      </p>
                     </div>
                   </div>
 
-                  {/* Card Content Area */}
-                  <div className="p-4 sm:p-5 space-y-2">
-                    <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-cyan-300 transition-colors line-clamp-1">
-                      {project.name}
-                    </h3>
-                    <p className="text-xs text-slate-300 leading-relaxed line-clamp-2">
-                      {project.shortDesc}
-                    </p>
-                  </div>
-                </div>
+                  {/* Footer with Tech Stack and Link */}
+                  <div className="p-4 sm:p-5 pt-0">
+                    <div className="flex flex-wrap gap-1.5 mb-3.5">
+                      {project.techStack.slice(0, 3).map((tech) => (
+                        <span
+                          key={tech}
+                          className="px-2 py-0.5 rounded-md bg-blue-950/60 border border-blue-400/25 text-[10px] font-medium text-blue-200"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
 
-                {/* Footer with Tech Stack and Link */}
-                <div className="p-4 sm:p-5 pt-0">
-                  <div className="flex flex-wrap gap-1.5 mb-3.5">
-                    {project.techStack.slice(0, 3).map((tech) => (
-                      <span
-                        key={tech}
-                        className="px-2 py-0.5 rounded-md bg-blue-950/60 border border-blue-400/25 text-[10px] font-medium text-blue-200"
-                      >
-                        {tech}
-                      </span>
-                    ))}
+                    <Link
+                      href={`/portfolio/${project.id}`}
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-cyan-400 hover:text-white transition-colors"
+                    >
+                      Detail Studi Kasus
+                      <svg className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
+                      </svg>
+                    </Link>
                   </div>
-
-                  <Link
-                    href={`/portfolio/${project.id}`}
-                    className="inline-flex items-center gap-1.5 text-xs font-bold text-cyan-400 hover:text-white transition-colors"
-                  >
-                    Detail Studi Kasus
-                    <svg className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
-                    </svg>
-                  </Link>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Slide Indicators (Dots) */}
       {maxIndex > 0 && (

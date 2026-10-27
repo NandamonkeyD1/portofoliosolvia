@@ -13,19 +13,25 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
+    if (!isOpen) {
+      setSearchQuery("");
+      return;
+    }
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
     const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
-        e.preventDefault();
-        if (isOpen) onClose();
-        else onClose(); // parent handles toggle
-      }
-      if (e.key === "Escape" && isOpen) {
+      if (e.key === "Escape") {
         onClose();
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
@@ -47,8 +53,14 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="w-full max-w-xl bg-[#04152d] border border-blue-500/40 rounded-2xl shadow-2xl overflow-hidden">
+    <div
+      className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-20 px-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200 cursor-pointer"
+      onClick={onClose}
+    >
+      <div
+        className="w-full max-w-xl bg-[#04152d] border border-blue-500/40 rounded-2xl shadow-2xl overflow-hidden cursor-default"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="flex items-center px-4 py-3 border-b border-blue-500/30">
           <svg
             className="w-5 h-5 text-blue-400 mr-3 shrink-0"

@@ -73,7 +73,7 @@ export default function Home() {
         </div>
 
         {/* Right: Solvia Nova Mascot at the Top with Badges */}
-        <div className="hero-art relative flex items-center justify-center p-4">
+        <div className="hero-art flex items-center justify-center p-4">
           <img
             src="/assets/images/maskot.png"
             alt="Solvia.Nova Mascot"

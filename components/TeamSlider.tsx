@@ -110,7 +110,7 @@ export default function TeamSlider() {
         onTouchEnd={handleTouchEnd}
       >
         <div
-          className="flex transition-transform duration-500 ease-out"
+          className="flex items-stretch transition-transform duration-500 ease-out"
           style={{
             transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)`,
           }}
@@ -118,7 +118,7 @@ export default function TeamSlider() {
           {teamData.map((member) => (
             <div
               key={member.id}
-              className="px-2 shrink-0"
+              className="px-2 shrink-0 flex flex-col"
               style={{ width: `${100 / itemsPerView}%` }}
             >
               <div className="group h-full bg-gradient-to-b from-[#0a274d] to-[#04152d] border border-blue-500/30 hover:border-cyan-400/70 rounded-2xl p-5 sm:p-6 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-blue-500/20 flex flex-col justify-between">
