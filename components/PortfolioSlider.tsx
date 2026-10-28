@@ -184,7 +184,7 @@ export default function PortfolioSlider() {
                 className="px-2 shrink-0 flex flex-col"
                 style={{ width: `${100 / itemsPerView}%` }}
               >
-                <div className="group h-full bg-gradient-to-b from-[#0a274d] to-[#04152d] border border-blue-500/30 hover:border-cyan-400/70 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-blue-500/20 flex flex-col justify-between">
+                <div className="group h-full bg-gradient-to-b from-[#0a274d] to-[#04152d] border border-blue-500/30 hover:border-cyan-400/70 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-blue-500/20 flex flex-col justify-between min-h-[430px]">
                   <div>
                     {/* Photo Thumbnail Container */}
                     <div className="relative h-44 sm:h-48 w-full bg-[#020611] overflow-hidden border-b border-blue-400/20">
@@ -193,6 +193,11 @@ export default function PortfolioSlider() {
                         alt={project.name}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         loading="lazy"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.onerror = null;
+                          target.src = "/assets/images/hero-art.jpg";
+                        }}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#04152d] via-transparent to-transparent opacity-80" />
                       
@@ -205,8 +210,8 @@ export default function PortfolioSlider() {
 
                       {/* Client / Status Tag Bottom Left */}
                       <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-[11px] font-semibold text-blue-200">
-                        <span>{project.client}</span>
-                        <span className="text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                        <span className="truncate pr-2">{project.client}</span>
+                        <span className="text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 shrink-0">
                           {project.year}
                         </span>
                       </div>
@@ -214,10 +219,10 @@ export default function PortfolioSlider() {
 
                     {/* Card Content Area */}
                     <div className="p-4 sm:p-5 space-y-2">
-                      <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-cyan-300 transition-colors line-clamp-1">
+                      <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-cyan-300 transition-colors line-clamp-2 min-h-[48px] sm:min-h-[52px] leading-snug">
                         {project.name}
                       </h3>
-                      <p className="text-xs text-slate-300 leading-relaxed line-clamp-2">
+                      <p className="text-xs text-slate-300 leading-relaxed line-clamp-2 min-h-[36px]">
                         {project.shortDesc}
                       </p>
                     </div>

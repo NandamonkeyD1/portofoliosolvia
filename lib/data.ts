@@ -202,7 +202,7 @@ export const portfolioData: Portfolio[] = [
     year: 2026,
     featured: true,
     status: "Published",
-    image: "https://images.unsplash.com/photo-1556742049-0a675659e9cf?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80",
     caseStudy: {
       problem: "Proses pemesanan barang masih dilakukan manual via chat yang membingungkan inventaris.",
       analysis: "Kebutuhan katalog interaktif dengan opsi pesanan otomatis langsung ke WhatsApp/Admin.",
@@ -314,7 +314,7 @@ export const portfolioData: Portfolio[] = [
     year: 2026,
     featured: false,
     status: "Published",
-    image: "https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=800&q=80"
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80"
   },
   {
     id: "9",
@@ -503,7 +503,7 @@ export const galleryData: GalleryItem[] = [
     title: "Solusi Reklame & Advertising Digital",
     category: "Branding & Advertising",
     date: "10 Sep 2026",
-    image: "https://images.unsplash.com/photo-1542744094-3a31216955a4?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "2",
@@ -517,7 +517,7 @@ export const galleryData: GalleryItem[] = [
     title: "Dapur Ceria – Sistem Manajemen Bakery",
     category: "Point of Sale",
     date: "25 Aug 2026",
-    image: "https://images.unsplash.com/photo-1556742049-0a675659e9cf?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "4",

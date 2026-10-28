@@ -121,7 +121,7 @@ export default function TeamSlider() {
               className="px-2 shrink-0 flex flex-col"
               style={{ width: `${100 / itemsPerView}%` }}
             >
-              <div className="group h-full bg-gradient-to-b from-[#0a274d] to-[#04152d] border border-blue-500/30 hover:border-cyan-400/70 rounded-2xl p-5 sm:p-6 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-blue-500/20 flex flex-col justify-between">
+              <div className="group h-full bg-gradient-to-b from-[#0a274d] to-[#04152d] border border-blue-500/30 hover:border-cyan-400/70 rounded-2xl p-5 sm:p-6 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-blue-500/20 flex flex-col justify-between min-h-[300px]">
                 <div>
                   {/* Photo Container */}
                   <div className="flex items-center gap-4 mb-4">
@@ -153,14 +153,14 @@ export default function TeamSlider() {
                   </div>
 
                   {/* Bio */}
-                  <p className="text-xs text-slate-300 leading-relaxed line-clamp-3 mb-4">
+                  <p className="text-xs text-slate-300 leading-relaxed line-clamp-3 min-h-[54px] mb-4">
                     {member.bio}
                   </p>
                 </div>
 
                 {/* Skills Chips */}
                 {member.skills && (
-                  <div className="pt-3 border-t border-blue-400/20">
+                  <div className="mt-auto pt-3 border-t border-blue-400/20">
                     <div className="text-[10px] font-bold text-blue-400 uppercase tracking-wider mb-2">
                       Keahlian Utama:
                     </div>

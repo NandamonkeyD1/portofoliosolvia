@@ -121,6 +121,15 @@ body {
   --white: #f7fbff;
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 24px;
+}
+
+section[id], div[id] {
+  scroll-margin-top: 24px;
+}
+
 .font-space {
   font-family: 'Space Grotesk', sans-serif;
 }
@@ -638,6 +647,8 @@ body {
   position: relative;
   border-bottom: 1px solid rgba(22, 135, 213, 0.2);
   padding-bottom: 18px;
+  mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
 }
 
 .marquee-track-custom {

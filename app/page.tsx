@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Sparkles, Users, ShieldCheck, Target } from "lucide-react";
 import {
   servicesData,
   testimonialsData,
@@ -211,21 +212,42 @@ export default function Home() {
       </section>
 
       {/* Core Values 4 Grid from Index */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 px-1 py-2">
-        {coreValuesData.map((val) => (
-          <div
-            key={val.title}
-            className="group p-5 rounded-2xl bg-gradient-to-b from-[#0a274d] to-[#04152d] border border-blue-400/25 hover:border-cyan-400/60 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-blue-500/15"
-          >
-            <div className="w-10 h-10 rounded-xl bg-blue-500/15 border border-blue-400/30 flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition-transform">
-              {val.icon}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 px-1 py-2">
+        {coreValuesData.map((val) => {
+          const renderIcon = () => {
+            switch (val.icon) {
+              case "Sparkles":
+                return <Sparkles className="w-5 h-5 text-cyan-400 group-hover:scale-110 transition-transform" />;
+              case "Users":
+                return <Users className="w-5 h-5 text-cyan-400 group-hover:scale-110 transition-transform" />;
+              case "ShieldCheck":
+                return <ShieldCheck className="w-5 h-5 text-cyan-400 group-hover:scale-110 transition-transform" />;
+              case "Target":
+                return <Target className="w-5 h-5 text-cyan-400 group-hover:scale-110 transition-transform" />;
+              default:
+                return <Sparkles className="w-5 h-5 text-cyan-400" />;
+            }
+          };
+
+          return (
+            <div
+              key={val.title}
+              className="group p-5 sm:p-6 rounded-2xl bg-gradient-to-b from-[#0a274d] to-[#04152d] border border-blue-400/25 hover:border-cyan-400/60 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-blue-500/15 flex flex-col justify-between min-h-[170px]"
+            >
+              <div>
+                <div className="w-11 h-11 rounded-xl bg-blue-500/20 border border-blue-400/40 flex items-center justify-center mb-3.5 group-hover:bg-cyan-500/25 group-hover:border-cyan-400 transition-all shadow-md">
+                  {renderIcon()}
+                </div>
+                <div className="text-white font-bold text-sm sm:text-base mb-1.5 group-hover:text-cyan-300 transition-colors">
+                  {val.title}
+                </div>
+              </div>
+              <div className="text-blue-200/80 text-xs leading-relaxed">
+                {val.description}
+              </div>
             </div>
-            <div className="text-white font-bold text-sm mb-1.5 group-hover:text-cyan-300 transition-colors">
-              {val.title}
-            </div>
-            <div className="text-blue-200/80 text-xs leading-relaxed">{val.desc}</div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* ========================================================

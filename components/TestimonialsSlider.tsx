@@ -121,7 +121,7 @@ export default function TestimonialsSlider() {
               className="px-2 shrink-0 flex flex-col"
               style={{ width: `${100 / itemsPerView}%` }}
             >
-              <div className="group h-full bg-gradient-to-b from-[#0a274d] to-[#04152d] border border-blue-500/30 hover:border-cyan-400/70 rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-blue-500/20 flex flex-col justify-between">
+              <div className="group h-full bg-gradient-to-b from-[#0a274d] to-[#04152d] border border-blue-500/30 hover:border-cyan-400/70 rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-blue-500/20 flex flex-col justify-between min-h-[250px]">
                 <div>
                   {/* Rating Stars & Project Badge */}
                   <div className="flex items-center justify-between gap-2 mb-3">
@@ -144,13 +144,13 @@ export default function TestimonialsSlider() {
                   </div>
 
                   {/* Testimonial Quote */}
-                  <p className="text-blue-100 text-xs sm:text-sm leading-relaxed italic mb-5 line-clamp-4">
+                  <p className="text-blue-100 text-xs sm:text-sm leading-relaxed italic mb-5 line-clamp-4 min-h-[72px]">
                     &quot;{item.testimonial}&quot;
                   </p>
                 </div>
 
                 {/* Author Info */}
-                <div className="flex items-center gap-3 pt-3.5 border-t border-blue-400/20">
+                <div className="flex items-center gap-3 pt-3.5 border-t border-blue-400/20 mt-auto">
                   {item.avatar ? (
                     <div className="w-10 h-10 rounded-xl overflow-hidden border border-cyan-400/50 shadow-md shrink-0 bg-slate-900">
                       <img
