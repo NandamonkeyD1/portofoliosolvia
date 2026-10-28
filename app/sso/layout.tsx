@@ -15,6 +15,7 @@ import {
   Mail,
   Search,
   FileSpreadsheet,
+  ScrollText,
   Settings,
   LogOut,
   ExternalLink,
@@ -61,12 +62,14 @@ export default function SSOLayout({ children }: { children: React.ReactNode }) {
     { href: "/sso/messages", label: "Messages", icon: Mail },
     { href: "/sso/seo", label: "SEO", icon: Search },
     { href: "/sso/invoice", label: "Invoice", icon: FileSpreadsheet },
+    { href: "/sso/letters", label: "Surat Menyurat", icon: ScrollText },
     { href: "/sso/settings", label: "Settings", icon: Settings },
   ];
 
   const getPageTitle = () => {
     if (pathname.includes("/seo")) return "SEO Management";
     if (pathname.includes("/settings")) return "Settings — Admin Solvia Nova";
+    if (pathname.includes("/letters")) return "Surat Menyurat & Dokumen Resmi";
     if (pathname.includes("/invoice")) return "Invoice";
     if (pathname.includes("/messages")) return "Messages";
     if (pathname.includes("/portfolio")) return "Portfolio Management";

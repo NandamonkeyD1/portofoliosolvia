@@ -1236,3 +1236,26 @@ body {
   }
 }
 
+/* ========================================================
+   PRINT STYLES FOR OFFICIAL LETTERS & INVOICES
+   ======================================================== */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 1.2cm 1.5cm;
+  }
+  body, html {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  .sidebar, header, nav, button, .print\:hidden {
+    display: none !important;
+  }
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+}
+

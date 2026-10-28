@@ -19,7 +19,8 @@ import {
   Search,
   ExternalLink,
   Zap,
-  CheckCircle2
+  CheckCircle2,
+  ScrollText
 } from "lucide-react";
 
 export default function SSODashboardPage() {
@@ -301,6 +302,13 @@ export default function SSODashboardPage() {
             >
               <Plus className="w-4 h-4" />
               <span>Tambah Tim</span>
+            </Link>
+            <Link
+              href="/sso/letters/create"
+              className="col-span-2 flex items-center justify-center gap-2 p-3 rounded-xl bg-gradient-to-r from-blue-600/20 to-indigo-600/20 border border-blue-500/40 text-blue-300 hover:from-blue-600 hover:to-indigo-600 hover:text-white transition-all text-xs font-bold shadow-md"
+            >
+              <ScrollText className="w-4 h-4" />
+              <span>Buat Surat &amp; Dokumen Resmi</span>
             </Link>
           </div>
         </div>
