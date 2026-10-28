@@ -59,18 +59,18 @@ export default function ClientLayoutWrapper({ children }: { children: React.Reac
         </main>
       </div>
 
-      {/* Floating Re-Open Button when Sidebar is closed */}
+      {/* Floating Re-Open Tab when Sidebar is closed (Docked cleanly at left center) */}
       {!sidebarOpen && (
         <button
           type="button"
           onClick={() => setSidebarOpen(true)}
           aria-label="Buka Sidebar"
           title="Buka Sidebar (Ctrl + B)"
-          className="fixed left-3 top-5 z-40 hidden md:flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-[#04152d]/95 border border-cyan-400/60 text-cyan-300 shadow-xl shadow-cyan-950/60 backdrop-blur-md hover:scale-105 hover:bg-[#082245] hover:border-cyan-300 hover:text-white transition-all duration-300 text-xs font-semibold group cursor-pointer animate-fade-in"
+          className="fixed left-0 top-1/2 -translate-y-1/2 z-40 hidden md:flex items-center gap-1.5 pl-2.5 pr-3.5 py-3 rounded-r-2xl bg-[#04152d]/95 border-y border-r border-cyan-400/60 text-cyan-300 shadow-2xl shadow-cyan-950/70 backdrop-blur-md hover:scale-105 hover:bg-[#082245] hover:border-cyan-300 hover:text-white transition-all duration-300 text-xs font-semibold group cursor-pointer animate-fade-in hover:pl-3.5"
         >
           <PanelLeftOpen className="w-4 h-4 text-cyan-400 group-hover:scale-110 transition-transform" />
-          <span>Buka Menu</span>
-          <span className="text-[10px] bg-cyan-950/80 px-1.5 py-0.5 rounded border border-cyan-800 text-cyan-300">
+          <span className="font-bold">Buka Menu</span>
+          <span className="text-[10px] bg-cyan-950/80 px-1.5 py-0.5 rounded border border-cyan-800 text-cyan-300 ml-1">
             Ctrl B
           </span>
         </button>

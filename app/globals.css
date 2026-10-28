@@ -351,19 +351,21 @@ body {
 .actions {
   display: flex;
   align-items: center;
-  gap: 38px;
+  gap: 16px;
+  flex-shrink: 0;
 }
 
 .search {
   display: flex;
   align-items: center;
   gap: 10px;
-  width: 263px;
+  width: 250px;
   padding: 10px 13px;
   background: #10294a;
   border-radius: 13px;
   color: #92aac8;
   font-size: 12px;
+  flex-shrink: 0;
 }
 
 .search svg {
@@ -387,8 +389,8 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  padding: 14px 24px;
+  gap: 10px;
+  padding: 12px 22px;
   border-radius: 14px;
   font-size: 13px;
   font-weight: 700;
@@ -397,6 +399,8 @@ body {
   text-decoration: none;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .btn-primary {
@@ -1166,8 +1170,10 @@ body {
     display: none;
   }
   .actions .btn-custom {
-    padding: 12px;
+    padding: 8px 14px;
     font-size: 11px;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
   .hero-box {
     height: auto;

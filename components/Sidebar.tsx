@@ -60,20 +60,27 @@ export default function Sidebar({ isOpen = true, onToggle, onSearchOpen }: Sideb
 
   return (
     <aside className={`sidebar ${!isOpen ? "closed" : ""}`}>
-      {onToggle && (
-        <button
-          type="button"
-          onClick={onToggle}
-          aria-label="Tutup navigasi"
-          title="Tutup Sidebar (Ctrl + B)"
-          className="hidden md:flex absolute -right-3 top-6 w-6 h-6 rounded-full bg-[#041830] border border-cyan-400/60 text-cyan-300 hover:text-white hover:bg-cyan-500 hover:border-cyan-300 items-center justify-center shadow-lg shadow-black/50 transition-all duration-200 z-50 cursor-pointer group hover:scale-110"
-        >
-          <ChevronLeft className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform" />
-        </button>
-      )}
+      {/* Sidebar Header with Menu Label & Toggle Button */}
+      <div className="w-full flex items-center justify-between pb-3 mb-3 border-b border-blue-900/40 shrink-0">
+        <div className="flex items-center gap-1.5 pl-1">
+          <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+          <span className="text-[10px] font-black tracking-wider text-cyan-300 uppercase">MENU</span>
+        </div>
+        {onToggle && (
+          <button
+            type="button"
+            onClick={onToggle}
+            aria-label="Tutup navigasi"
+            title="Tutup Sidebar (Ctrl + B)"
+            className="hidden md:flex p-1.5 rounded-lg bg-blue-950/80 hover:bg-cyan-500/20 border border-cyan-500/30 hover:border-cyan-400 text-cyan-300 hover:text-white items-center justify-center transition-all duration-200 cursor-pointer active:scale-95 group"
+          >
+            <ChevronLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
+          </button>
+        )}
+      </div>
 
       <Link
-        className="logo-icon group flex flex-col items-center gap-1.5 no-underline !mb-6"
+        className="logo-icon group flex flex-col items-center gap-1.5 no-underline !mb-5 shrink-0"
         href={isHome ? "#beranda" : "/"}
         title="Solvia Nova"
       >

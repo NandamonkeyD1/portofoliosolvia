@@ -357,7 +357,7 @@ export default function ChatbotNovi() {
           aria-label="Buka Chat dengan Novi"
           className={`${
             isOpen ? "hidden sm:flex" : "flex"
-          } group relative w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-2xl shadow-blue-600/50 border border-blue-300/40 items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95`}
+          } group relative w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-2xl shadow-blue-600/50 border border-blue-300/40 items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95 shrink-0`}
         >
           {/* Animated Glow Halo */}
           <div className="absolute inset-0 rounded-2xl bg-blue-500/30 blur-md group-hover:blur-lg transition-all" />
