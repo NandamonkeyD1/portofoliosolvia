@@ -1,20 +1,49 @@
 "use client";
 
 import Link from "next/link";
+import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
 
-export default function Topbar({ onSearchOpen }: { onSearchOpen: () => void }) {
+interface TopbarProps {
+  onSearchOpen: () => void;
+  isSidebarOpen?: boolean;
+  onToggleSidebar?: () => void;
+}
+
+export default function Topbar({
+  onSearchOpen,
+  isSidebarOpen = true,
+  onToggleSidebar,
+}: TopbarProps) {
   return (
     <header className="topbar">
-      <Link className="wordmark flex items-center gap-3 no-underline group" href="/">
-        <img
-          src="/assets/images/Solvia.png"
-          alt="Solvia Nova Logo"
-          className="h-10 sm:h-11 w-auto object-contain transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_2px_12px_rgba(18,169,255,0.35)]"
-        />
-        <span className="text-white font-bold font-['Space_Grotesk'] text-2xl tracking-tight">
-          Solvia<span className="text-[#38bdf8]">.Nova</span>
-        </span>
-      </Link>
+      <div className="flex items-center gap-2 sm:gap-3">
+        {onToggleSidebar && (
+          <button
+            type="button"
+            onClick={onToggleSidebar}
+            title={isSidebarOpen ? "Tutup Sidebar (Ctrl + B)" : "Buka Sidebar (Ctrl + B)"}
+            aria-label="Toggle Sidebar"
+            className="p-2 sm:p-2.5 rounded-xl bg-[#092244]/80 hover:bg-[#103463] border border-cyan-500/30 hover:border-cyan-400 text-cyan-300 hover:text-white transition-all duration-200 flex items-center justify-center group shadow-sm active:scale-95"
+          >
+            {isSidebarOpen ? (
+              <PanelLeftClose className="w-5 h-5 text-cyan-400 group-hover:-translate-x-0.5 transition-transform" />
+            ) : (
+              <PanelLeftOpen className="w-5 h-5 text-cyan-400 group-hover:translate-x-0.5 transition-transform" />
+            )}
+          </button>
+        )}
+
+        <Link className="wordmark flex items-center gap-2.5 sm:gap-3 no-underline group" href="/">
+          <img
+            src="/assets/images/Solvia.png"
+            alt="Solvia Nova Logo"
+            className="h-9 sm:h-11 w-auto object-contain transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_2px_12px_rgba(18,169,255,0.35)]"
+          />
+          <span className="text-white font-bold font-['Space_Grotesk'] text-xl sm:text-2xl tracking-tight">
+            Solvia<span className="text-[#38bdf8]">.Nova</span>
+          </span>
+        </Link>
+      </div>
 
       <div className="actions">
         <button

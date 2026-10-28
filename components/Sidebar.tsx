@@ -3,8 +3,15 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ChevronLeft } from "lucide-react";
 
-export default function Sidebar({ onSearchOpen }: { onSearchOpen?: () => void }) {
+interface SidebarProps {
+  isOpen?: boolean;
+  onToggle?: () => void;
+  onSearchOpen?: () => void;
+}
+
+export default function Sidebar({ isOpen = true, onToggle, onSearchOpen }: SidebarProps) {
   const pathname = usePathname();
   const isHome = pathname === "/";
   const [activeSection, setActiveSection] = useState("beranda");
@@ -52,7 +59,19 @@ export default function Sidebar({ onSearchOpen }: { onSearchOpen?: () => void })
   };
 
   return (
-    <aside className="sidebar">
+    <aside className={`sidebar ${!isOpen ? "closed" : ""}`}>
+      {onToggle && (
+        <button
+          type="button"
+          onClick={onToggle}
+          aria-label="Tutup navigasi"
+          title="Tutup Sidebar (Ctrl + B)"
+          className="hidden md:flex absolute -right-3 top-6 w-6 h-6 rounded-full bg-[#041830] border border-cyan-400/60 text-cyan-300 hover:text-white hover:bg-cyan-500 hover:border-cyan-300 items-center justify-center shadow-lg shadow-black/50 transition-all duration-200 z-50 cursor-pointer group hover:scale-110"
+        >
+          <ChevronLeft className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform" />
+        </button>
+      )}
+
       <Link
         className="logo-icon group flex flex-col items-center gap-1.5 no-underline !mb-6"
         href={isHome ? "#beranda" : "/"}
@@ -73,19 +92,19 @@ export default function Sidebar({ onSearchOpen }: { onSearchOpen?: () => void })
       <nav className="nav" aria-label="Navigasi utama">
         {/* Beranda */}
         <Link
-          className={isActive("beranda", "/") && isHome ? "active" : ""}
+          className={`group ${isActive("beranda", "/") && isHome ? "active" : ""}`}
           href={isHome ? "#beranda" : "/"}
           onClick={() => isHome && setActiveSection("beranda")}
         >
           <svg viewBox="0 0 24 24">
             <path d="m3 10 9-7 9 7M5 9v12h14V9M9 21v-7h6v7" />
           </svg>
-          <span>Beranda</span>
+          <span className="group-hover:text-cyan-200 transition-colors">Beranda</span>
         </Link>
 
         {/* Tentang */}
         <Link
-          className={isHome ? (activeSection === "tentang" ? "active" : "") : pathname === "/about" ? "active" : ""}
+          className={`group ${isHome ? (activeSection === "tentang" ? "active" : "") : pathname === "/about" ? "active" : ""}`}
           href={isHome ? "#tentang" : "/about"}
           onClick={() => isHome && setActiveSection("tentang")}
         >
@@ -93,12 +112,12 @@ export default function Sidebar({ onSearchOpen }: { onSearchOpen?: () => void })
             <circle cx="12" cy="7" r="4" />
             <path d="M4 21a8 8 0 0 1 16 0" />
           </svg>
-          <span>Tentang</span>
+          <span className="group-hover:text-cyan-200 transition-colors">Tentang</span>
         </Link>
 
         {/* Layanan */}
         <Link
-          className={isHome ? (activeSection === "layanan" ? "active" : "") : pathname.startsWith("/services") ? "active" : ""}
+          className={`group ${isHome ? (activeSection === "layanan" ? "active" : "") : pathname.startsWith("/services") ? "active" : ""}`}
           href={isHome ? "#layanan" : "/services"}
           onClick={() => isHome && setActiveSection("layanan")}
         >
@@ -108,12 +127,12 @@ export default function Sidebar({ onSearchOpen }: { onSearchOpen?: () => void })
             <rect x="3" y="14" width="7" height="7" rx="2" />
             <rect x="14" y="14" width="7" height="7" rx="2" />
           </svg>
-          <span>Layanan</span>
+          <span className="group-hover:text-cyan-200 transition-colors">Layanan</span>
         </Link>
 
         {/* Portfolio */}
         <Link
-          className={isHome ? (activeSection === "portfolio" ? "active" : "") : pathname.startsWith("/portfolio") ? "active" : ""}
+          className={`group ${isHome ? (activeSection === "portfolio" ? "active" : "") : pathname.startsWith("/portfolio") ? "active" : ""}`}
           href={isHome ? "#portfolio" : "/portfolio"}
           onClick={() => isHome && setActiveSection("portfolio")}
         >
@@ -121,12 +140,12 @@ export default function Sidebar({ onSearchOpen }: { onSearchOpen?: () => void })
             <rect x="3" y="4" width="18" height="16" rx="2" />
             <path d="M3 9h18M8 4v5" />
           </svg>
-          <span>Portfolio</span>
+          <span className="group-hover:text-cyan-200 transition-colors">Portfolio</span>
         </Link>
 
         {/* Tim */}
         <Link
-          className={isHome ? (activeSection === "tim" ? "active" : "") : pathname === "/team" ? "active" : ""}
+          className={`group ${isHome ? (activeSection === "tim" ? "active" : "") : pathname === "/team" ? "active" : ""}`}
           href={isHome ? "#tim" : "/team"}
           onClick={() => isHome && setActiveSection("tim")}
         >
@@ -134,36 +153,36 @@ export default function Sidebar({ onSearchOpen }: { onSearchOpen?: () => void })
             <circle cx="9" cy="8" r="3.5" />
             <path d="M2 20a7 7 0 0 1 14 0M16 5.5a3 3 0 0 1 0 5.8M18 14a5 5 0 0 1 4 5" />
           </svg>
-          <span>Tim</span>
+          <span className="group-hover:text-cyan-200 transition-colors">Tim</span>
         </Link>
 
         {/* Testimoni */}
         <Link
-          className={isHome && activeSection === "testimoni" ? "active" : ""}
+          className={`group ${isHome && activeSection === "testimoni" ? "active" : ""}`}
           href={isHome ? "#testimoni" : "/#testimoni"}
           onClick={() => isHome && setActiveSection("testimoni")}
         >
           <svg viewBox="0 0 24 24">
             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
           </svg>
-          <span>Testimoni</span>
+          <span className="group-hover:text-cyan-200 transition-colors">Testimoni</span>
         </Link>
 
         {/* Artikel */}
         <Link
-          className={isHome ? (activeSection === "artikel" ? "active" : "") : pathname.startsWith("/articles") ? "active" : ""}
+          className={`group ${isHome ? (activeSection === "artikel" ? "active" : "") : pathname.startsWith("/articles") ? "active" : ""}`}
           href={isHome ? "#artikel" : "/articles"}
           onClick={() => isHome && setActiveSection("artikel")}
         >
           <svg viewBox="0 0 24 24">
             <path d="M5 3h11l4 4v14H5zM15 3v5h5M8 12h8M8 16h8" />
           </svg>
-          <span>Artikel</span>
+          <span className="group-hover:text-cyan-200 transition-colors">Artikel</span>
         </Link>
 
         {/* Kontak */}
         <Link
-          className={isHome ? (activeSection === "kontak" ? "active" : "") : pathname === "/contact" ? "active" : ""}
+          className={`group ${isHome ? (activeSection === "kontak" ? "active" : "") : pathname === "/contact" ? "active" : ""}`}
           href={isHome ? "#kontak" : "/contact"}
           onClick={() => isHome && setActiveSection("kontak")}
         >
@@ -171,24 +190,24 @@ export default function Sidebar({ onSearchOpen }: { onSearchOpen?: () => void })
             <rect x="3" y="5" width="18" height="14" rx="2" />
             <path d="m4 7 8 6 8-6" />
           </svg>
-          <span>Kontak</span>
+          <span className="group-hover:text-cyan-200 transition-colors">Kontak</span>
         </Link>
       </nav>
 
       <div className="side-bottom">
         <div className="side-label">PRODUCT</div>
-        <Link className="kelora" href="/services">
-          <i className="kmark" />
-          Kelora ›
+        <Link className="kelora group" href="/services">
+          <i className="kmark group-hover:border-cyan-400 group-hover:rotate-45 transition-all" />
+          <span>Kelora ›</span>
         </Link>
         <div className="socials">
-          <a href="https://linkedin.com" target="_blank" rel="noreferrer" title="LinkedIn">
+          <a href="https://linkedin.com" target="_blank" rel="noreferrer" title="LinkedIn" className="hover:scale-125 transition-transform">
             in
           </a>
-          <a href="https://instagram.com" target="_blank" rel="noreferrer" title="Instagram">
+          <a href="https://instagram.com" target="_blank" rel="noreferrer" title="Instagram" className="hover:scale-125 transition-transform">
             ◎
           </a>
-          <a href="https://youtube.com" target="_blank" rel="noreferrer" title="YouTube">
+          <a href="https://youtube.com" target="_blank" rel="noreferrer" title="YouTube" className="hover:scale-125 transition-transform">
             ▶
           </a>
         </div>
