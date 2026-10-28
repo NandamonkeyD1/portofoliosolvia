@@ -60,8 +60,8 @@ export default function Sidebar({ isOpen = true, onToggle, onSearchOpen }: Sideb
 
   return (
     <aside className={`sidebar ${!isOpen ? "closed" : ""}`}>
-      {/* Sidebar Header with Menu Label & Toggle Button */}
-      <div className="w-full flex items-center justify-between pb-3 mb-3 border-b border-blue-900/40 shrink-0">
+      {/* Sidebar Header with Menu Label & Toggle Button (Desktop only) */}
+      <div className="hidden md:flex w-full items-center justify-between pb-3 mb-3 border-b border-blue-900/40 shrink-0">
         <div className="flex items-center gap-1.5 pl-1">
           <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
           <span className="text-[10px] font-black tracking-wider text-cyan-300 uppercase">MENU</span>

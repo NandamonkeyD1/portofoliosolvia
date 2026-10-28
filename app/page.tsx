@@ -38,10 +38,10 @@ export default function Home() {
           </p>
 
           <div className="hero-buttons">
-            <a className="btn-custom btn-primary" href="#kontak">
+            <a className="btn-custom btn-primary w-full sm:w-auto text-center justify-center touch-manipulation active:scale-95" href="#kontak">
               Konsultasi Gratis <b>→</b>
             </a>
-            <a className="btn-custom btn-outline" href="#portfolio">
+            <a className="btn-custom btn-outline w-full sm:w-auto text-center justify-center touch-manipulation active:scale-95" href="#portfolio">
               ◉ &nbsp; Lihat Portofolio
             </a>
           </div>
@@ -271,8 +271,8 @@ export default function Home() {
                 <div className="icon">
                   {idx === 0 ? "⌘" : idx === 1 ? "▤" : idx === 2 ? "▦" : "◉"}
                 </div>
-                <h3>{svc.name}</h3>
-                <p>{svc.shortDesc}</p>
+                <h3 className="min-h-[48px] sm:min-h-[52px] flex items-center">{svc.name}</h3>
+                <p className="min-h-[44px]">{svc.shortDesc}</p>
                 <ul className="space-y-1.5 my-3 pt-2 border-t border-blue-400/15">
                   {svc.features.slice(0, 3).map((feat) => (
                     <li key={feat} className="text-[11px] text-blue-200 flex items-center gap-1.5">
@@ -282,7 +282,7 @@ export default function Home() {
                   ))}
                 </ul>
               </div>
-              <Link href={`/services#${svc.id}`}>
+              <Link href={`/services#${svc.id}`} className="active:scale-95 touch-manipulation">
                 Pelajari Fitur <span>→</span>
               </Link>
             </div>
@@ -290,7 +290,7 @@ export default function Home() {
         </div>
 
         <div className="text-center mt-8">
-          <Link href="/services" className="btn-custom btn-outline text-xs">
+          <Link href="/services" className="btn-custom btn-outline text-xs touch-manipulation active:scale-95">
             Lihat Semua Detail Layanan →
           </Link>
         </div>
@@ -314,7 +314,7 @@ export default function Home() {
         <PortfolioSlider />
 
         <div className="text-center mt-8">
-          <Link href="/portfolio" className="btn-custom btn-outline text-xs">
+          <Link href="/portfolio" className="btn-custom btn-outline text-xs touch-manipulation active:scale-95">
             Lihat Semua Portofolio →
           </Link>
         </div>
@@ -417,12 +417,12 @@ export default function Home() {
               Diskusikan tantangan, kebutuhan sistem, atau ide inovasi teknologi Anda. Kami siap membantu merancang solusi tepat sasaran dengan efisiensi maksimal.
             </p>
           </div>
-          <div className="flex flex-wrap gap-3">
-            <Link className="btn-custom btn-primary" href="/contact">
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+            <Link className="btn-custom btn-primary w-full sm:w-auto text-center justify-center touch-manipulation active:scale-95" href="/contact">
               Mulai Konsultasi Gratis <b>→</b>
             </Link>
             <a
-              className="btn-custom btn-outline"
+              className="btn-custom btn-outline w-full sm:w-auto text-center justify-center touch-manipulation active:scale-95"
               href="https://wa.me/6281234567890?text=Halo%20Solvia%20Nova,%20saya%20ingin%20konsultasi%20proyek%20digital."
               target="_blank"
               rel="noreferrer"

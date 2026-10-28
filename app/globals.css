@@ -829,6 +829,8 @@ section[id], div[id] {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 14px;
+  padding: 10px 4px;
+  margin: -10px -4px;
 }
 
 .card-custom {
@@ -1119,20 +1121,23 @@ section[id], div[id] {
     position: fixed;
     top: auto;
     bottom: 8px;
-    left: 8px;
-    right: 8px;
+    left: 6px;
+    right: 6px;
     width: auto;
     height: auto;
     min-height: 0;
-    max-height: none;
+    max-height: 62px;
     margin-left: 0;
-    padding: 8px;
+    padding: 4px 6px;
     border-radius: 18px;
     flex-direction: row;
-    justify-content: center;
-    background: rgba(3, 19, 39, 0.96);
-    backdrop-filter: blur(12px);
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(3, 19, 39, 0.98);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(22, 135, 213, 0.6);
     z-index: 50;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
     transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
   }
   .sidebar.closed {
@@ -1149,48 +1154,86 @@ section[id], div[id] {
   }
   .nav {
     display: flex;
-    justify-content: space-around;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
     gap: 2px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav::-webkit-scrollbar {
+    display: none;
   }
   .nav a {
-    font-size: 9px;
-    padding: 8px 4px;
+    font-size: 8.5px;
+    font-weight: 700;
+    padding: 5px 2px;
+    border-radius: 10px;
+    min-width: 36px;
+    min-height: 44px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
     flex: 1;
+    white-space: nowrap;
+    touch-action: manipulation;
   }
   .nav a svg {
-    width: 19px;
-    height: 19px;
+    width: 17px;
+    height: 17px;
   }
   .topbar {
-    height: 66px;
-    padding: 0 15px;
+    height: 64px;
+    padding: 0 12px;
     margin-bottom: 12px;
   }
   .wordmark {
-    font-size: 22px;
+    font-size: 18px;
   }
   .actions {
     gap: 8px;
   }
   .search {
-    width: 40px;
-    padding: 10px;
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    min-height: 38px;
+    padding: 0;
+    display: flex;
+    align-items: center;
     justify-content: center;
+    border-radius: 11px;
+    flex-shrink: 0;
   }
   .search span, .search kbd {
     display: none;
   }
   .actions .btn-custom {
-    padding: 8px 14px;
+    padding: 8px 12px;
     font-size: 11px;
     white-space: nowrap;
     flex-shrink: 0;
+    min-height: 38px;
   }
   .hero-box {
     height: auto;
     min-height: auto;
     display: flex;
     flex-direction: column;
+  }
+  .hero-buttons {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+  }
+  .hero-buttons .btn-custom {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    padding: 13px 18px;
+    font-size: 13px;
   }
   .hero-copy {
     padding: 24px 20px 10px;

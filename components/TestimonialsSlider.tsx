@@ -79,12 +79,12 @@ export default function TestimonialsSlider() {
         </div>
 
         {/* Carousel Prev/Next Buttons */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0">
           <button
             type="button"
             onClick={prevSlide}
             aria-label="Sebelumnya"
-            className="w-9 h-9 rounded-xl bg-[#081d36] border border-blue-400/30 flex items-center justify-center text-blue-300 hover:text-white hover:border-cyan-400 hover:bg-blue-600/30 transition-all shadow-md active:scale-95"
+            className="w-10 h-10 sm:w-9 sm:h-9 rounded-xl bg-[#081d36] border border-blue-400/30 flex items-center justify-center text-blue-300 hover:text-white hover:border-cyan-400 hover:bg-blue-600/30 transition-all shadow-md active:scale-90 touch-manipulation"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" />
@@ -94,7 +94,7 @@ export default function TestimonialsSlider() {
             type="button"
             onClick={nextSlide}
             aria-label="Berikutnya"
-            className="w-9 h-9 rounded-xl bg-[#081d36] border border-blue-400/30 flex items-center justify-center text-blue-300 hover:text-white hover:border-cyan-400 hover:bg-blue-600/30 transition-all shadow-md active:scale-95"
+            className="w-10 h-10 sm:w-9 sm:h-9 rounded-xl bg-[#081d36] border border-blue-400/30 flex items-center justify-center text-blue-300 hover:text-white hover:border-cyan-400 hover:bg-blue-600/30 transition-all shadow-md active:scale-90 touch-manipulation"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
@@ -103,14 +103,14 @@ export default function TestimonialsSlider() {
         </div>
       </div>
 
-      {/* Carousel Track */}
+      {/* Carousel Track with Padding to Prevent Card Hover/Animation Clipping */}
       <div
-        className="overflow-hidden rounded-2xl"
+        className="overflow-hidden rounded-2xl py-3 -my-3 px-1 -mx-1"
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
         <div
-          className="flex items-stretch transition-transform duration-500 ease-out"
+          className="flex items-stretch transition-transform duration-500 ease-out py-2"
           style={{
             transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)`,
           }}
@@ -121,7 +121,7 @@ export default function TestimonialsSlider() {
               className="px-2 shrink-0 flex flex-col"
               style={{ width: `${100 / itemsPerView}%` }}
             >
-              <div className="group h-full bg-gradient-to-b from-[#0a274d] to-[#04152d] border border-blue-500/30 hover:border-cyan-400/70 rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-blue-500/20 flex flex-col justify-between min-h-[250px]">
+              <div className="group h-full bg-gradient-to-b from-[#0a274d] to-[#04152d] border border-blue-500/30 hover:border-cyan-400/70 rounded-2xl p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-cyan-500/20 flex flex-col justify-between min-h-[250px]">
                 <div>
                   {/* Rating Stars & Project Badge */}
                   <div className="flex items-center justify-between gap-2 mb-3">

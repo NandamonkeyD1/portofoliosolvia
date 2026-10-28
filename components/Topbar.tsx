@@ -23,7 +23,7 @@ export default function Topbar({
             onClick={onToggleSidebar}
             title={isSidebarOpen ? "Tutup Sidebar (Ctrl + B)" : "Buka Sidebar (Ctrl + B)"}
             aria-label="Toggle Sidebar"
-            className="p-2 sm:p-2.5 rounded-xl bg-[#092244]/80 hover:bg-[#103463] border border-cyan-500/30 hover:border-cyan-400 text-cyan-300 hover:text-white transition-all duration-200 flex items-center justify-center group shadow-sm active:scale-95 shrink-0"
+            className="p-2 sm:p-2.5 rounded-xl bg-[#092244]/80 hover:bg-[#103463] border border-cyan-500/30 hover:border-cyan-400 text-cyan-300 hover:text-white transition-all duration-200 flex items-center justify-center group shadow-sm active:scale-90 touch-manipulation shrink-0"
           >
             {isSidebarOpen ? (
               <PanelLeftClose className="w-5 h-5 text-cyan-400 group-hover:-translate-x-0.5 transition-transform" />
@@ -33,7 +33,7 @@ export default function Topbar({
           </button>
         )}
 
-        <Link className="wordmark flex items-center gap-2 sm:gap-3 no-underline group shrink-0" href="/">
+        <Link className="wordmark flex items-center gap-2 sm:gap-3 no-underline group shrink-0 active:scale-98 transition-transform" href="/">
           <img
             src="/assets/images/Solvia.png"
             alt="Solvia Nova Logo"
@@ -48,7 +48,7 @@ export default function Topbar({
       <div className="actions shrink-0">
         <button
           type="button"
-          className="search cursor-pointer text-left border-0 shrink-0"
+          className="search cursor-pointer text-left border-0 shrink-0 active:scale-95 touch-manipulation"
           onClick={onSearchOpen}
           aria-label="Cari layanan, proyek, atau artikel"
         >
@@ -61,11 +61,11 @@ export default function Topbar({
         </button>
 
         <Link
-          className="btn-custom btn-primary shrink-0 whitespace-nowrap !py-2.5 sm:!py-3.5 !px-3.5 sm:!px-6"
+          className="btn-custom btn-primary shrink-0 whitespace-nowrap !py-2.5 sm:!py-3.5 !px-3.5 sm:!px-6 active:scale-95 touch-manipulation"
           href="/contact"
         >
-          <span className="hidden xs:inline sm:inline">Mulai Proyek</span>
-          <span className="xs:hidden sm:hidden">Proyek</span>
+          <span className="hidden sm:inline">Mulai Proyek</span>
+          <span className="sm:hidden">Proyek</span>
           <b className="ml-1">→</b>
         </Link>
       </div>

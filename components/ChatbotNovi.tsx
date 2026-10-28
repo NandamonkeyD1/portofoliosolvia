@@ -295,7 +295,7 @@ export default function ChatbotNovi() {
   return (
     <>
       {/* FLOATING ACTION TRIGGER & DYNAMIC EXPRESSION POP-UP */}
-      <div className="fixed bottom-20 right-4 md:bottom-6 md:right-6 z-40 flex flex-col items-end gap-2.5">
+      <div className="fixed bottom-[74px] right-3 sm:bottom-6 sm:right-6 z-40 flex flex-col items-end gap-2.5">
         {/* Dynamic Expression Pop-up Bubble (Appears periodically with distinct moods/emotions) */}
         {!isOpen && showPopup && (
           <div className="relative max-w-[280px] sm:max-w-[320px] p-3 rounded-2xl bg-[#020611]/95 border border-blue-400/40 shadow-2xl backdrop-blur-xl animate-in fade-in slide-in-from-bottom-3 duration-300">
@@ -357,7 +357,7 @@ export default function ChatbotNovi() {
           aria-label="Buka Chat dengan Novi"
           className={`${
             isOpen ? "hidden sm:flex" : "flex"
-          } group relative w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-2xl shadow-blue-600/50 border border-blue-300/40 items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95 shrink-0`}
+          } group relative w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-2xl shadow-blue-600/50 border border-blue-300/40 items-center justify-center transition-all duration-300 hover:scale-105 active:scale-90 touch-manipulation shrink-0`}
         >
           {/* Animated Glow Halo */}
           <div className="absolute inset-0 rounded-2xl bg-blue-500/30 blur-md group-hover:blur-lg transition-all" />
