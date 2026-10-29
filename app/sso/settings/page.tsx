@@ -6,7 +6,7 @@ import ImageUploader from "@/components/ImageUploader";
 
 export default function SettingsAdminPage() {
   const [siteName, setSiteName] = useState("Solvia Nova");
-  const [siteEmail, setSiteEmail] = useState("info@solvianova.id");
+  const [siteEmail, setSiteEmail] = useState("solvianova1@gmail.com");
   const [sitePhone, setSitePhone] = useState("+62 831-4880-1578");
   const [siteWhatsapp, setSiteWhatsapp] = useState("https://wa.me/6283148801578");
   const [siteAddress, setSiteAddress] = useState("RT 02 / RW 05, Nanggulan Salatiga");

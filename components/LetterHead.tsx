@@ -26,9 +26,9 @@ export default function LetterHead() {
             <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-slate-700 font-medium">
               <span>WhatsApp / Hotline: <strong>+62 831-4880-1578</strong></span>
               <span>•</span>
-              <span>Email: <strong>official@solvianova.com</strong></span>
+              <span>Email: <strong>solvianova1@gmail.com</strong></span>
               <span>•</span>
-              <span>Web: <strong>www.solvianova.com</strong></span>
+              <span>Web: <strong>solvianova.my.id</strong></span>
             </div>
           </div>
         </div>

@@ -77,7 +77,7 @@ export default function ContactPage() {
 
           <div className="space-y-5 pt-2">
             <a
-              href="mailto:info@solvianova.id"
+              href="mailto:solvianova1@gmail.com"
               className="flex items-center gap-4 group p-2.5 -m-2.5 rounded-2xl hover:bg-blue-600/10 transition-colors"
             >
               <div className="w-12 h-12 rounded-2xl bg-blue-600/25 border border-blue-400/40 flex items-center justify-center text-cyan-300 shrink-0 group-hover:scale-105 transition-transform">
@@ -85,8 +85,8 @@ export default function ContactPage() {
               </div>
               <div className="min-w-0">
                 <div className="text-blue-300 text-xs font-medium">Chat by Email Resmi</div>
-                <div className="text-white font-bold text-sm truncate group-hover:text-cyan-300 transition-colors">
-                  info@solvianova.id
+                <div className="text-white font-bold text-sm truncate group-hover:text-cyan-300 transition-colors font-mono">
+                  solvianova1@gmail.com
                 </div>
                 <div className="text-[11px] text-slate-400">Klik untuk kirim email langsung</div>
               </div>
@@ -138,7 +138,7 @@ export default function ContactPage() {
               <span>Formulir Chat by Email</span>
             </h2>
             <p className="text-blue-100/80 text-xs mt-1">
-              Kirimkan rincian konsultasi Anda. Pesan akan terkirim otomatis ke <strong>info@solvianova.id</strong>.
+              Kirimkan rincian konsultasi Anda. Pesan akan terkirim otomatis ke <strong>solvianova1@gmail.com</strong>.
             </p>
           </div>
 
@@ -227,7 +227,7 @@ export default function ContactPage() {
                 </a>
 
                 <a
-                  href="mailto:info@solvianova.id?subject=Konsultasi%20Solvia%20Nova"
+                  href="mailto:solvianova1@gmail.com?subject=Konsultasi%20Solvia%20Nova"
                   className="py-3 px-4 rounded-xl bg-blue-900/30 hover:bg-blue-800/50 border border-blue-400/30 text-cyan-200 hover:text-white font-bold text-xs active:scale-95 transition-all text-center flex items-center justify-center gap-2"
                 >
                   <Mail className="w-3.5 h-3.5" />

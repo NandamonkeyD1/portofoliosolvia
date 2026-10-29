@@ -129,7 +129,7 @@ export default function MessagesAdminPage() {
     const newMsg: MessageItem = {
       id: "msg-" + Date.now().toString(),
       sender: sender.trim(),
-      email: email.trim() || "klien@solvianova.id",
+      email: email.trim() || "-",
       phone: phone.trim() ? phone.replace(/[^0-9]/g, "") : "6283148801578",
       subject: subject.trim(),
       message: message.trim(),

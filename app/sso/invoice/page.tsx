@@ -590,7 +590,7 @@ export default function InvoiceAdminPage() {
                 invoiceDate={previewInvoice.date}
                 clientName={previewInvoice.client}
                 clientAddress={previewInvoice.clientAddress || "Dusun Brambang Rt 01/02, Kelurahan Blimbing, Kec. Gatak, Kab.Sukoharjo"}
-                clientEmail={previewInvoice.clientEmail || "info@solvianova.my.id"}
+                clientEmail={previewInvoice.clientEmail || ""}
                 clientPhone={previewInvoice.clientPhone || "+62 812-2661-5585"}
                 projectName={previewInvoice.project}
                 servicePackage={previewInvoice.servicePackage || "IoT System Integration, Web Dashboard Development"}

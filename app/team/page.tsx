@@ -138,7 +138,7 @@ export default function TeamPage() {
         </div>
         <div className="pt-2">
           <a
-            href="mailto:career@solvianova.id"
+            href="mailto:solvianova1@gmail.com?subject=Karir%20Solvia%20Nova"
             className="inline-flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white text-xs font-bold rounded-xl transition-all shadow-xl shadow-blue-600/30 hover:scale-105"
           >
             <Mail className="w-4 h-4" />
