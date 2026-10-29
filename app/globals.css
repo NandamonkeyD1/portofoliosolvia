@@ -1337,25 +1337,60 @@ section[id], div[id] {
 }
 
 /* ========================================================
-   PRINT STYLES FOR OFFICIAL LETTERS & INVOICES
+   PRINT STYLES FOR OFFICIAL INVOICES & LETTERS (EXACT PDF MATCH)
    ======================================================== */
 @media print {
   @page {
     size: A4 portrait;
-    margin: 1.2cm 1.5cm;
+    margin: 8mm 10mm;
   }
-  body, html {
+
+  *, *::before, *::after {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  html, body {
     background: #ffffff !important;
-    color: #000000 !important;
+    color: #0f172a !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    min-height: 100% !important;
+    overflow: visible !important;
   }
-  .sidebar, header, nav, button, .print\:hidden {
+
+  /* Completely hide all non-printable admin UI */
+  aside,
+  header,
+  nav,
+  button,
+  .sidebar,
+  .topbar,
+  #scene3d,
+  .overlay-3d,
+  .chatbot-container,
+  .print\:hidden {
     display: none !important;
   }
+
   main {
     padding: 0 !important;
     margin: 0 !important;
     max-width: 100% !important;
     width: 100% !important;
+    background: transparent !important;
+  }
+
+  /* Table repeating header & page break avoidance */
+  thead {
+    display: table-header-group !important;
+  }
+
+  tr, img, .print-avoid-break {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
   }
 }
 

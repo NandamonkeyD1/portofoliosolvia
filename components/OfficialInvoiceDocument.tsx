@@ -122,12 +122,12 @@ export default function OfficialInvoiceDocument({
   return (
     <div className="bg-white text-slate-800 font-sans text-xs w-full max-w-4xl mx-auto shadow-2xl rounded-2xl print:rounded-none print:shadow-none print:max-w-none print:w-full border border-slate-200 print:border-none">
       {/* INVOICE CONTENT WRAPPER */}
-      <div className="p-6 sm:p-10 space-y-6">
+      <div className="p-6 sm:p-10 print:p-0 space-y-6 print:space-y-4">
         
         {/* ================= 1. KOP HEADER ================= */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+        <div className="grid grid-cols-12 gap-4 items-center">
           {/* Left: Brand Identity */}
-          <div className="md:col-span-5 flex items-center gap-3.5">
+          <div className="col-span-5 flex items-center gap-3.5">
             <div className="w-16 h-16 sm:w-20 sm:h-20 shrink-0 flex items-center justify-center">
               <img
                 src="/assets/images/Solvia.png"
@@ -149,7 +149,7 @@ export default function OfficialInvoiceDocument({
           </div>
 
           {/* Center: Contact Info with circular icons */}
-          <div className="md:col-span-4 border-l border-slate-200 pl-4 space-y-1.5 text-[11px] text-slate-700">
+          <div className="col-span-4 border-l border-slate-200 pl-4 space-y-1.5 text-[11px] text-slate-700">
             <div className="flex items-start gap-2">
               <span className="w-5 h-5 rounded-full border border-slate-300 flex items-center justify-center shrink-0 text-slate-600 mt-0.5">
                 <MapPin className="w-3 h-3" />
@@ -192,7 +192,7 @@ export default function OfficialInvoiceDocument({
           </div>
 
           {/* Right: Invoice Tag & Number */}
-          <div className="md:col-span-3 text-left md:text-right space-y-1.5">
+          <div className="col-span-3 text-right space-y-1.5">
             <h2 className="text-3xl font-black tracking-tight text-[#071b40] uppercase">
               INVOICE
             </h2>
@@ -209,9 +209,9 @@ export default function OfficialInvoiceDocument({
         <div className="border-b-2 border-[#071b40] pt-1" />
 
         {/* ================= 2. CLIENT & PROJECT METADATA ================= */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 text-xs">
+        <div className="grid grid-cols-12 gap-6 text-xs">
           {/* Left: KEPADA YTH. */}
-          <div className="md:col-span-6 space-y-1">
+          <div className="col-span-6 space-y-1">
             <span className="text-[11px] font-bold uppercase text-slate-800 tracking-wider">
               KEPADA YTH.
             </span>
@@ -236,7 +236,7 @@ export default function OfficialInvoiceDocument({
           </div>
 
           {/* Right: INFORMASI PROJECT */}
-          <div className="md:col-span-6 space-y-1">
+          <div className="col-span-6 space-y-1">
             <span className="text-[11px] font-bold uppercase text-slate-800 tracking-wider">
               INFORMASI PROJECT
             </span>
@@ -321,9 +321,9 @@ export default function OfficialInvoiceDocument({
         </div>
 
         {/* ================= 4. SUMMARY & TOTALS ================= */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start pt-2">
+        <div className="grid grid-cols-12 gap-6 items-start pt-2 print-avoid-break">
           {/* Left: TOTAL PEMBAYARAN Card + Terbilang */}
-          <div className="md:col-span-7 bg-slate-50/80 border border-slate-200 rounded-xl p-4 space-y-1">
+          <div className="col-span-7 bg-slate-50/80 border border-slate-200 rounded-xl p-4 space-y-1">
             <span className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">
               TOTAL PEMBAYARAN
             </span>
@@ -336,7 +336,7 @@ export default function OfficialInvoiceDocument({
           </div>
 
           {/* Right: Subtotal & Dark Navy TOTAL block */}
-          <div className="md:col-span-5 space-y-2">
+          <div className="col-span-5 space-y-2">
             <div className="flex items-center justify-between text-xs px-2 py-1">
               <span className="text-slate-600 font-medium">Subtotal</span>
               <span className="font-bold text-slate-800 font-mono">{formatRupiah(subtotal)}</span>
@@ -350,9 +350,9 @@ export default function OfficialInvoiceDocument({
         </div>
 
         {/* ================= 5. PAYMENT & SIGNATURE ================= */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start pt-2">
+        <div className="grid grid-cols-12 gap-6 items-start pt-2 print-avoid-break">
           {/* Left: Informasi Pembayaran */}
-          <div className="md:col-span-6 space-y-2">
+          <div className="col-span-6 space-y-2">
             <span className="text-[11px] font-bold text-slate-800 uppercase tracking-wider block">
               INFORMASI PEMBAYARAN
             </span>
@@ -380,7 +380,7 @@ export default function OfficialInvoiceDocument({
           </div>
 
           {/* Right: Hormat Kami & Signature */}
-          <div className="md:col-span-6 flex flex-col items-start md:items-end text-left md:text-right space-y-1">
+          <div className="col-span-6 flex flex-col items-end text-right space-y-1">
             <span className="text-xs text-slate-700">Hormat Kami,</span>
 
             {/* Signature Graphic / Image */}
@@ -417,7 +417,7 @@ export default function OfficialInvoiceDocument({
       </div>
 
       {/* ================= 6. OFFICIAL NAVY FOOTER BAR ================= */}
-      <div className="bg-[#071b40] text-white py-3 px-6 text-xs flex flex-wrap items-center justify-center gap-4 sm:gap-8 font-medium tracking-wide">
+      <div className="bg-[#071b40] text-white py-2.5 px-6 text-xs flex flex-wrap items-center justify-center gap-4 sm:gap-8 font-medium tracking-wide print-avoid-break">
         <div className="flex items-center gap-1.5">
           <MapPin className="w-3.5 h-3.5 text-blue-300" />
           <span>Jl.GumukrejoRT 05 RW 05, Nanggulan Salatiga</span>

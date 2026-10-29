@@ -94,7 +94,7 @@ export default function SSOLayout({ children }: { children: React.ReactNode }) {
 
       {/* Left Sidebar (Permanently Fixed to Viewport, Does NOT scroll with page) */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 h-screen bg-[#0A0E1A] border-r border-slate-800 flex flex-col justify-between transition-transform duration-200 ease-out ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 h-screen bg-[#0A0E1A] border-r border-slate-800 flex flex-col justify-between transition-transform duration-200 ease-out print:hidden ${
           mobileSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
       >
@@ -164,9 +164,9 @@ export default function SSOLayout({ children }: { children: React.ReactNode }) {
       </aside>
 
       {/* Main Right Area */}
-      <div className="flex-1 flex flex-col min-w-0 md:pl-64 min-h-screen">
+      <div className="flex-1 flex flex-col min-w-0 md:pl-64 min-h-screen print:pl-0 print:min-h-0 print:block">
         {/* Top Header Bar */}
-        <header className="sticky top-0 z-30 bg-[#0A0E1A] border-b border-slate-800 px-4 sm:px-6 py-3 flex items-center justify-between">
+        <header className="sticky top-0 z-30 bg-[#0A0E1A] border-b border-slate-800 px-4 sm:px-6 py-3 flex items-center justify-between print:hidden">
           <div className="flex items-center gap-3 min-w-0">
             <button
               onClick={() => setMobileSidebarOpen(true)}
@@ -201,7 +201,7 @@ export default function SSOLayout({ children }: { children: React.ReactNode }) {
         </header>
 
         {/* Dynamic Page Content */}
-        <main className="relative z-10 flex-1 p-3.5 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">{children}</main>
+        <main className="relative z-10 flex-1 p-3.5 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto print:p-0 print:m-0 print:max-w-none print:w-full">{children}</main>
       </div>
     </div>
   );

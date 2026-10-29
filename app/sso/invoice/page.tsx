@@ -249,8 +249,10 @@ export default function InvoiceAdminPage() {
         </div>
       )}
 
-      {/* Page Action Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      {/* Admin Invoice Controls & Table (Hidden on Print) */}
+      <div className="print:hidden space-y-6">
+        {/* Page Action Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-xl sm:text-2xl font-black text-white">Invoice Management</h1>
           <p className="text-slate-400 text-xs mt-0.5">Kelola data tagihan klien, status pembayaran, dan invoice resmi</p>
@@ -480,6 +482,7 @@ export default function InvoiceAdminPage() {
           </div>
         </div>
       )}
+      </div>
 
       {/* QUICK PREVIEW & PRINT INVOICE MODAL */}
       {previewInvoice && (

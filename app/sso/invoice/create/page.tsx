@@ -126,16 +126,17 @@ export default function CreateInvoicePage() {
         </div>
       )}
 
-      {/* Back Link */}
-      <div>
-        <Link
-          href="/sso/invoice"
-          className="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Kembali ke Invoice</span>
-        </Link>
-      </div>
+      {/* Back Link & Edit Form (Hidden on Print) */}
+      <div className="print:hidden space-y-6">
+        <div>
+          <Link
+            href="/sso/invoice"
+            className="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>Kembali ke Invoice</span>
+          </Link>
+        </div>
 
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -478,6 +479,7 @@ export default function CreateInvoicePage() {
           </div>
         </div>
       </form>
+      </div>
 
       {/* EXACT OFFICIAL SOLVIA NOVA INVOICE PRINTABLE / PDF MODAL */}
       {isPreviewOpen && (
