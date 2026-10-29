@@ -43,6 +43,7 @@ export default function Navbar() {
     { href: "/articles", label: "Artikel" },
     { href: "/gallery", label: "Galeri" },
     { href: "/about", label: "Tentang Kami" },
+    { href: "/contact", label: "Kontak" },
   ];
 
   return (
@@ -91,12 +92,22 @@ export default function Navbar() {
         </nav>
 
         {/* Action Button for Desktop */}
-        <div className="hidden md:flex items-center gap-4">
+        <div className="hidden md:flex items-center gap-2.5">
+          <a
+            href="https://wa.me/6283148801578?text=Halo%20Solvia%20Nova,%20saya%20tertarik%20konsultasi%20solusi%20digital."
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-emerald-300 bg-emerald-950/50 hover:bg-emerald-600 hover:text-white rounded-xl transition-all border border-emerald-500/30 shadow-md shadow-emerald-950/40"
+            title="Chat WhatsApp Resmi (+62 831-4880-1578)"
+          >
+            <span>WA: +62 831-4880-1578</span>
+          </a>
+
           <Link
             href="/contact"
-            className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-bold text-white bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 rounded-xl shadow-lg shadow-blue-600/30 transition-all hover:scale-105 border border-blue-400/30"
+            className="inline-flex items-center gap-2 px-4 py-2 text-xs font-bold text-white bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 rounded-xl shadow-lg shadow-blue-600/30 transition-all hover:scale-105 border border-blue-400/30"
           >
-            <span>Konsultasi Proyek</span>
+            <span>Chat by Email</span>
             <ArrowUpRight className="w-3.5 h-3.5" />
           </Link>
         </div>
@@ -147,7 +158,7 @@ export default function Navbar() {
                 className="flex items-center justify-center gap-2.5 w-full py-3.5 px-4 rounded-xl text-xs font-extrabold text-white bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-500 shadow-lg shadow-emerald-900/40 border border-emerald-400/30 active:scale-95 transition-all text-center"
               >
                 <Sparkles className="w-4 h-4 text-emerald-200" />
-                <span>Chat WhatsApp (Respon Cepat)</span>
+                <span>Chat WhatsApp (+62 831-4880-1578)</span>
               </a>
 
               <Link
@@ -155,7 +166,7 @@ export default function Navbar() {
                 onClick={() => setMobileOpen(false)}
                 className="flex items-center justify-center gap-2 w-full py-3.5 px-4 rounded-xl text-xs font-extrabold text-white bg-gradient-to-r from-blue-600 to-indigo-600 shadow-md border border-blue-400/30 active:scale-95 transition-all text-center"
               >
-                <span>Form Konsultasi Proyek</span>
+                <span>Form Chat by Email &amp; Konsultasi</span>
                 <ArrowUpRight className="w-4 h-4" />
               </Link>
             </div>

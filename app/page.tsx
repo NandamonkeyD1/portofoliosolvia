@@ -419,15 +419,15 @@ export default function Home() {
           </div>
           <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
             <Link className="btn-custom btn-primary w-full sm:w-auto text-center justify-center touch-manipulation active:scale-95" href="/contact">
-              Mulai Konsultasi Gratis <b>→</b>
+              Form Chat by Email <b>→</b>
             </Link>
             <a
               className="btn-custom btn-outline w-full sm:w-auto text-center justify-center touch-manipulation active:scale-95"
-              href="https://wa.me/6281234567890?text=Halo%20Solvia%20Nova,%20saya%20ingin%20konsultasi%20proyek%20digital."
+              href="https://wa.me/6283148801578?text=Halo%20Solvia%20Nova,%20saya%20ingin%20konsultasi%20proyek%20digital."
               target="_blank"
               rel="noreferrer"
             >
-              WhatsApp Konsultasi
+              WhatsApp (+62 831-4880-1578)
             </a>
           </div>
         </div>
