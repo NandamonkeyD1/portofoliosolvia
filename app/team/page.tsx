@@ -110,7 +110,7 @@ export default function TeamPage() {
                   Keahlian & Core Skills:
                 </span>
                 <div className="flex flex-wrap gap-1.5">
-                  {member.skills.map((skill) => (
+                  {member.skills?.map((skill: string) => (
                     <span
                       key={skill}
                       className="px-2.5 py-1 rounded-lg bg-blue-950/70 border border-blue-400/20 text-blue-200 text-xs font-bold"

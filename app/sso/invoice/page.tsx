@@ -3,8 +3,9 @@
 import { useState, useEffect } from "react";
 import { Plus, Eye, Edit, Trash2, Search, Check, X, FileSpreadsheet, ArrowUpRight, Printer, Sparkles } from "lucide-react";
 import Link from "next/link";
+import OfficialInvoiceDocument, { LineItem, DEFAULT_FILTRAZON_ITEMS } from "@/components/OfficialInvoiceDocument";
 
-interface InvoiceItem {
+export interface InvoiceItem {
   id: string;
   no: string;
   client: string;
@@ -12,11 +13,32 @@ interface InvoiceItem {
   date: string;
   total: string;
   status: string;
+  clientAddress?: string;
+  clientEmail?: string;
+  clientPhone?: string;
+  servicePackage?: string;
+  projectDuration?: string;
+  items?: LineItem[];
 }
 
 const STORAGE_KEY = "solvia_invoices_data";
 
 const DEFAULT_INVOICES: InvoiceItem[] = [
+  {
+    id: "filtrazon",
+    no: "NO. INV/2026/10/003",
+    client: "FILTRAZON IoT 2.0",
+    project: "FILTRAZON IoT 2.0",
+    date: "28 October 2026",
+    total: "Rp 6.201.723",
+    status: "Lunas",
+    clientAddress: "Dusun Brambang Rt 01/02, Kelurahan Blimbing, Kec. Gatak, Kab.Sukoharjo",
+    clientEmail: "helixxjust@gmail.com",
+    clientPhone: "+62 812-2661-5585",
+    servicePackage: "IoT System Integration, Web DashboardDevelopment",
+    projectDuration: "1 Juli - 30 Agustus",
+    items: DEFAULT_FILTRAZON_ITEMS,
+  },
   {
     id: "1",
     no: "INV/2026/07/005",
@@ -25,6 +47,14 @@ const DEFAULT_INVOICES: InvoiceItem[] = [
     date: "30/07/2026",
     total: "Rp 24.202.500",
     status: "Draft",
+    clientAddress: "Surabaya, Jawa Timur",
+    clientEmail: "hydrone@gmail.com",
+    clientPhone: "+62 812-3456-7890",
+    servicePackage: "Hardware & AI Integration",
+    projectDuration: "1 Bulan",
+    items: [
+      { id: "1", description: "Pengembangan Prototype Autonomous Underwater Vehicle (AUV) Pembersih Mikroplastik dan Monitoring Kualitas Air", qty: 1, price: 24202500 }
+    ],
   },
   {
     id: "2",
@@ -34,6 +64,14 @@ const DEFAULT_INVOICES: InvoiceItem[] = [
     date: "22/07/2026",
     total: "Rp 18.633.000",
     status: "Lunas",
+    clientAddress: "Sukoharjo, Jawa Tengah",
+    clientEmail: "info@filtrazon.com",
+    clientPhone: "+62 812-2661-5585",
+    servicePackage: "IoT Monitoring System",
+    projectDuration: "1 Bulan",
+    items: [
+      { id: "1", description: "Filtrazon IoT Monitoring Parameter Sensor & Dashboard", qty: 1, price: 18633000 }
+    ],
   },
   {
     id: "3",
@@ -43,6 +81,9 @@ const DEFAULT_INVOICES: InvoiceItem[] = [
     date: "15/07/2026",
     total: "Rp 2.500.000",
     status: "Lunas",
+    items: [
+      { id: "1", description: "Precentense + Integration IoT Setup", qty: 1, price: 2500000 }
+    ],
   },
   {
     id: "4",
@@ -52,6 +93,9 @@ const DEFAULT_INVOICES: InvoiceItem[] = [
     date: "06/07/2026",
     total: "Rp 2.300.000",
     status: "Draft",
+    items: [
+      { id: "1", description: "PRESENCE-TEEN Presensi Pintar Berbasis QR Code", qty: 1, price: 2300000 }
+    ],
   },
   {
     id: "5",
@@ -61,6 +105,9 @@ const DEFAULT_INVOICES: InvoiceItem[] = [
     date: "06/07/2026",
     total: "Rp 3.000.000",
     status: "Pending",
+    items: [
+      { id: "1", description: "Sistem Otomasi Data Presensi & Notifikasi", qty: 1, price: 3000000 }
+    ],
   },
 ];
 
@@ -85,7 +132,17 @@ export default function InvoiceAdminPage() {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
-        setInvoices(JSON.parse(saved));
+        const parsed: InvoiceItem[] = JSON.parse(saved);
+        const hasFiltrazon = parsed.some(
+          (inv) => inv.no === "NO. INV/2026/10/003" || inv.client.includes("FILTRAZON IoT 2.0")
+        );
+        if (!hasFiltrazon) {
+          const merged = [DEFAULT_INVOICES[0], ...parsed];
+          setInvoices(merged);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+        } else {
+          setInvoices(parsed);
+        }
       } else {
         setInvoices(DEFAULT_INVOICES);
         localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_INVOICES));
@@ -426,14 +483,14 @@ export default function InvoiceAdminPage() {
 
       {/* QUICK PREVIEW & PRINT INVOICE MODAL */}
       {previewInvoice && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3.5 sm:p-4 bg-black/85 overflow-y-auto print:p-0 print:bg-white print:static">
-          <div className="relative w-full max-w-3xl bg-white text-slate-900 rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden my-6 print:border-none print:shadow-none print:m-0 print:w-full">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/85 overflow-y-auto print:p-0 print:bg-white print:static">
+          <div className="relative w-full max-w-4xl bg-slate-900 border border-slate-700/60 rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden my-6 print:border-none print:shadow-none print:m-0 print:w-full print:bg-white">
             {/* Modal Controls Bar (Hidden on Print) */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-slate-50 print:hidden">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-900/95 print:hidden">
               <div className="flex items-center gap-2">
-                <FileSpreadsheet className="w-4 h-4 text-blue-600" />
-                <span className="text-xs font-bold text-slate-800">
-                  Pratinjau Tagihan: <span className="font-mono text-blue-700">{previewInvoice.no}</span>
+                <FileSpreadsheet className="w-4 h-4 text-blue-400" />
+                <span className="text-xs font-bold text-slate-200">
+                  Pratinjau Resmi Tagihan: <span className="font-mono text-blue-400">{previewInvoice.no}</span>
                 </span>
               </div>
 
@@ -441,7 +498,7 @@ export default function InvoiceAdminPage() {
                 <button
                   type="button"
                   onClick={() => window.print()}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-900 hover:bg-blue-800 text-white text-xs font-bold transition-all shadow-md active:scale-95 cursor-pointer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-md active:scale-95 cursor-pointer"
                 >
                   <Printer className="w-3.5 h-3.5" />
                   <span>Cetak / Simpan PDF</span>
@@ -449,91 +506,34 @@ export default function InvoiceAdminPage() {
                 <button
                   type="button"
                   onClick={() => setPreviewInvoice(null)}
-                  className="p-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 transition-colors cursor-pointer"
+                  className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors cursor-pointer"
                 >
                   <X className="w-4 h-4" />
                 </button>
               </div>
             </div>
 
-            {/* Invoice A4 Sheet Layout */}
-            <div className="p-8 sm:p-10 space-y-6 font-sans text-xs">
-              {/* Header Kop */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b pb-4 gap-4">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-lg bg-blue-900 text-white font-black flex items-center justify-center text-sm">
-                      S
-                    </div>
-                    <span className="text-xl font-black text-blue-950 tracking-tight">SOLVIA.NOVA</span>
-                  </div>
-                  <div className="text-[10px] font-bold text-blue-800 uppercase tracking-wider">
-                    Digital Solution & Software House
-                  </div>
-                  <div className="text-slate-500 text-[11px]">Jl. Gumukrejo RT 05 RW 05, Nanggulan Salatiga • 083148801578</div>
-                </div>
-
-                <div className="text-left sm:text-right space-y-1">
-                  <div className="text-2xl font-black text-blue-950">INVOICE</div>
-                  <div className="font-mono font-bold text-slate-700">{previewInvoice.no}</div>
-                  <div className="text-slate-500">Tanggal: {previewInvoice.date}</div>
-                </div>
-              </div>
-
-              {/* Klien & Project Meta */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-200">
-                <div className="space-y-1">
-                  <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">DITUJUKAN KEPADA:</span>
-                  <div className="font-bold text-slate-900 text-sm">{previewInvoice.client}</div>
-                  <div className="text-slate-600">Proyek: <strong className="text-slate-800">{previewInvoice.project}</strong></div>
-                </div>
-                <div className="space-y-1 sm:text-right">
-                  <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">STATUS TAGIHAN:</span>
-                  <span className="inline-block px-3 py-1 rounded-full text-xs font-black bg-blue-100 text-blue-900 border border-blue-200">
-                    {previewInvoice.status}
-                  </span>
-                </div>
-              </div>
-
-              {/* Rincian Ringkas Tagihan */}
-              <div className="border border-slate-200 rounded-2xl overflow-hidden">
-                <table className="w-full text-left border-collapse">
-                  <thead className="bg-slate-100 border-b border-slate-200 text-slate-700 text-[11px] font-bold uppercase">
-                    <tr>
-                      <th className="py-3 px-4">Deskripsi Layanan / Proyek</th>
-                      <th className="py-3 px-4 text-right">Subtotal</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr className="border-b border-slate-100">
-                      <td className="py-3.5 px-4">
-                        <div className="font-bold text-slate-900">{previewInvoice.project}</div>
-                        <div className="text-slate-500 text-[11px] mt-0.5">Pengembangan sistem digital, implementasi & pengujian terpadu</div>
-                      </td>
-                      <td className="py-3.5 px-4 text-right font-bold text-slate-900 font-mono text-sm">
-                        {previewInvoice.total}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              {/* Pembayaran & Tanda Tangan */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
-                <div className="bg-blue-50/60 border border-blue-200 rounded-2xl p-4 space-y-1">
-                  <span className="text-[10px] font-bold text-blue-900 uppercase tracking-wider block">INFORMASI PEMBAYARAN:</span>
-                  <div className="font-bold text-slate-900">Bank Mandiri</div>
-                  <div className="font-mono font-black text-blue-900 text-sm">1360034942356</div>
-                  <div className="text-slate-600 text-[11px]">a.n. Nanda Ari Wahyu Widagdo</div>
-                </div>
-
-                <div className="text-center sm:text-right space-y-2 flex flex-col justify-end">
-                  <div className="text-slate-600">Hormat Kami,</div>
-                  <div className="font-serif italic text-xl text-blue-900 font-bold">Nanda A. W.</div>
-                  <div className="font-bold text-slate-900">Solvia Nova Official</div>
-                  <div className="text-slate-500 text-[10px] uppercase font-bold">Direktur Utama / CEO</div>
-                </div>
-              </div>
+            {/* Render Official Document (Matches PDF Page 1 & 2) */}
+            <div className="p-3 sm:p-6 bg-slate-950 overflow-x-auto print:p-0 print:bg-white">
+              <OfficialInvoiceDocument
+                invoiceNo={previewInvoice.no}
+                invoiceDate={previewInvoice.date}
+                clientName={previewInvoice.client}
+                clientAddress={previewInvoice.clientAddress || "Dusun Brambang Rt 01/02, Kelurahan Blimbing, Kec. Gatak, Kab.Sukoharjo"}
+                clientEmail={previewInvoice.clientEmail || "info@solvianova.my.id"}
+                clientPhone={previewInvoice.clientPhone || "+62 812-2661-5585"}
+                projectName={previewInvoice.project}
+                servicePackage={previewInvoice.servicePackage || "IoT System Integration, Web Dashboard Development"}
+                projectDuration={previewInvoice.projectDuration || "1 Juli - 30 Agustus"}
+                items={previewInvoice.items && previewInvoice.items.length > 0 ? previewInvoice.items : [
+                  {
+                    id: "1",
+                    description: previewInvoice.project,
+                    qty: 1,
+                    price: parseInt(previewInvoice.total.replace(/[^0-9]/g, ""), 10) || 0
+                  }
+                ]}
+              />
             </div>
           </div>
         </div>

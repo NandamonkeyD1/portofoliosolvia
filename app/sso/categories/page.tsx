@@ -1,25 +1,38 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Plus, Tag, Edit, Trash2, X, Check, Search, Layers, FolderKanban, ExternalLink } from "lucide-react";
+import { Plus, Tag, Edit, Trash2, X, Check, Search, ExternalLink } from "lucide-react";
 
-interface CategoryItem {
+export interface CategoryItem {
   id: string;
   name: string;
-  slug: string;
-  count: number;
-  desc?: string;
+  group: "portfolio" | "services" | "articles";
+  order: number;
 }
 
 const STORAGE_KEY = "solvia_categories_data";
 
 const DEFAULT_CATEGORIES: CategoryItem[] = [
-  { id: "1", name: "Website Development", slug: "website-development", count: 4, desc: "Pembuatan website company profile, landing page, dan portal web responsif" },
-  { id: "2", name: "System Development & ERP", slug: "system-development", count: 3, desc: "Sistem informasi manajemen, ERP custom, dan POS kasir" },
-  { id: "3", name: "Sistem IoT & Smart Automation", slug: "iot-automation", count: 3, desc: "Integrasi hardware mikrokontroler, telemetri sensor, dan LoRa" },
-  { id: "4", name: "Branding & Creative", slug: "branding-creative", count: 2, desc: "Desain visual identity, logo, 3D render, dan advertising kit" },
-  { id: "5", name: "Automation & AI Workflow", slug: "automation-ai", count: 2, desc: "Automasi alur kerja, chatbot WhatsApp, dan AI summarizer" },
-  { id: "6", name: "Mentoring & IT Coaching", slug: "mentoring-it", count: 2, desc: "Bimbingan teknis pemrograman, skripsi IT, dan konsultasi arsitektur" },
+  // Portfolio
+  { id: "p-1", name: "Website", group: "portfolio", order: 1 },
+  { id: "p-2", name: "Dashboard", group: "portfolio", order: 2 },
+  { id: "p-3", name: "Mobile", group: "portfolio", order: 3 },
+  { id: "p-4", name: "Automation", group: "portfolio", order: 5 },
+  { id: "p-5", name: "Branding", group: "portfolio", order: 6 },
+  { id: "p-6", name: "Enterprise", group: "portfolio", order: 7 },
+  { id: "p-7", name: "Internet Of Things", group: "portfolio", order: 7 },
+  { id: "p-8", name: "Landing Page", group: "portfolio", order: 8 },
+
+  // Services
+  { id: "s-1", name: "Website Development", group: "services", order: 1 },
+  { id: "s-2", name: "System Development", group: "services", order: 2 },
+  { id: "s-3", name: "Branding & Creative", group: "services", order: 3 },
+  { id: "s-4", name: "Automation & AI", group: "services", order: 4 },
+
+  // Articles
+  { id: "a-1", name: "Insight", group: "articles", order: 1 },
+  { id: "a-2", name: "Tutorial", group: "articles", order: 2 },
+  { id: "a-3", name: "News", group: "articles", order: 3 },
 ];
 
 export default function CategoriesAdminPage() {
@@ -31,16 +44,21 @@ export default function CategoriesAdminPage() {
 
   // Form inputs
   const [name, setName] = useState("");
-  const [slug, setSlug] = useState("");
-  const [count, setCount] = useState<number>(0);
-  const [desc, setDesc] = useState("");
+  const [group, setGroup] = useState<"portfolio" | "services" | "articles">("portfolio");
+  const [order, setOrder] = useState<number>(1);
 
   // Hydrate from localStorage
   useEffect(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
-        setCategories(JSON.parse(saved));
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0 && parsed[0].group) {
+          setCategories(parsed);
+        } else {
+          setCategories(DEFAULT_CATEGORIES);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_CATEGORIES));
+        }
       } else {
         setCategories(DEFAULT_CATEGORIES);
         localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_CATEGORIES));
@@ -64,64 +82,49 @@ export default function CategoriesAdminPage() {
     setTimeout(() => setToast(null), 3000);
   };
 
-  const handleOpenAddModal = () => {
+  const handleOpenAddModal = (targetGroup: "portfolio" | "services" | "articles" = "portfolio") => {
     setEditingItem(null);
     setName("");
-    setSlug("");
-    setCount(0);
-    setDesc("");
+    setGroup(targetGroup);
+    // Auto increment order for that group
+    const groupItems = categories.filter((c) => c.group === targetGroup);
+    setOrder(groupItems.length + 1);
     setIsModalOpen(true);
   };
 
   const handleOpenEditModal = (item: CategoryItem) => {
     setEditingItem(item);
     setName(item.name);
-    setSlug(item.slug);
-    setCount(item.count || 0);
-    setDesc(item.desc || "");
+    setGroup(item.group);
+    setOrder(item.order);
     setIsModalOpen(true);
-  };
-
-  const handleNameChange = (val: string) => {
-    setName(val);
-    if (!editingItem) {
-      setSlug(
-        val
-          .toLowerCase()
-          .replace(/[^a-z0-9]+/g, "-")
-          .replace(/(^-|-$)+/g, "")
-      );
-    }
   };
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) return;
 
-    const finalSlug = slug.trim()
-      ? slug.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-")
-      : name
-          .toLowerCase()
-          .replace(/[^a-z0-9]+/g, "-")
-          .replace(/(^-|-$)+/g, "");
-
     if (editingItem) {
       const updated = categories.map((cat) =>
         cat.id === editingItem.id
-          ? { ...cat, name: name.trim(), slug: finalSlug, count: Number(count) || 0, desc: desc.trim() }
+          ? {
+              ...cat,
+              name: name.trim(),
+              group,
+              order: Number(order) || 1,
+            }
           : cat
       );
       saveToStorage(updated);
       showToast("Kategori berhasil diperbarui!");
     } else {
-      const newItem: CategoryItem = {
+      const newCat: CategoryItem = {
         id: "cat-" + Date.now().toString(),
         name: name.trim(),
-        slug: finalSlug,
-        count: Number(count) || 0,
-        desc: desc.trim(),
+        group,
+        order: Number(order) || 1,
       };
-      saveToStorage([newItem, ...categories]);
+      saveToStorage([...categories, newCat]);
       showToast("Kategori baru berhasil ditambahkan!");
     }
 
@@ -136,12 +139,47 @@ export default function CategoriesAdminPage() {
     }
   };
 
-  const filteredCategories = categories.filter(
-    (cat) =>
-      cat.name.toLowerCase().includes(search.toLowerCase()) ||
-      cat.slug.toLowerCase().includes(search.toLowerCase()) ||
-      (cat.desc && cat.desc.toLowerCase().includes(search.toLowerCase()))
+  const filterBySearch = (items: CategoryItem[]) => {
+    if (!search.trim()) return items;
+    return items.filter((c) => c.name.toLowerCase().includes(search.toLowerCase()));
+  };
+
+  const portfolioCategories = filterBySearch(
+    categories.filter((c) => c.group === "portfolio").sort((a, b) => a.order - b.order)
   );
+  const servicesCategories = filterBySearch(
+    categories.filter((c) => c.group === "services").sort((a, b) => a.order - b.order)
+  );
+  const articlesCategories = filterBySearch(
+    categories.filter((c) => c.group === "articles").sort((a, b) => a.order - b.order)
+  );
+
+  const columns = [
+    {
+      group: "portfolio" as const,
+      title: "Portfolio",
+      dotColor: "bg-blue-500",
+      badgeColor: "bg-blue-600/30 text-blue-300",
+      items: portfolioCategories,
+      totalCount: categories.filter((c) => c.group === "portfolio").length,
+    },
+    {
+      group: "services" as const,
+      title: "Services",
+      dotColor: "bg-indigo-400",
+      badgeColor: "bg-indigo-600/30 text-indigo-300",
+      items: servicesCategories,
+      totalCount: categories.filter((c) => c.group === "services").length,
+    },
+    {
+      group: "articles" as const,
+      title: "Articles",
+      dotColor: "bg-emerald-400",
+      badgeColor: "bg-emerald-600/30 text-emerald-300",
+      items: articlesCategories,
+      totalCount: categories.filter((c) => c.group === "articles").length,
+    },
+  ];
 
   return (
     <div className="space-y-6">
@@ -156,14 +194,14 @@ export default function CategoriesAdminPage() {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl sm:text-2xl font-black text-white">Kategori Management</h1>
+          <h1 className="text-xl sm:text-2xl font-black text-white">Kategori</h1>
           <p className="text-slate-400 text-xs mt-1">
-            Kelola pengelompokan kategori layanan, portofolio, dan artikel Solvia Nova
+            Pengelompokan kategori portofolio, layanan digital, dan artikel wawasan
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2 sm:gap-3 w-full sm:w-auto">
           <button
-            onClick={handleOpenAddModal}
+            onClick={() => handleOpenAddModal("portfolio")}
             className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-colors shadow-md shadow-blue-600/30 cursor-pointer order-1 sm:order-none flex-1 sm:flex-initial"
           >
             <Plus className="w-4 h-4" />
@@ -192,70 +230,82 @@ export default function CategoriesAdminPage() {
         </div>
       </div>
 
-      {/* Categories Table */}
-      <div className="bg-[#0E1526] border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
-        <div className="overflow-x-auto w-full">
-          <table className="w-full text-left border-collapse min-w-[650px]">
-            <thead>
-              <tr className="border-b border-slate-800/80 bg-[#070A12]/80 text-slate-400 text-[11px] font-bold uppercase tracking-wider">
-                <th className="py-4 px-5">NAMA KATEGORI</th>
-                <th className="py-4 px-5">SLUG URL</th>
-                <th className="py-4 px-5">DESKRIPSI</th>
-                <th className="py-4 px-5">TOTAL ITEM</th>
-                <th className="py-4 px-5 text-right">AKSI</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-800/60 text-xs">
-              {filteredCategories.length === 0 ? (
-                <tr>
-                  <td colSpan={5} className="py-12 text-center text-slate-500 font-medium">
-                    Tidak ada kategori yang cocok dengan pencarian.
-                  </td>
-                </tr>
+      {/* 3-COLUMN CATEGORY BOARDS MATCHING EXACT SCREENSHOT */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+        {columns.map((col) => (
+          <div
+            key={col.group}
+            className="bg-[#0B1222] border border-slate-800/90 rounded-2xl p-5 shadow-xl space-y-4"
+          >
+            {/* Board Column Header */}
+            <div className="flex items-center justify-between border-b border-slate-800/70 pb-3.5">
+              <div className="flex items-center gap-2.5">
+                <span className={`w-2 h-2 rounded-full ${col.dotColor}`} />
+                <h3 className="font-bold text-white text-sm tracking-wide">{col.title}</h3>
+                <span
+                  className={`text-[11px] font-mono font-bold px-2 py-0.5 rounded-full ${col.badgeColor}`}
+                >
+                  {col.totalCount}
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => handleOpenAddModal(col.group)}
+                className="w-7 h-7 rounded-lg bg-slate-800/80 hover:bg-blue-600 text-slate-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+                title={`Tambah Kategori ${col.title}`}
+              >
+                <Plus className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* List Items */}
+            <div className="space-y-1.5 min-h-[220px]">
+              {col.items.length === 0 ? (
+                <div className="text-center py-8 text-xs text-slate-500">
+                  {search ? "Tidak ada hasil pencarian" : "Belum ada kategori"}
+                </div>
               ) : (
-                filteredCategories.map((cat) => (
-                  <tr key={cat.id} className="hover:bg-slate-800/40 transition-colors">
-                    <td className="py-4 px-5">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 shrink-0">
-                          <Tag className="w-4 h-4" />
-                        </div>
-                        <span className="font-bold text-white">{cat.name}</span>
-                      </div>
-                    </td>
-                    <td className="py-4 px-5 text-slate-400 font-mono text-[11px]">{cat.slug}</td>
-                    <td className="py-4 px-5 text-slate-400 max-w-xs truncate">
-                      {cat.desc || "-"}
-                    </td>
-                    <td className="py-4 px-5">
-                      <span className="px-2.5 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 font-bold text-[11px]">
-                        {cat.count} items
+                col.items.map((item) => (
+                  <div
+                    key={item.id}
+                    className="group flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-slate-800/50 transition-colors"
+                  >
+                    <div className="flex items-center gap-2.5 min-w-0 pr-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-slate-500 shrink-0" />
+                      <span className="text-xs font-semibold text-slate-200 group-hover:text-white truncate">
+                        {item.name}
                       </span>
-                    </td>
-                    <td className="py-4 px-5 text-right">
-                      <div className="flex items-center justify-end gap-2 text-slate-400">
+                    </div>
+
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className="text-[11px] font-mono text-slate-500 font-semibold group-hover:text-slate-400">
+                        #{item.order}
+                      </span>
+                      <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                         <button
-                          onClick={() => handleOpenEditModal(cat)}
-                          title="Edit Kategori"
-                          className="p-2 rounded-lg hover:text-blue-400 hover:bg-slate-800 text-slate-400 transition-colors"
+                          type="button"
+                          onClick={() => handleOpenEditModal(item)}
+                          className="p-1 rounded-md text-slate-400 hover:text-blue-400 hover:bg-slate-700/60"
+                          title="Edit"
                         >
                           <Edit className="w-3.5 h-3.5" />
                         </button>
                         <button
-                          onClick={() => handleDelete(cat.id, cat.name)}
-                          title="Hapus Kategori"
-                          className="p-2 rounded-lg hover:text-red-400 hover:bg-slate-800 text-slate-400 transition-colors"
+                          type="button"
+                          onClick={() => handleDelete(item.id, item.name)}
+                          className="p-1 rounded-md text-slate-400 hover:text-red-400 hover:bg-slate-700/60"
+                          title="Hapus"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
                       </div>
-                    </td>
-                  </tr>
+                    </div>
+                  </div>
                 ))
               )}
-            </tbody>
-          </table>
-        </div>
+            </div>
+          </div>
+        ))}
       </div>
 
       {/* Add / Edit Modal */}
@@ -263,7 +313,7 @@ export default function CategoriesAdminPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3.5 sm:p-4 bg-black/80">
           <div className="bg-[#0E1526] border border-slate-700 w-full max-w-lg rounded-2xl p-4 sm:p-6 shadow-2xl space-y-5 max-h-[88vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <h2 className="text-lg font-black text-white flex items-center gap-2">
+              <h2 className="text-base sm:text-lg font-black text-white flex items-center gap-2">
                 <Tag className="w-5 h-5 text-blue-500" />
                 <span>{editingItem ? "Edit Kategori" : "Tambah Kategori Baru"}</span>
               </h2>
@@ -283,64 +333,49 @@ export default function CategoriesAdminPage() {
                 <input
                   type="text"
                   required
-                  placeholder="Contoh: Mobile Apps Development"
                   value={name}
-                  onChange={(e) => handleNameChange(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500"
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Contoh: Website, Automation, IoT..."
+                  className="w-full bg-[#070A12] border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500"
                 />
               </div>
 
-              <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1.5">
-                  Slug URL <span className="text-slate-500 font-normal">(Otomatis atau kustom)</span>
-                </label>
-                <input
-                  type="text"
-                  required
-                  placeholder="mobile-apps-development"
-                  value={slug}
-                  onChange={(e) => setSlug(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-slate-300 font-mono focus:outline-none focus:border-blue-500"
-                />
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-bold text-slate-300 mb-1.5">Kelompok Board</label>
+                  <select
+                    value={group}
+                    onChange={(e) => setGroup(e.target.value as any)}
+                    className="w-full bg-[#070A12] border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500 cursor-pointer"
+                  >
+                    <option value="portfolio">Portfolio</option>
+                    <option value="services">Services</option>
+                    <option value="articles">Articles</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-300 mb-1.5">Urutan Nomor (#)</label>
+                  <input
+                    type="number"
+                    min={1}
+                    value={order}
+                    onChange={(e) => setOrder(Number(e.target.value))}
+                    className="w-full bg-[#070A12] border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500 font-mono"
+                  />
+                </div>
               </div>
 
-              <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1.5">
-                  Jumlah Item Terkait (Opsional)
-                </label>
-                <input
-                  type="number"
-                  min="0"
-                  value={count}
-                  onChange={(e) => setCount(Number(e.target.value))}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1.5">
-                  Deskripsi Kategori
-                </label>
-                <textarea
-                  rows={3}
-                  placeholder="Penjelasan singkat mengenai kategori ini..."
-                  value={desc}
-                  onChange={(e) => setDesc(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500 leading-relaxed"
-                />
-              </div>
-
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
+              <div className="flex justify-end gap-3 pt-4 border-t border-slate-800">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition-colors"
+                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition-colors cursor-pointer"
                 >
                   Batal
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-lg shadow-blue-600/30"
+                  className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-md shadow-blue-600/30 transition-colors cursor-pointer"
                 >
                   {editingItem ? "Simpan Perubahan" : "Tambah Kategori"}
                 </button>

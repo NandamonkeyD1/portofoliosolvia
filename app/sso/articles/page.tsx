@@ -363,7 +363,6 @@ export default function ArticlesAdminPage() {
                   label="Upload Banner Artikel"
                   value={image}
                   onChange={setImage}
-                  placeholder="Upload atau masukkan URL foto banner"
                 />
               </div>
 

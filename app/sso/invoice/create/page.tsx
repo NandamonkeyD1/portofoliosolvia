@@ -3,106 +3,40 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Plus, Trash2, Check, Printer, MapPin, Phone, Mail, Globe, Sparkles } from "lucide-react";
+import { ArrowLeft, Plus, Trash2, Check, Printer } from "lucide-react";
 import ImageUploader from "@/components/ImageUploader";
-
-interface LineItem {
-  id: string;
-  description: string;
-  qty: number;
-  price: number;
-  subDetail: string;
-}
-
-// Terbilang helper in Indonesian
-function terbilangRupiah(n: number): string {
-  if (n < 0) return "Minus " + terbilangRupiah(-n);
-  if (n === 0) return "Nol Rupiah";
-
-  const satuan = ["", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas"];
-
-  function konversi(x: number): string {
-    if (x < 12) return satuan[x];
-    if (x < 20) return konversi(x - 10) + " Belas";
-    if (x < 100) return konversi(Math.floor(x / 10)) + " Puluh " + (x % 10 !== 0 ? konversi(x % 10) : "");
-    if (x < 200) return "Seratus " + (x % 100 !== 0 ? konversi(x - 100) : "");
-    if (x < 1000) return konversi(Math.floor(x / 100)) + " Ratus " + (x % 100 !== 0 ? konversi(x % 100) : "");
-    if (x < 2000) return "Seribu " + (x % 1000 !== 0 ? konversi(x - 1000) : "");
-    if (x < 1000000) return konversi(Math.floor(x / 1000)) + " Ribu " + (x % 1000 !== 0 ? konversi(x % 1000) : "");
-    if (x < 1000000000) return konversi(Math.floor(x / 1000000)) + " Juta " + (x % 1000000 !== 0 ? konversi(x % 1000000) : "");
-    if (x < 1000000000000) return konversi(Math.floor(x / 1000000000)) + " Milyar " + (x % 1000000000 !== 0 ? konversi(x % 1000000000) : "");
-    return "";
-  }
-
-  const hasil = konversi(Math.floor(n)).replace(/\s+/g, " ").trim();
-  return hasil ? `(${hasil} Rupiah)` : "";
-}
+import OfficialInvoiceDocument, { LineItem, formatRupiah, DEFAULT_FILTRAZON_ITEMS } from "@/components/OfficialInvoiceDocument";
 
 export default function CreateInvoicePage() {
   const router = useRouter();
 
   // 1. Informasi Invoice
-  const [invoiceNo, setInvoiceNo] = useState(`INV/${new Date().getFullYear()}/${String(new Date().getMonth() + 1).padStart(2, "0")}/001`);
-  const [invoiceDate, setInvoiceDate] = useState(new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "long", year: "numeric" }));
-  const [status, setStatus] = useState("Draft");
+  const [invoiceNo, setInvoiceNo] = useState("NO. INV/2026/10/003");
+  const [invoiceDate, setInvoiceDate] = useState("28 October 2026");
+  const [status, setStatus] = useState("Lunas");
 
   // 2. Data Penerima
-  const [clientName, setClientName] = useState("Filtrazon IoT");
-  const [clientAddress, setClientAddress] = useState("Dusun Brambang rt01/02, Kelurahan Blimbing, Kec.Gatak, Kab.Sukoharjo");
+  const [clientName, setClientName] = useState("FILTRAZON IoT 2.0");
+  const [clientAddress, setClientAddress] = useState("Dusun Brambang Rt 01/02, Kelurahan Blimbing, Kec. Gatak, Kab.Sukoharjo");
   const [clientEmail, setClientEmail] = useState("helixxjust@gmail.com");
   const [clientPhone, setClientPhone] = useState("+62 812-2661-5585");
 
   // 3. Informasi Project
-  const [projectName, setProjectName] = useState("Filtrazon IoT");
-  const [servicePackage, setServicePackage] = useState("IoT System Integration, Web Dashboard Development");
+  const [projectName, setProjectName] = useState("FILTRAZON IoT 2.0");
+  const [servicePackage, setServicePackage] = useState("IoT System Integration, Web DashboardDevelopment");
   const [projectDuration, setProjectDuration] = useState("1 Juli - 30 Agustus");
 
   // 4. Line Items
-  const [items, setItems] = useState<LineItem[]>([
-    {
-      id: "1",
-      description: "ESP32-S3",
-      qty: 1,
-      price: 175000,
-      subDetail: "",
-    },
-    {
-      id: "2",
-      description: "ESP32 Devkit V4",
-      qty: 1,
-      price: 90000,
-      subDetail: "",
-    },
-    {
-      id: "3",
-      description: "Modul LoRa SX1278 433 MHz",
-      qty: 2,
-      price: 110000,
-      subDetail: "",
-    },
-    {
-      id: "4",
-      description: "IoT Cloud Dashboard & Real-Time Data Visualization Development",
-      qty: 1,
-      price: 250000,
-      subDetail: "- Pembuatan User Interface (UI/UX) dashboard responsif untuk visualisasi parameter air,\n- Konfigurasi widget monitoring metrik sensor (pH, TDS, kekeruhan) secara real-time,\n- Konfigurasi protokol komunikasi pengiriman data (LORA) dari mikrokontroler",
-    },
-  ]);
+  const [items, setItems] = useState<LineItem[]>(DEFAULT_FILTRAZON_ITEMS);
 
-  // 5. Financials
-  const [discount, setDiscount] = useState<number>(0);
-
-  // 6. Informasi Pembayaran
+  // 5. Informasi Pembayaran
   const [bankName, setBankName] = useState("Bank Mandiri");
   const [bankBadge, setBankBadge] = useState("BM");
   const [accountNo, setAccountNo] = useState("1360034942356");
-  const [accountHolder, setAccountHolder] = useState("Nanda Ari Wahyu Widagdo");
+  const [accountHolder, setAccountHolder] = useState("NANDA ARI WAHYU");
   const [transferType, setTransferType] = useState("Antar Bank");
 
-  // 7. Catatan & Signature
-  const [notes, setNotes] = useState(
-    "- Invoice ini merupakan dokumen resmi penagihan untuk proyek pengadaan Filtrazon IoT.\n- Pembayaran dianggap sah apabila dana telah masuk dan terverifikasi di rekening Bank Mandiri yang tertera di atas.\n- Seluruh sistem kelistrikan, sensor, dan bodi koper Filtrazon IoT dilindungi garansi pemeliharaan selama 1 (satu) bulan sejak tanggal serah terima.\n- Garansi tidak mencakup kerusakan akibat kesalahan penggunaan (human error), bencana alam, atau modifikasi mandiri tanpa persetujuan pihak kami.\n- Atas perhatian dan kerja sama Bapak/Ibu, kami ucapkan terima kasih."
-  );
+  // 6. Signatory
   const [signatory, setSignatory] = useState("Nanda Ari Wahyu Widagdo");
   const [signatoryTitle, setSignatoryTitle] = useState("Founder");
   const [signatureImage, setSignatureImage] = useState("");
@@ -121,7 +55,7 @@ export default function CreateInvoicePage() {
 
   const addItem = () => {
     const newItem: LineItem = {
-      id: Date.now().toString(),
+      id: "item-" + Date.now().toString(),
       description: "",
       qty: 1,
       price: 0,
@@ -130,81 +64,60 @@ export default function CreateInvoicePage() {
     setItems([...items, newItem]);
   };
 
+  const updateItem = (id: string, field: keyof LineItem, val: any) => {
+    setItems(items.map((it) => (it.id === id ? { ...it, [field]: val } : it)));
+  };
+
   const removeItem = (id: string) => {
-    if (items.length === 1) return;
-    setItems(items.filter((item) => item.id !== id));
-  };
-
-  const updateItem = (id: string, field: keyof LineItem, value: any) => {
-    setItems(
-      items.map((item) =>
-        item.id === id ? { ...item, [field]: value } : item
-      )
-    );
-  };
-
-  const calculateSubtotal = () => {
-    return items.reduce((acc, item) => acc + item.qty * item.price, 0);
+    if (items.length <= 1) {
+      alert("Invoice minimal memiliki 1 item.");
+      return;
+    }
+    setItems(items.filter((it) => it.id !== id));
   };
 
   const calculateTotal = () => {
-    const subtotal = calculateSubtotal();
-    return Math.max(0, subtotal - discount);
-  };
-
-  const formatRupiah = (amount: number) => {
-    return "Rp " + new Intl.NumberFormat("id-ID").format(amount);
+    return items.reduce((acc, it) => acc + (it.qty * it.price), 0);
   };
 
   const handleSaveInvoice = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!clientName || !projectName) {
-      alert("Mohon isi Nama Klien dan Nama Project terlebih dahulu.");
+    if (!invoiceNo || !clientName) {
+      alert("Harap lengkapi nomor invoice dan nama penerima.");
       return;
     }
 
-    if (signatureImage) {
-      localStorage.setItem("solvia_signature_image", signatureImage);
-    }
-    if (signatory) {
-      localStorage.setItem("solvia_signatory_name", signatory);
-    }
+    const totalVal = calculateTotal();
+    const formattedTotal = formatRupiah(totalVal);
 
-    // Persist new invoice to invoices list
+    // Save to localStorage list
     try {
-      const savedInvoices = localStorage.getItem("solvia_invoices_data");
-      const currentList = savedInvoices ? JSON.parse(savedInvoices) : [];
-      const newInvoiceEntry = {
+      const STORAGE_KEY = "solvia_invoices_data";
+      const existing = localStorage.getItem(STORAGE_KEY);
+      const list = existing ? JSON.parse(existing) : [];
+
+      const newInv = {
         id: "inv-" + Date.now().toString(),
         no: invoiceNo,
         client: clientName,
         project: projectName,
         date: invoiceDate,
-        total: formatRupiah(calculateTotal()),
+        total: formattedTotal,
         status: status,
       };
 
-      const existingIdx = currentList.findIndex((item: any) => item.no === invoiceNo);
-      let updatedList = [];
-      if (existingIdx >= 0) {
-        updatedList = [...currentList];
-        updatedList[existingIdx] = newInvoiceEntry;
-      } else {
-        updatedList = [newInvoiceEntry, ...currentList];
-      }
-      localStorage.setItem("solvia_invoices_data", JSON.stringify(updatedList));
-    } catch (err) {
-      console.error("Failed to save invoice to solvia_invoices_data:", err);
-    }
-
-    setToast("Invoice baru berhasil dibuat dan disimpan!");
-    setTimeout(() => {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify([newInv, ...list]));
+      setToast("Invoice resmi berhasil disimpan ke database!");
+      setTimeout(() => setToast(null), 3000);
       setIsPreviewOpen(true);
-    }, 800);
+    } catch (e) {
+      console.error(e);
+      setIsPreviewOpen(true);
+    }
   };
 
   return (
-    <div className="space-y-8 pb-20">
+    <div className="space-y-6 pb-20">
       {/* Toast Notification */}
       {toast && (
         <div className="fixed top-20 right-6 z-50 bg-emerald-600 text-white px-4 py-2.5 rounded-xl shadow-lg flex items-center gap-2 text-xs font-bold transition-opacity">
@@ -237,15 +150,22 @@ export default function CreateInvoicePage() {
             Batal
           </Link>
           <button
+            type="button"
+            onClick={() => setIsPreviewOpen(true)}
+            className="px-4 py-2.5 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-bold transition-colors cursor-pointer"
+          >
+            Preview Desain
+          </button>
+          <button
             onClick={handleSaveInvoice}
             className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-md shadow-blue-600/30 transition-colors cursor-pointer"
           >
-            Simpan & Preview
+            Simpan & Cetak
           </button>
         </div>
       </div>
 
-      <form onSubmit={handleSaveInvoice} className="space-y-8">
+      <form onSubmit={handleSaveInvoice} className="space-y-6">
         {/* 1. Header & Nomor Invoice */}
         <div className="bg-[#0E1526] border border-slate-800 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-xl space-y-6">
           <div className="flex items-center justify-between border-b border-slate-800 pb-4">
@@ -255,45 +175,39 @@ export default function CreateInvoicePage() {
             <select
               value={status}
               onChange={(e) => setStatus(e.target.value)}
-              className="bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-yellow-400 font-bold focus:outline-none focus:border-blue-500"
+              className="bg-slate-900 border border-slate-700 text-white text-xs font-bold px-3 py-1.5 rounded-xl cursor-pointer"
             >
+              <option value="Lunas">Lunas (Paid)</option>
               <option value="Draft">Draft</option>
               <option value="Pending">Pending</option>
-              <option value="Lunas">Lunas</option>
             </select>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold text-slate-300 mb-1.5">
-                Nomor Invoice
-              </label>
+              <label className="block text-xs font-bold text-slate-300 mb-1">Nomor Invoice *</label>
               <input
                 type="text"
                 required
                 value={invoiceNo}
                 onChange={(e) => setInvoiceNo(e.target.value)}
-                placeholder="INV/2026/07/004"
-                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white font-mono focus:outline-none focus:border-blue-500"
+                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white font-mono font-bold"
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-slate-300 mb-1.5">
-                Tanggal Invoice <span className="text-red-400">*</span>
-              </label>
+              <label className="block text-xs font-bold text-slate-300 mb-1">Tanggal Terbit *</label>
               <input
                 type="text"
                 required
                 value={invoiceDate}
                 onChange={(e) => setInvoiceDate(e.target.value)}
-                placeholder="22 July 2026"
-                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500 font-semibold"
+                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white"
               />
             </div>
           </div>
         </div>
 
-        {/* 2. Data Penerima (Kepada Yth.) & Informasi Project */}
+        {/* 2. Data Penerima & Informasi Project */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="bg-[#0E1526] border border-slate-800 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-xl space-y-4">
             <h2 className="text-sm font-bold text-white uppercase tracking-wider border-b border-slate-800 pb-3">
@@ -306,7 +220,7 @@ export default function CreateInvoicePage() {
                 required
                 value={clientName}
                 onChange={(e) => setClientName(e.target.value)}
-                placeholder="Filtrazon IoT"
+                placeholder="FILTRAZON IoT 2.0"
                 className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white font-bold"
               />
             </div>
@@ -316,7 +230,7 @@ export default function CreateInvoicePage() {
                 rows={2}
                 value={clientAddress}
                 onChange={(e) => setClientAddress(e.target.value)}
-                placeholder="Dusun Brambang rt01/02..."
+                placeholder="Dusun Brambang Rt 01/02..."
                 className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-slate-200 resize-none"
               />
             </div>
@@ -355,28 +269,28 @@ export default function CreateInvoicePage() {
                 required
                 value={projectName}
                 onChange={(e) => setProjectName(e.target.value)}
-                placeholder="Filtrazon IoT"
+                placeholder="FILTRAZON IoT 2.0"
                 className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white font-bold"
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-slate-300 mb-1">Paket / Deskripsi Layanan</label>
+              <label className="block text-xs font-bold text-slate-300 mb-1">Paket Layanan</label>
               <input
                 type="text"
                 value={servicePackage}
                 onChange={(e) => setServicePackage(e.target.value)}
-                placeholder="IoT System Integration, Web Dashboard Development"
+                placeholder="IoT System Integration, Web DashboardDevelopment"
                 className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white"
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-slate-300 mb-1">Durasi Project</label>
+              <label className="block text-xs font-bold text-slate-300 mb-1">Durasi Pengerjaan</label>
               <input
                 type="text"
                 value={projectDuration}
                 onChange={(e) => setProjectDuration(e.target.value)}
                 placeholder="1 Juli - 30 Agustus"
-                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white font-semibold"
+                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white"
               />
             </div>
           </div>
@@ -385,136 +299,94 @@ export default function CreateInvoicePage() {
         {/* 3. RINCIAN LAYANAN Line Items Builder */}
         <div className="bg-[#0E1526] border border-slate-800 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-xl space-y-6">
           <div className="flex items-center justify-between border-b border-slate-800 pb-4">
-            <h2 className="text-sm font-bold text-white uppercase tracking-wider">
-              RINCIAN LAYANAN & ITEM
-            </h2>
+            <div>
+              <h2 className="text-sm font-bold text-white uppercase tracking-wider">
+                RINCIAN LAYANAN & ITEM ({items.length} Item)
+              </h2>
+              <p className="text-slate-400 text-xs mt-0.5">Daftar komponen pengadaan hardware, instalasi, dan software</p>
+            </div>
             <button
               type="button"
               onClick={addItem}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-md"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-md cursor-pointer"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Tambah Item Layanan</span>
             </button>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             {items.map((item, idx) => (
               <div
                 key={item.id}
-                className="bg-slate-900/60 border border-slate-800 rounded-2xl p-4 space-y-3 relative group"
+                className="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-3"
               >
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-blue-400 uppercase font-mono">
-                    NO #{idx + 1}
-                  </span>
-                  {items.length > 1 && (
-                    <button
-                      type="button"
-                      onClick={() => removeItem(item.id)}
-                      className="p-1 text-slate-400 hover:text-red-400 transition-colors"
-                      title="Hapus Item"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  )}
+                <div className="flex items-center gap-2 text-slate-400 font-mono text-xs w-8 shrink-0">
+                  #{idx + 1}
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
-                  <div className="md:col-span-6">
-                    <label className="block text-[11px] font-bold text-slate-300 mb-1">
-                      Deskripsi Layanan / Komponen
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="Nama komponen / layanan"
-                      value={item.description}
-                      onChange={(e) => updateItem(item.id, "description", e.target.value)}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white font-semibold"
-                    />
-                  </div>
+                <div className="flex-1 w-full space-y-1.5">
+                  <input
+                    type="text"
+                    required
+                    value={item.description}
+                    onChange={(e) => updateItem(item.id, "description", e.target.value)}
+                    placeholder="Deskripsi layanan atau komponen barang..."
+                    className="w-full bg-[#070A12] border border-slate-700/80 rounded-xl px-3.5 py-2 text-xs text-white font-medium"
+                  />
+                </div>
 
-                  <div className="md:col-span-2">
-                    <label className="block text-[11px] font-bold text-slate-300 mb-1 text-center">
-                      Qty
-                    </label>
+                <div className="flex items-center gap-2.5 w-full md:w-auto">
+                  <div className="w-20">
+                    <label className="block text-[10px] text-slate-400 font-semibold mb-0.5">QTY</label>
                     <input
                       type="number"
                       min={1}
                       value={item.qty}
                       onChange={(e) => updateItem(item.id, "qty", parseInt(e.target.value) || 1)}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-2 py-2 text-xs text-white text-center font-bold"
+                      className="w-full bg-[#070A12] border border-slate-700/80 rounded-xl px-3 py-1.5 text-xs text-white font-mono text-center"
                     />
                   </div>
 
-                  <div className="md:col-span-2">
-                    <label className="block text-[11px] font-bold text-slate-300 mb-1">
-                      Harga Satuan (Rp)
-                    </label>
+                  <div className="w-36">
+                    <label className="block text-[10px] text-slate-400 font-semibold mb-0.5">Harga Satuan (Rp)</label>
                     <input
                       type="number"
-                      min={0}
                       value={item.price}
-                      onChange={(e) => updateItem(item.id, "price", parseFloat(e.target.value) || 0)}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white font-mono"
+                      onChange={(e) => updateItem(item.id, "price", parseInt(e.target.value) || 0)}
+                      className="w-full bg-[#070A12] border border-slate-700/80 rounded-xl px-3 py-1.5 text-xs text-white font-mono text-right"
                     />
                   </div>
 
-                  <div className="md:col-span-2">
-                    <label className="block text-[11px] font-bold text-slate-300 mb-1">
-                      Total
-                    </label>
-                    <div className="bg-slate-950 border border-slate-700/60 rounded-xl px-3 py-2 text-xs text-emerald-400 font-extrabold font-mono truncate">
+                  <div className="w-36 text-right">
+                    <span className="block text-[10px] text-slate-400 font-semibold mb-0.5">Subtotal</span>
+                    <span className="text-xs font-mono font-bold text-cyan-400">
                       {formatRupiah(item.qty * item.price)}
-                    </div>
+                    </span>
                   </div>
-                </div>
 
-                <div>
-                  <label className="block text-[10px] font-bold text-slate-400 mb-1">
-                    Sub-detail / Poin Fitur (Gunakan awalan dash "-" per baris)
-                  </label>
-                  <textarea
-                    rows={2}
-                    placeholder="- Poin 1...&#10;- Poin 2..."
-                    value={item.subDetail}
-                    onChange={(e) => updateItem(item.id, "subDetail", e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-slate-300 resize-none font-mono text-[11px]"
-                  />
+                  <button
+                    type="button"
+                    onClick={() => removeItem(item.id)}
+                    className="p-2 rounded-xl text-slate-500 hover:text-red-400 hover:bg-red-500/10 transition-colors mt-3 md:mt-0"
+                    title="Hapus Baris"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Subtotal & Total Output */}
-          <div className="pt-4 border-t border-slate-800 flex justify-end">
-            <div className="w-full sm:w-72 space-y-2">
-              <div className="flex items-center justify-between text-xs text-slate-300">
-                <span>Subtotal:</span>
-                <span className="font-bold font-mono text-white">{formatRupiah(calculateSubtotal())}</span>
-              </div>
-              <div className="flex items-center justify-between text-xs text-slate-300 gap-2">
-                <span>Diskon (- Rp):</span>
-                <input
-                  type="number"
-                  min={0}
-                  value={discount}
-                  onChange={(e) => setDiscount(parseFloat(e.target.value) || 0)}
-                  className="w-32 bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-xs text-red-400 font-mono font-bold text-right"
-                />
-              </div>
-              <div className="flex items-center justify-between bg-blue-950/80 border border-blue-500/30 p-3 rounded-2xl text-white">
-                <span className="font-black text-xs">TOTAL:</span>
-                <span className="font-black text-base text-emerald-400 font-mono">
-                  {formatRupiah(calculateTotal())}
-                </span>
-              </div>
-            </div>
+          <div className="flex justify-between items-center pt-4 border-t border-slate-800">
+            <span className="text-xs font-bold text-slate-400">Total Keseluruhan</span>
+            <span className="text-2xl font-black text-white font-mono">
+              {formatRupiah(calculateTotal())}
+            </span>
           </div>
         </div>
 
-        {/* 4. Informasi Pembayaran, Catatan, & Tanda Tangan */}
+        {/* 4. Informasi Pembayaran & Tanda Tangan */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="bg-[#0E1526] border border-slate-800 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-xl space-y-4">
             <h2 className="text-sm font-bold text-white uppercase tracking-wider border-b border-slate-800 pb-3">
@@ -558,7 +430,7 @@ export default function CreateInvoicePage() {
                 type="text"
                 value={accountHolder}
                 onChange={(e) => setAccountHolder(e.target.value)}
-                placeholder="Nanda Ari Wahyu Widagdo"
+                placeholder="NANDA ARI WAHYU"
                 className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white font-bold"
               />
             </div>
@@ -576,22 +448,21 @@ export default function CreateInvoicePage() {
 
           <div className="bg-[#0E1526] border border-slate-800 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-xl space-y-4">
             <h2 className="text-sm font-bold text-white uppercase tracking-wider border-b border-slate-800 pb-3">
-              TANDA TANGAN & CATATAN
+              TANDA TANGAN & PENGESAHAN
             </h2>
             <ImageUploader
               value={signatureImage}
               onChange={setSignatureImage}
               label="Tanda Tangan Digital Official"
             />
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-3 pt-2">
               <div>
                 <label className="block text-[11px] font-bold text-slate-300 mb-1">Nama Penandatangan</label>
                 <input
                   type="text"
                   value={signatory}
                   onChange={(e) => setSignatory(e.target.value)}
-                  placeholder="Nanda Ari Wahyu Widagdo"
-                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white font-bold"
+                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white font-bold"
                 />
               </div>
               <div>
@@ -600,316 +471,66 @@ export default function CreateInvoicePage() {
                   type="text"
                   value={signatoryTitle}
                   onChange={(e) => setSignatoryTitle(e.target.value)}
-                  placeholder="Founder"
-                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white font-semibold"
+                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white font-semibold"
                 />
               </div>
             </div>
-            <div>
-              <label className="block text-[11px] font-bold text-slate-300 mb-1">Catatan Tambahan (Ketentuan)</label>
-              <textarea
-                rows={3}
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-                placeholder="- Invoice ini merupakan dokumen..."
-                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-[11px] text-slate-300 resize-none font-mono"
-              />
-            </div>
           </div>
-        </div>
-
-        {/* Submit */}
-        <div className="flex justify-end gap-4">
-          <Link
-            href="/sso/invoice"
-            className="px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold"
-          >
-            Batal
-          </Link>
-          <button
-            type="submit"
-            className="px-8 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white text-xs font-extrabold shadow-xl shadow-blue-600/30 transition-all hover:scale-105"
-          >
-            Buat & Preview Invoice PDF
-          </button>
         </div>
       </form>
 
       {/* EXACT OFFICIAL SOLVIA NOVA INVOICE PRINTABLE / PDF MODAL */}
       {isPreviewOpen && (
-        <div className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-2 sm:p-6 overflow-y-auto">
-          <div className="bg-white text-slate-900 rounded-3xl max-w-4xl w-full p-6 sm:p-10 space-y-8 shadow-2xl relative my-8 print:m-0 print:p-0 print:shadow-none print:w-full print:max-w-none">
-            {/* Action Bar Header */}
-            <div className="flex items-center justify-between border-b pb-4 print:hidden">
+        <div className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-2 sm:p-6 overflow-y-auto print:p-0 print:bg-white print:static">
+          <div className="w-full max-w-4xl space-y-4 my-8 print:my-0">
+            {/* Modal Controls Bar (Hidden on Print) */}
+            <div className="flex items-center justify-between px-6 py-3.5 rounded-2xl bg-[#0A0E1A] border border-slate-800 text-white print:hidden shadow-2xl">
               <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded-full bg-blue-600" />
-                <span className="text-xs font-bold text-slate-700 uppercase tracking-widest">
-                  PREVIEW INVOICE RESMI SOLVIA NOVA
+                <span className="w-2.5 h-2.5 rounded-full bg-blue-500" />
+                <span className="text-xs font-bold uppercase tracking-wider">
+                  Pratinjau Resmi: <span className="font-mono text-cyan-400">{invoiceNo}</span>
                 </span>
               </div>
-              <div className="flex gap-2">
+              <div className="flex items-center gap-2.5">
                 <button
+                  type="button"
                   onClick={() => window.print()}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-900 hover:bg-blue-800 text-white text-xs font-bold shadow-lg transition-all"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-md active:scale-95 cursor-pointer"
                 >
                   <Printer className="w-4 h-4" />
                   <span>Cetak / Simpan PDF</span>
                 </button>
                 <button
+                  type="button"
                   onClick={() => setIsPreviewOpen(false)}
-                  className="px-4 py-2.5 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold hover:bg-slate-200 transition-colors"
+                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition-colors cursor-pointer"
                 >
                   Tutup
                 </button>
               </div>
             </div>
 
-            {/* DOCUMENT CONTENT PREVIEW (MATCHING DESIGN 100%) */}
-            <div className="space-y-8 font-sans text-slate-800 leading-normal print:space-y-6">
-              
-              {/* TOP HEADER BOX */}
-              <div className="border border-slate-200 rounded-2xl p-6 grid grid-cols-1 md:grid-cols-12 gap-6 items-center shadow-sm">
-                {/* Left Brand Column */}
-                <div className="md:col-span-5 space-y-1 border-b md:border-b-0 md:border-r border-slate-200 pb-4 md:pb-0 md:pr-4">
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-lg bg-blue-900 flex items-center justify-center text-white font-black text-base">
-                      S
-                    </div>
-                    <div className="text-2xl font-black text-blue-900 tracking-tight">
-                      SOLVIA.NOVA
-                    </div>
-                  </div>
-                  <div className="text-[10px] font-extrabold text-blue-800 tracking-wider uppercase">
-                    DIGITAL SOLUTION PARTNER
-                  </div>
-                  <p className="text-[11px] text-slate-500 italic pt-1">
-                    "Membangun Solusi Digital untuk Masa Depan Bisnismu"
-                  </p>
-                </div>
-
-                {/* Middle Contact Info Column */}
-                <div className="md:col-span-4 space-y-2 text-[11px] border-b md:border-b-0 md:border-r border-slate-200 pb-4 md:pb-0 md:pr-4">
-                  <div className="flex items-start gap-2">
-                    <span className="font-bold text-slate-900 w-20 shrink-0">ALAMAT</span>
-                    <span className="text-slate-600">: Jl.GumukrejoRT 05 RW 05, Nanggulan Salatiga</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold text-slate-900 w-20 shrink-0">WHATSAPP</span>
-                    <span className="text-slate-600">: 6283148801578</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold text-slate-900 w-20 shrink-0">EMAIL</span>
-                    <span className="text-slate-600">: solvianova1@gmail.com</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold text-slate-900 w-20 shrink-0">WEBSITE</span>
-                    <span className="text-slate-600">: solvianova.my.id</span>
-                  </div>
-                </div>
-
-                {/* Right INVOICE Number Column */}
-                <div className="md:col-span-3 text-center md:text-right space-y-1">
-                  <h1 className="text-3xl font-black text-blue-900 tracking-tight">
-                    INVOICE
-                  </h1>
-                  <div className="text-xs font-bold font-mono text-slate-700">
-                    NO. {invoiceNo}
-                  </div>
-                  <div className="text-xs font-semibold text-slate-500">
-                    {invoiceDate}
-                  </div>
-                </div>
-              </div>
-
-              {/* KEPADA YTH & INFORMASI PROJECT */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-xs">
-                {/* Kepada Yth */}
-                <div className="space-y-1.5">
-                  <span className="font-extrabold text-blue-950 uppercase tracking-wider block text-[11px]">
-                    KEPADA YTH.
-                  </span>
-                  <div className="font-bold text-slate-900 text-sm">{clientName || "Klien Solvia Nova"}</div>
-                  <div className="text-slate-600 leading-relaxed max-w-sm">{clientAddress || "-"}</div>
-                  {clientEmail && <div className="text-slate-500 font-mono pt-1">Email: {clientEmail}</div>}
-                  {clientPhone && <div className="text-slate-500 font-mono">Telepon: {clientPhone}</div>}
-                </div>
-
-                {/* Informasi Project */}
-                <div className="space-y-2">
-                  <span className="font-extrabold text-blue-950 uppercase tracking-wider block text-[11px]">
-                    INFORMASI PROJECT
-                  </span>
-                  <div className="grid grid-cols-12 gap-1 text-slate-700">
-                    <span className="col-span-4 font-semibold text-slate-600">Nama Project</span>
-                    <span className="col-span-8 font-bold text-slate-900">: {projectName}</span>
-                  </div>
-                  <div className="grid grid-cols-12 gap-1 text-slate-700">
-                    <span className="col-span-4 font-semibold text-slate-600">Paket</span>
-                    <span className="col-span-8 font-medium text-slate-800">: {servicePackage || "-"}</span>
-                  </div>
-                  <div className="grid grid-cols-12 gap-1 text-slate-700">
-                    <span className="col-span-4 font-semibold text-slate-600">Durasi</span>
-                    <span className="col-span-8 font-medium text-slate-800">: {projectDuration || "-"}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* RINCIAN LAYANAN TABLE */}
-              <div className="space-y-2">
-                <span className="font-extrabold text-blue-950 uppercase tracking-wider block text-[11px]">
-                  RINCIAN LAYANAN
-                </span>
-
-                <div className="overflow-hidden border border-slate-200 rounded-xl">
-                  <table className="w-full text-left border-collapse text-xs">
-                    <thead>
-                      <tr className="bg-[#0B1E48] text-white font-bold uppercase text-[11px] tracking-wider">
-                        <th className="py-3 px-4 text-center w-12">NO</th>
-                        <th className="py-3 px-4">DESKRIPSI</th>
-                        <th className="py-3 px-4 text-center w-16">QTY</th>
-                        <th className="py-3 px-4 text-right w-36">HARGA SATUAN</th>
-                        <th className="py-3 px-4 text-right w-36">TOTAL</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-200">
-                      {items.map((item, idx) => (
-                        <tr key={item.id} className="hover:bg-slate-50/50">
-                          <td className="py-3.5 px-4 text-center font-bold text-slate-600 align-top">
-                            {idx + 1}
-                          </td>
-                          <td className="py-3.5 px-4 align-top">
-                            <div className="font-bold text-slate-900 text-xs">{item.description}</div>
-                            {item.subDetail && (
-                              <div className="text-[11px] text-slate-600 mt-1 space-y-0.5 font-sans whitespace-pre-line leading-relaxed">
-                                {item.subDetail}
-                              </div>
-                            )}
-                          </td>
-                          <td className="py-3.5 px-4 text-center font-bold text-slate-800 align-top">
-                            {item.qty}
-                          </td>
-                          <td className="py-3.5 px-4 text-right font-semibold font-mono text-slate-800 align-top">
-                            {formatRupiah(item.price)}
-                          </td>
-                          <td className="py-3.5 px-4 text-right font-extrabold font-mono text-slate-900 align-top">
-                            {formatRupiah(item.qty * item.price)}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              {/* TOTAL PEMBAYARAN, SUBTOTAL, & INFORMASI PEMBAYARAN */}
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
-                
-                {/* Left Side: TOTAL PEMBAYARAN BOX & INFORMASI PEMBAYARAN */}
-                <div className="md:col-span-7 space-y-6">
-                  {/* Total Pembayaran Box */}
-                  <div className="border border-slate-200 bg-slate-50/50 rounded-2xl p-5 space-y-1.5">
-                    <span className="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider block">
-                      TOTAL PEMBAYARAN
-                    </span>
-                    <div className="text-3xl font-black text-blue-950 font-mono">
-                      {formatRupiah(calculateTotal())}
-                    </div>
-                    <div className="text-xs text-slate-600 italic font-medium">
-                      {terbilangRupiah(calculateTotal())}
-                    </div>
-                  </div>
-
-                  {/* Informasi Pembayaran Box */}
-                  <div className="border border-slate-200 rounded-2xl p-5 space-y-3">
-                    <span className="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider block">
-                      INFORMASI PEMBAYARAN
-                    </span>
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-blue-900 text-white font-black flex items-center justify-center text-sm shrink-0 shadow-sm">
-                        {bankBadge || "BM"}
-                      </div>
-                      <div className="space-y-0.5 text-xs">
-                        <div className="font-bold text-slate-900 text-sm">{bankName}</div>
-                        <div className="font-extrabold font-mono text-blue-900 text-base">{accountNo}</div>
-                        <div className="text-slate-600">a.n. {accountHolder}</div>
-                        <div className="text-[11px] text-slate-500 font-medium pt-1">
-                          Jenis Transfer: {transferType}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Right Side: Subtotal & Signatory */}
-                <div className="md:col-span-5 space-y-6 flex flex-col justify-between h-full">
-                  {/* Subtotal / Total Summary */}
-                  <div className="space-y-3 pt-2">
-                    <div className="flex justify-between items-center text-xs text-slate-600">
-                      <span className="font-medium">Subtotal</span>
-                      <span className="font-bold font-mono text-slate-900">{formatRupiah(calculateSubtotal())}</span>
-                    </div>
-                    {discount > 0 && (
-                      <div className="flex justify-between items-center text-xs text-red-500">
-                        <span>Diskon</span>
-                        <span className="font-bold font-mono">- {formatRupiah(discount)}</span>
-                      </div>
-                    )}
-                    <div className="flex justify-between items-center text-sm font-black border-t pt-3 text-slate-900">
-                      <span>TOTAL</span>
-                      <span className="text-blue-900 font-mono text-base">{formatRupiah(calculateTotal())}</span>
-                    </div>
-                  </div>
-
-                  {/* TANDA TANGAN OFFICIAL */}
-                  <div className="text-center space-y-2 pt-6">
-                    <span className="text-xs font-semibold text-slate-600 block">
-                      Hormat Kami,
-                    </span>
-                    <div className="h-20 flex items-center justify-center my-1">
-                      {signatureImage ? (
-                        <img
-                          src={signatureImage}
-                          alt="Tanda Tangan Official"
-                          className="max-h-20 max-w-48 object-contain mx-auto"
-                        />
-                      ) : (
-                        <div className="h-14 border-b border-dashed border-slate-300 w-36 mx-auto" />
-                      )}
-                    </div>
-                    <div>
-                      <div className="font-black text-slate-900 text-sm">{signatory}</div>
-                      <div className="text-xs text-slate-500 font-medium">{signatoryTitle}</div>
-                      <div className="text-[10px] font-bold text-blue-900 mt-1 uppercase tracking-wider flex items-center justify-center gap-1">
-                        <Sparkles className="w-3 h-3 text-blue-600" />
-                        <span>Solvia.Nova Digital Solution Partner</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* CATATAN & FOOTER LINE */}
-              {notes && (
-                <div className="border-t pt-4 space-y-2 text-xs text-slate-600">
-                  <span className="font-extrabold text-blue-950 uppercase tracking-wider block text-[11px]">
-                    CATATAN
-                  </span>
-                  <div className="whitespace-pre-line leading-relaxed text-[11px] font-normal text-slate-600 pl-1">
-                    {notes}
-                  </div>
-                </div>
-              )}
-
-              {/* Bottom Footer Line */}
-              <div className="border-t pt-4 text-center text-[10px] text-slate-400 font-medium flex flex-wrap justify-center gap-4">
-                <span>Jl.GumukrejoRT 05 RW 05, Nanggulan Salatiga</span>
-                <span>•</span>
-                <span>solvianova1@gmail.com</span>
-                <span>•</span>
-                <span>solvianova.my.id</span>
-              </div>
-
-            </div>
+            {/* Official Invoice Document Structure (Exact Match with PDF) */}
+            <OfficialInvoiceDocument
+              invoiceNo={invoiceNo}
+              invoiceDate={invoiceDate}
+              clientName={clientName}
+              clientAddress={clientAddress}
+              clientEmail={clientEmail}
+              clientPhone={clientPhone}
+              projectName={projectName}
+              servicePackage={servicePackage}
+              projectDuration={projectDuration}
+              items={items}
+              bankBadge={bankBadge}
+              bankName={bankName}
+              accountNo={accountNo}
+              accountHolder={accountHolder}
+              transferType={transferType}
+              signatureImage={signatureImage}
+              signatoryName={signatory}
+              signatoryRole={signatoryTitle}
+            />
           </div>
         </div>
       )}
