@@ -483,14 +483,14 @@ export default function InvoiceAdminPage() {
 
       {/* QUICK PREVIEW & PRINT INVOICE MODAL */}
       {previewInvoice && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/85 overflow-y-auto print:p-0 print:bg-white print:static">
-          <div className="relative w-full max-w-4xl bg-slate-900 border border-slate-700/60 rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden my-6 print:border-none print:shadow-none print:m-0 print:w-full print:bg-white">
-            {/* Modal Controls Bar (Hidden on Print) */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-900/95 print:hidden">
+        <div className="fixed inset-0 z-50 bg-black/85 overflow-y-auto p-2 sm:p-6 md:p-8 flex justify-center items-start print:p-0 print:bg-white print:static print:overflow-visible">
+          <div className="w-full max-w-4xl space-y-4 my-2 sm:my-4 print:my-0">
+            {/* Modal Controls Bar (Hidden on Print, Sticky at top) */}
+            <div className="sticky top-2 z-30 flex items-center justify-between px-5 sm:px-6 py-3 rounded-2xl bg-[#0A0E1A] border border-slate-700/80 text-white print:hidden shadow-2xl backdrop-blur-md">
               <div className="flex items-center gap-2">
                 <FileSpreadsheet className="w-4 h-4 text-blue-400" />
                 <span className="text-xs font-bold text-slate-200">
-                  Pratinjau Resmi Tagihan: <span className="font-mono text-blue-400">{previewInvoice.no}</span>
+                  Pratinjau Resmi Tagihan: <span className="font-mono text-cyan-400">{previewInvoice.no}</span>
                 </span>
               </div>
 
@@ -514,8 +514,7 @@ export default function InvoiceAdminPage() {
             </div>
 
             {/* Render Official Document (Matches PDF Page 1 & 2) */}
-            <div className="p-3 sm:p-6 bg-slate-950 overflow-x-auto print:p-0 print:bg-white">
-              <OfficialInvoiceDocument
+            <OfficialInvoiceDocument
                 invoiceNo={previewInvoice.no}
                 invoiceDate={previewInvoice.date}
                 clientName={previewInvoice.client}
@@ -534,7 +533,6 @@ export default function InvoiceAdminPage() {
                   }
                 ]}
               />
-            </div>
           </div>
         </div>
       )}

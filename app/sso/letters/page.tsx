@@ -335,10 +335,10 @@ export default function LettersAdminPage() {
 
       {/* QUICK PREVIEW & PRINT MODAL */}
       {previewLetter && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3.5 sm:p-4 bg-black/85 overflow-y-auto print:p-0 print:bg-white print:static">
-          <div className="relative w-full max-w-4xl bg-[#04152d] border border-blue-500/40 rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden my-6 print:border-none print:shadow-none print:m-0 print:w-full print:bg-white">
-            {/* Modal Controls Bar (Hidden on Print) */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-[#0A0E1A] print:hidden">
+        <div className="fixed inset-0 z-50 bg-black/85 overflow-y-auto p-2 sm:p-4 md:p-8 flex justify-center items-start print:p-0 print:bg-white print:static print:overflow-visible">
+          <div className="relative w-full max-w-4xl bg-[#04152d] border border-blue-500/40 rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden my-3 sm:my-6 print:border-none print:shadow-none print:m-0 print:w-full print:bg-white">
+            {/* Modal Controls Bar (Hidden on Print, Sticky at top) */}
+            <div className="sticky top-0 z-30 flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-[#0A0E1A] print:hidden">
               <div className="flex items-center gap-2">
                 <FileText className="w-4 h-4 text-cyan-400" />
                 <span className="text-xs font-bold text-white">

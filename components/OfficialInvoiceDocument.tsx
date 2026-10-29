@@ -120,7 +120,7 @@ export default function OfficialInvoiceDocument({
   const terbilangText = terbilangRupiah(total);
 
   return (
-    <div className="bg-white text-slate-800 font-sans text-xs max-w-4xl mx-auto shadow-2xl rounded-2xl print:rounded-none print:shadow-none print:max-w-none print:w-full overflow-hidden border border-slate-200 print:border-none">
+    <div className="bg-white text-slate-800 font-sans text-xs w-full max-w-4xl mx-auto shadow-2xl rounded-2xl print:rounded-none print:shadow-none print:max-w-none print:w-full border border-slate-200 print:border-none">
       {/* INVOICE CONTENT WRAPPER */}
       <div className="p-6 sm:p-10 space-y-6">
         
@@ -265,7 +265,7 @@ export default function OfficialInvoiceDocument({
             RINCIAN LAYANAN
           </h3>
 
-          <div className="border border-slate-200 rounded-lg overflow-hidden">
+          <div className="border border-slate-200 rounded-lg overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-[#071b40] text-white text-[11px] font-extrabold uppercase tracking-wider">

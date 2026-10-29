@@ -481,12 +481,12 @@ export default function CreateInvoicePage() {
 
       {/* EXACT OFFICIAL SOLVIA NOVA INVOICE PRINTABLE / PDF MODAL */}
       {isPreviewOpen && (
-        <div className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-2 sm:p-6 overflow-y-auto print:p-0 print:bg-white print:static">
-          <div className="w-full max-w-4xl space-y-4 my-8 print:my-0">
-            {/* Modal Controls Bar (Hidden on Print) */}
-            <div className="flex items-center justify-between px-6 py-3.5 rounded-2xl bg-[#0A0E1A] border border-slate-800 text-white print:hidden shadow-2xl">
+        <div className="fixed inset-0 z-50 bg-black/85 overflow-y-auto p-2 sm:p-6 md:p-8 flex justify-center items-start print:p-0 print:bg-white print:static print:overflow-visible">
+          <div className="w-full max-w-4xl space-y-4 my-2 sm:my-4 print:my-0">
+            {/* Modal Controls Bar (Hidden on Print, Sticky at top) */}
+            <div className="sticky top-2 z-30 flex items-center justify-between px-5 sm:px-6 py-3 rounded-2xl bg-[#0A0E1A] border border-slate-700/80 text-white print:hidden shadow-2xl backdrop-blur-md">
               <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-blue-500" />
+                <span className="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse" />
                 <span className="text-xs font-bold uppercase tracking-wider">
                   Pratinjau Resmi: <span className="font-mono text-cyan-400">{invoiceNo}</span>
                 </span>
