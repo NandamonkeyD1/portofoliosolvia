@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Mail, Trash2, Eye, X, Check, Search, MessageSquare, CheckCheck, ExternalLink, Send } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Mail, Trash2, Eye, X, Check, Search, MessageSquare, CheckCheck, ExternalLink, Send, Plus } from "lucide-react";
 
 interface MessageItem {
   id: string;
@@ -14,85 +14,152 @@ interface MessageItem {
   unread: boolean;
 }
 
-export default function MessagesAdminPage() {
-  const [messages, setMessages] = useState<MessageItem[]>([
-    {
-      id: "1",
-      sender: "PT Maju Bersama (Budi)",
-      email: "info@majubersama.com",
-      phone: "6281234567890",
-      subject: "Pengembangan ERP Custom & POS Unit",
-      message: "Halo Solvia Nova, kami bermaksud ingin membangun sistem ERP manufaktur custom untuk 200 karyawan kami dengan integrasi kontrol produksi.",
-      date: "Hari Ini, 10:45",
-      unread: true,
-    },
-    {
-      id: "2",
-      sender: "Budi Santoso",
-      email: "budi@fashionstore.id",
-      phone: "6285712345678",
-      subject: "Tanya Paket E-Commerce & WhatsApp Notification",
-      message: "Apakah tersedia paket e-commerce lengkap dengan integrasi WhatsApp notification & payment gateway terotomatisasi?",
-      date: "Kemarin, 16:20",
-      unread: true,
-    },
-    {
-      id: "3",
-      sender: "Rina Wijaya",
-      email: "rina@brandlokal.com",
-      phone: "6281398765432",
-      subject: "Konsultasi Rebranding FMCG",
-      message: "Kami ingin melakukan rebranding lengkap untuk lini produk makanan ringan lokal kami.",
-      date: "29 Sep 2026",
-      unread: false,
-    },
-    {
-      id: "4",
-      sender: "Dzikron Zaidan (Hydrone IoT)",
-      email: "dzikron@hydrone.io",
-      phone: "6283148801578",
-      subject: "Konsultasi Prototype Autonomous Underwater Vehicle",
-      message: "Tertarik layanan pembuatan sistem IoT monitoring telemetri real-time.",
-      date: "24 Sep 2026",
-      unread: false,
-    },
-    {
-      id: "5",
-      sender: "Filtrazon Team",
-      email: "filtrazon@gmail.com",
-      phone: "6281226615585",
-      subject: "Penawaran Kerjasama Integration IoT",
-      message: "Ingin mengajukan kerjasama integrasi sensor kualitas air & dashboard WebGL 3D.",
-      date: "09 Aug 2026",
-      unread: false,
-    },
-  ]);
+const STORAGE_KEY = "solvia_messages_data";
 
+const DEFAULT_MESSAGES: MessageItem[] = [
+  {
+    id: "1",
+    sender: "PT Maju Bersama (Budi)",
+    email: "info@majubersama.com",
+    phone: "6281234567890",
+    subject: "Pengembangan ERP Custom & POS Unit",
+    message: "Halo Solvia Nova, kami bermaksud ingin membangun sistem ERP manufaktur custom untuk 200 karyawan kami dengan integrasi kontrol produksi.",
+    date: "Hari Ini, 10:45",
+    unread: true,
+  },
+  {
+    id: "2",
+    sender: "Budi Santoso",
+    email: "budi@fashionstore.id",
+    phone: "6285712345678",
+    subject: "Tanya Paket E-Commerce & WhatsApp Notification",
+    message: "Apakah tersedia paket e-commerce lengkap dengan integrasi WhatsApp notification & payment gateway terotomatisasi?",
+    date: "Kemarin, 16:20",
+    unread: true,
+  },
+  {
+    id: "3",
+    sender: "Rina Wijaya",
+    email: "rina@brandlokal.com",
+    phone: "6281398765432",
+    subject: "Konsultasi Rebranding FMCG",
+    message: "Kami ingin melakukan rebranding lengkap untuk lini produk makanan ringan lokal kami.",
+    date: "29 Sep 2026",
+    unread: false,
+  },
+  {
+    id: "4",
+    sender: "Dzikron Zaidan (Hydrone IoT)",
+    email: "dzikron@hydrone.io",
+    phone: "6283148801578",
+    subject: "Konsultasi Prototype Autonomous Underwater Vehicle",
+    message: "Tertarik layanan pembuatan sistem IoT monitoring telemetri real-time.",
+    date: "24 Sep 2026",
+    unread: false,
+  },
+  {
+    id: "5",
+    sender: "Filtrazon Team",
+    email: "filtrazon@gmail.com",
+    phone: "6281226615585",
+    subject: "Penawaran Kerjasama Integration IoT",
+    message: "Ingin mengajukan kerjasama integrasi sensor kualitas air & dashboard WebGL 3D.",
+    date: "09 Aug 2026",
+    unread: false,
+  },
+];
+
+export default function MessagesAdminPage() {
+  const [messages, setMessages] = useState<MessageItem[]>([]);
   const [search, setSearch] = useState("");
   const [filterMode, setFilterMode] = useState<"all" | "unread" | "read">("all");
   const [selectedMsg, setSelectedMsg] = useState<MessageItem | null>(null);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
+
+  // Form states for adding new message/lead
+  const [sender, setSender] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
+
+  // Hydrate from localStorage
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        setMessages(JSON.parse(saved));
+      } else {
+        setMessages(DEFAULT_MESSAGES);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_MESSAGES));
+      }
+    } catch {
+      setMessages(DEFAULT_MESSAGES);
+    }
+  }, []);
+
+  const saveToStorage = (updatedMessages: MessageItem[]) => {
+    setMessages(updatedMessages);
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedMessages));
+    } catch (e) {
+      console.error("Failed to save to localStorage:", e);
+    }
+  };
 
   const showToast = (msg: string) => {
     setToast(msg);
     setTimeout(() => setToast(null), 3000);
   };
 
+  const handleOpenAddModal = () => {
+    setSender("");
+    setEmail("");
+    setPhone("");
+    setSubject("");
+    setMessage("");
+    setIsAddModalOpen(true);
+  };
+
+  const handleSaveNewMessage = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!sender.trim() || !subject.trim() || !message.trim()) return;
+
+    const newMsg: MessageItem = {
+      id: "msg-" + Date.now().toString(),
+      sender: sender.trim(),
+      email: email.trim() || "klien@solvianova.id",
+      phone: phone.trim() ? phone.replace(/[^0-9]/g, "") : "6283148801578",
+      subject: subject.trim(),
+      message: message.trim(),
+      date: "Hari Ini, " + new Date().toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" }),
+      unread: true,
+    };
+
+    saveToStorage([newMsg, ...messages]);
+    showToast("Leads / Pesan konsultasi baru berhasil dicatat!");
+    setIsAddModalOpen(false);
+  };
+
   const handleOpenMessage = (msg: MessageItem) => {
     setSelectedMsg(msg);
     if (msg.unread) {
-      setMessages(messages.map((m) => (m.id === msg.id ? { ...m, unread: false } : m)));
+      const updated = messages.map((m) => (m.id === msg.id ? { ...m, unread: false } : m));
+      saveToStorage(updated);
     }
   };
 
   const handleMarkAllRead = () => {
-    setMessages(messages.map((m) => ({ ...m, unread: false })));
-    showToast("Semua pesan & leads berhasil ditandai sudah dibaca / diproses!");
+    const updated = messages.map((m) => ({ ...m, unread: false }));
+    saveToStorage(updated);
+    showToast("Semua pesan & leads berhasil ditandai sudah dibaca!");
   };
 
   const handleDelete = (id: string) => {
     if (confirm("Apakah Anda yakin ingin menghapus pesan ini?")) {
-      setMessages(messages.filter((m) => m.id !== id));
+      const updated = messages.filter((m) => m.id !== id);
+      saveToStorage(updated);
       if (selectedMsg?.id === id) setSelectedMsg(null);
       showToast("Pesan berhasil dihapus!");
     }
@@ -134,7 +201,7 @@ export default function MessagesAdminPage() {
           {unreadCount > 0 && (
             <button
               onClick={handleMarkAllRead}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500 border border-amber-500/40 text-amber-300 hover:text-white text-xs font-bold transition-all shadow-lg"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500 border border-amber-500/40 text-amber-300 hover:text-white text-xs font-bold transition-all shadow-lg cursor-pointer"
             >
               <CheckCheck className="w-4 h-4" />
               <span>Tandai Semua Dibaca</span>
@@ -148,9 +215,17 @@ export default function MessagesAdminPage() {
               placeholder="Cari pengirim atau email..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="bg-slate-900 border border-slate-700 rounded-xl pl-9 pr-4 py-2 text-xs text-white focus:outline-none focus:border-blue-500 w-56 sm:w-64"
+              className="bg-slate-900 border border-slate-700 rounded-xl pl-9 pr-4 py-2 text-xs text-white focus:outline-none focus:border-blue-500 w-52 sm:w-64"
             />
           </div>
+
+          <button
+            onClick={handleOpenAddModal}
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-lg shadow-blue-600/25 shrink-0 cursor-pointer"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Tambah Lead / Pesan</span>
+          </button>
         </div>
       </div>
 
@@ -158,7 +233,7 @@ export default function MessagesAdminPage() {
       <div className="flex items-center gap-2 border-b border-slate-800 pb-3">
         <button
           onClick={() => setFilterMode("all")}
-          className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
+          className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
             filterMode === "all" ? "bg-blue-600 text-white" : "text-slate-400 hover:text-white"
           }`}
         >
@@ -166,7 +241,7 @@ export default function MessagesAdminPage() {
         </button>
         <button
           onClick={() => setFilterMode("unread")}
-          className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
+          className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
             filterMode === "unread" ? "bg-amber-500 text-white" : "text-slate-400 hover:text-white"
           }`}
         >
@@ -174,7 +249,7 @@ export default function MessagesAdminPage() {
         </button>
         <button
           onClick={() => setFilterMode("read")}
-          className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
+          className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
             filterMode === "read" ? "bg-emerald-600 text-white" : "text-slate-400 hover:text-white"
           }`}
         >
@@ -195,68 +270,179 @@ export default function MessagesAdminPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800/60 text-xs">
-              {filteredMessages.map((m) => (
-                <tr key={m.id} className="hover:bg-slate-800/40 transition-colors">
-                  <td className="py-4 px-5">
-                    <div className="flex items-center gap-3">
-                      <span
-                        className={`w-2.5 h-2.5 rounded-full shrink-0 ${
-                          m.unread ? "bg-amber-400 animate-pulse shadow-[0_0_8px_rgba(251,191,36,0.8)]" : "bg-slate-600"
-                        }`}
-                      />
-                      <div>
-                        <div className="text-white font-bold">{m.sender}</div>
-                        <div className="text-slate-400 text-[11px] font-mono">{m.email}</div>
-                      </div>
-                    </div>
-                  </td>
-
-                  <td className="py-4 px-5">
-                    <div className="font-bold text-slate-200 line-clamp-1">{m.subject}</div>
-                    <div className="text-slate-400 text-[11px] line-clamp-1 mt-0.5">{m.message}</div>
-                  </td>
-
-                  <td className="py-4 px-5 text-slate-400 font-mono whitespace-nowrap">{m.date}</td>
-
-                  <td className="py-4 px-5 text-right whitespace-nowrap">
-                    <div className="flex items-center justify-end gap-2">
-                      {/* Direct WhatsApp Response Button */}
-                      <a
-                        href={`https://wa.me/${m.phone || "6283148801578"}?text=${encodeURIComponent(
-                          `Halo ${m.sender}, terima kasih telah menghubungi Solvia Nova mengenai "${m.subject}". Kami siap mendiskusikan kebutuhan sistem Anda.`
-                        )}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-emerald-600/20 hover:bg-emerald-600 border border-emerald-500/30 text-emerald-300 hover:text-white text-[11px] font-bold transition-all"
-                        title="Balas Langsung via WhatsApp"
-                      >
-                        <Send className="w-3 h-3" />
-                        <span>Balas WA</span>
-                      </a>
-
-                      <button
-                        onClick={() => handleOpenMessage(m)}
-                        className="p-1.5 rounded-lg bg-blue-500/10 hover:bg-blue-600 text-blue-400 hover:text-white transition-colors"
-                        title="Detail Pesan"
-                      >
-                        <Eye className="w-4 h-4" />
-                      </button>
-
-                      <button
-                        onClick={() => handleDelete(m.id)}
-                        className="p-1.5 rounded-lg bg-red-500/10 hover:bg-red-600 text-red-400 hover:text-white transition-colors"
-                        title="Hapus"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
+              {filteredMessages.length === 0 ? (
+                <tr>
+                  <td colSpan={4} className="py-12 text-center text-slate-500 font-medium">
+                    Tidak ada pesan atau leads pada tab ini.
                   </td>
                 </tr>
-              ))}
+              ) : (
+                filteredMessages.map((m) => (
+                  <tr key={m.id} className="hover:bg-slate-800/40 transition-colors">
+                    <td className="py-4 px-5">
+                      <div className="flex items-center gap-3">
+                        <span
+                          className={`w-2.5 h-2.5 rounded-full shrink-0 ${
+                            m.unread ? "bg-amber-400 animate-pulse shadow-[0_0_8px_rgba(251,191,36,0.8)]" : "bg-slate-600"
+                          }`}
+                        />
+                        <div>
+                          <div className="text-white font-bold">{m.sender}</div>
+                          <div className="text-slate-400 text-[11px] font-mono">{m.email}</div>
+                        </div>
+                      </div>
+                    </td>
+
+                    <td className="py-4 px-5">
+                      <div className="font-bold text-slate-200 line-clamp-1">{m.subject}</div>
+                      <div className="text-slate-400 text-[11px] line-clamp-1 mt-0.5">{m.message}</div>
+                    </td>
+
+                    <td className="py-4 px-5 text-slate-400 font-mono whitespace-nowrap">{m.date}</td>
+
+                    <td className="py-4 px-5 text-right whitespace-nowrap">
+                      <div className="flex items-center justify-end gap-2">
+                        {/* Direct WhatsApp Response Button */}
+                        <a
+                          href={`https://wa.me/${m.phone || "6283148801578"}?text=${encodeURIComponent(
+                            `Halo ${m.sender}, terima kasih telah menghubungi Solvia Nova mengenai "${m.subject}". Kami siap mendiskusikan kebutuhan sistem Anda.`
+                          )}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-emerald-600/20 hover:bg-emerald-600 border border-emerald-500/30 text-emerald-300 hover:text-white text-[11px] font-bold transition-all"
+                          title="Balas Langsung via WhatsApp"
+                        >
+                          <Send className="w-3 h-3" />
+                          <span>Balas WA</span>
+                        </a>
+
+                        <button
+                          onClick={() => handleOpenMessage(m)}
+                          className="p-1.5 rounded-lg bg-blue-500/10 hover:bg-blue-600 text-blue-400 hover:text-white transition-colors cursor-pointer"
+                          title="Detail Pesan"
+                        >
+                          <Eye className="w-4 h-4" />
+                        </button>
+
+                        <button
+                          onClick={() => handleDelete(m.id)}
+                          className="p-1.5 rounded-lg bg-red-500/10 hover:bg-red-600 text-red-400 hover:text-white transition-colors cursor-pointer"
+                          title="Hapus"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
       </div>
+
+      {/* ADD LEAD MODAL */}
+      {isAddModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-[#0A0E1A] border border-slate-800 rounded-3xl max-w-lg w-full p-6 space-y-6 shadow-2xl animate-in fade-in zoom-in duration-200">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+              <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                <MessageSquare className="w-5 h-5 text-blue-500" />
+                <span>Catat Lead / Pesan Konsultasi Baru</span>
+              </h2>
+              <button
+                onClick={() => setIsAddModalOpen(false)}
+                className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveNewMessage} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1">
+                  Nama Klien / Perusahaan <span className="text-red-400">*</span>
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={sender}
+                  onChange={(e) => setSender(e.target.value)}
+                  placeholder="Contoh: Budi Santoso (PT Sinar Terang)"
+                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-300 mb-1">Email</label>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="budi@sinarterang.co.id"
+                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-300 mb-1">No. WhatsApp</label>
+                  <input
+                    type="text"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="628123456789"
+                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500 font-mono"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1">
+                  Subjek / Kebutuhan Solusi <span className="text-red-400">*</span>
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={subject}
+                  onChange={(e) => setSubject(e.target.value)}
+                  placeholder="Contoh: Pembuatan Sistem ERP Inventory & POS Gudang"
+                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1">
+                  Detail Pesan / Konsultasi <span className="text-red-400">*</span>
+                </label>
+                <textarea
+                  rows={4}
+                  required
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  placeholder="Rincian kebutuhan sistem klien..."
+                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500 leading-relaxed"
+                />
+              </div>
+
+              <div className="pt-4 flex justify-end gap-3 border-t border-slate-800">
+                <button
+                  type="button"
+                  onClick={() => setIsAddModalOpen(false)}
+                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition-colors cursor-pointer"
+                >
+                  Batal
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-lg shadow-blue-600/30 transition-all cursor-pointer"
+                >
+                  Simpan Lead Baru
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* DETAIL MESSAGE MODAL */}
       {selectedMsg && (
@@ -285,6 +471,12 @@ export default function MessagesAdminPage() {
                   <span className="text-slate-400 font-semibold">Email:</span>
                   <span className="text-blue-300 font-mono">{selectedMsg.email}</span>
                 </div>
+                {selectedMsg.phone && (
+                  <div className="flex justify-between">
+                    <span className="text-slate-400 font-semibold">WhatsApp:</span>
+                    <span className="text-emerald-400 font-mono">{selectedMsg.phone}</span>
+                  </div>
+                )}
                 <div className="flex justify-between">
                   <span className="text-slate-400 font-semibold">Waktu Masuk:</span>
                   <span className="text-slate-300 font-mono">{selectedMsg.date}</span>
@@ -302,7 +494,7 @@ export default function MessagesAdminPage() {
             <div className="pt-4 flex justify-between items-center border-t border-slate-800">
               <button
                 onClick={() => handleDelete(selectedMsg.id)}
-                className="px-3 py-2 rounded-xl bg-red-500/10 hover:bg-red-600 text-red-400 hover:text-white text-xs font-bold transition-colors"
+                className="px-3 py-2 rounded-xl bg-red-500/10 hover:bg-red-600 text-red-400 hover:text-white text-xs font-bold transition-colors cursor-pointer"
               >
                 Hapus Pesan
               </button>

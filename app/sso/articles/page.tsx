@@ -1,28 +1,73 @@
 "use client";
 
-import { useState } from "react";
-import { Plus, Edit, Trash2, X, Check, Search } from "lucide-react";
-import { articlesData } from "@/lib/data";
+import { useState, useEffect } from "react";
+import { Plus, Edit, Trash2, X, Check, Search, FileText, Image as ImageIcon } from "lucide-react";
+import { articlesData, Article } from "@/lib/data";
+import ImageUploader from "@/components/ImageUploader";
 
 interface ArticleItem {
   id: string;
+  slug?: string;
   title: string;
   category: string;
   date: string;
   readTime: string;
   author: string;
+  summary?: string;
+  image?: string;
 }
 
+const STORAGE_KEY = "solvia_articles_data";
+
 export default function ArticlesAdminPage() {
-  const [articles, setArticles] = useState<ArticleItem[]>(articlesData);
+  const [articles, setArticles] = useState<ArticleItem[]>([]);
   const [search, setSearch] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<ArticleItem | null>(null);
   const [toast, setToast] = useState<string | null>(null);
 
+  // Form states
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
   const [author, setAuthor] = useState("");
+  const [readTime, setReadTime] = useState("");
+  const [summary, setSummary] = useState("");
+  const [image, setImage] = useState("");
+
+  // Hydrate from localStorage
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        setArticles(JSON.parse(saved));
+      } else {
+        const initial = articlesData.map((a) => ({
+          id: a.id,
+          slug: a.slug,
+          title: a.title,
+          category: a.category,
+          date: a.date,
+          readTime: a.readTime,
+          author: a.author,
+          summary: a.summary,
+          image: a.image,
+        }));
+        setArticles(initial);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(initial));
+      }
+    } catch {
+      setArticles(articlesData);
+    }
+  }, []);
+
+  const saveToStorage = (updatedArticles: ArticleItem[]) => {
+    setArticles(updatedArticles);
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedArticles));
+    } catch (e) {
+      console.error("Failed to save to localStorage:", e);
+    }
+  };
 
   const showToast = (msg: string) => {
     setToast(msg);
@@ -34,6 +79,9 @@ export default function ArticlesAdminPage() {
     setTitle("");
     setCategory("");
     setAuthor("Tim Solvia Nova");
+    setReadTime("5 menit baca");
+    setSummary("");
+    setImage("https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80");
     setIsModalOpen(true);
   };
 
@@ -42,38 +90,62 @@ export default function ArticlesAdminPage() {
     setTitle(item.title);
     setCategory(item.category);
     setAuthor(item.author);
+    setReadTime(item.readTime || "5 menit baca");
+    setSummary(item.summary || "");
+    setImage(item.image || "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80");
     setIsModalOpen(true);
   };
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title || !category) return;
+    if (!title.trim() || !category.trim()) return;
+
+    const slug = title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)+/g, "");
+
+    const imgUrl = image || "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80";
 
     if (editingItem) {
-      setArticles(
-        articles.map((a) =>
-          a.id === editingItem.id ? { ...a, title, category, author } : a
-        )
+      const updated = articles.map((a) =>
+        a.id === editingItem.id
+          ? {
+              ...a,
+              title: title.trim(),
+              slug,
+              category: category.trim(),
+              author: author.trim() || "Tim Solvia Nova",
+              readTime: readTime.trim() || "5 menit baca",
+              summary: summary.trim(),
+              image: imgUrl,
+            }
+          : a
       );
+      saveToStorage(updated);
       showToast("Artikel berhasil diperbarui!");
     } else {
       const newArt: ArticleItem = {
-        id: Date.now().toString(),
-        title,
-        category,
+        id: "art-" + Date.now().toString(),
+        slug,
+        title: title.trim(),
+        category: category.trim(),
         date: new Date().toLocaleDateString("id-ID", { day: "2-digit", month: "short", year: "numeric" }),
-        readTime: "5 menit baca",
-        author: author || "Tim Solvia Nova",
+        readTime: readTime.trim() || "5 menit baca",
+        author: author.trim() || "Tim Solvia Nova",
+        summary: summary.trim(),
+        image: imgUrl,
       };
-      setArticles([newArt, ...articles]);
+      saveToStorage([newArt, ...articles]);
       showToast("Artikel baru berhasil diterbitkan!");
     }
     setIsModalOpen(false);
   };
 
-  const handleDelete = (id: string) => {
-    if (confirm("Apakah Anda yakin ingin menghapus artikel ini?")) {
-      setArticles(articles.filter((a) => a.id !== id));
+  const handleDelete = (id: string, artTitle: string) => {
+    if (confirm(`Apakah Anda yakin ingin menghapus artikel "${artTitle}"?`)) {
+      const updated = articles.filter((a) => a.id !== id);
+      saveToStorage(updated);
       showToast("Artikel berhasil dihapus!");
     }
   };
@@ -81,7 +153,8 @@ export default function ArticlesAdminPage() {
   const filteredArticles = articles.filter(
     (a) =>
       a.title.toLowerCase().includes(search.toLowerCase()) ||
-      a.category.toLowerCase().includes(search.toLowerCase())
+      a.category.toLowerCase().includes(search.toLowerCase()) ||
+      a.author.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -97,8 +170,8 @@ export default function ArticlesAdminPage() {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-black text-white">Articles</h1>
-          <p className="text-slate-400 text-xs mt-1">Kelola artikel blog & wawasan teknologi</p>
+          <h1 className="text-2xl font-black text-white">Articles Management</h1>
+          <p className="text-slate-400 text-xs mt-1">Kelola artikel wawasan teknologi, tutorial, dan riset Solvia Nova</p>
         </div>
         <div className="flex items-center gap-3">
           <div className="relative">
@@ -113,7 +186,7 @@ export default function ArticlesAdminPage() {
           </div>
           <button
             onClick={handleOpenAddModal}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-lg shadow-blue-600/25 shrink-0"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-lg shadow-blue-600/25 shrink-0 cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span>Tambah Artikel</span>
@@ -121,50 +194,75 @@ export default function ArticlesAdminPage() {
         </div>
       </div>
 
-      {/* Articles List */}
+      {/* Articles List Cards */}
       <div className="space-y-4">
-        {filteredArticles.map((art) => (
-          <div
-            key={art.id}
-            className="bg-[#0E1526]/80 border border-slate-800 rounded-2xl p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 backdrop-blur-md"
-          >
-            <div className="space-y-1">
-              <span className="px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 text-[10px] font-bold">
-                {art.category}
-              </span>
-              <h3 className="text-base font-bold text-white">{art.title}</h3>
-              <div className="text-slate-400 text-xs font-medium">
-                {art.date} • {art.readTime} • Oleh {art.author}
+        {filteredArticles.length === 0 ? (
+          <div className="bg-[#0E1526]/80 border border-slate-800 rounded-2xl p-12 text-center text-slate-400">
+            <FileText className="w-10 h-10 mx-auto text-slate-600 mb-2" />
+            <p className="font-bold text-sm">Tidak ada artikel yang cocok.</p>
+          </div>
+        ) : (
+          filteredArticles.map((art) => (
+            <div
+              key={art.id}
+              className="bg-[#0E1526]/80 border border-slate-800 rounded-2xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 backdrop-blur-md shadow-xl hover:border-slate-700 transition-colors"
+            >
+              <div className="flex items-start gap-4">
+                {art.image && (
+                  <img
+                    src={art.image}
+                    alt={art.title}
+                    className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl object-cover border border-slate-700 shrink-0"
+                  />
+                )}
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <span className="px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 text-[10px] font-bold border border-blue-500/30">
+                      {art.category}
+                    </span>
+                    <span className="text-slate-500 text-[11px]">• {art.readTime}</span>
+                  </div>
+                  <h3 className="text-base font-bold text-white hover:text-blue-400 transition-colors">
+                    {art.title}
+                  </h3>
+                  {art.summary && (
+                    <p className="text-slate-400 text-xs line-clamp-1 max-w-2xl">{art.summary}</p>
+                  )}
+                  <div className="text-slate-500 text-[11px] font-medium pt-1">
+                    {art.date} • Ditulis oleh <span className="text-slate-300 font-semibold">{art.author}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex gap-2 shrink-0 md:self-center">
+                <button
+                  onClick={() => handleOpenEditModal(art)}
+                  className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-blue-600 text-slate-200 text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer"
+                >
+                  <Edit className="w-3.5 h-3.5" />
+                  <span>Edit</span>
+                </button>
+                <button
+                  onClick={() => handleDelete(art.id, art.title)}
+                  className="px-3 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-600 text-red-300 hover:text-white text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                  <span>Hapus</span>
+                </button>
               </div>
             </div>
-
-            <div className="flex gap-2 shrink-0">
-              <button
-                onClick={() => handleOpenEditModal(art)}
-                className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-blue-600 text-slate-200 text-xs font-semibold transition-colors flex items-center gap-1"
-              >
-                <Edit className="w-3.5 h-3.5" />
-                <span>Edit</span>
-              </button>
-              <button
-                onClick={() => handleDelete(art.id)}
-                className="px-3 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-600 text-red-300 hover:text-white text-xs font-semibold transition-colors flex items-center gap-1"
-              >
-                <Trash2 className="w-3.5 h-3.5" />
-                <span>Hapus</span>
-              </button>
-            </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
 
       {/* ADD / EDIT MODAL */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#0A0E1A] border border-slate-800 rounded-3xl max-w-lg w-full p-6 space-y-6 shadow-2xl animate-in fade-in zoom-in duration-200">
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-[#0A0E1A] border border-slate-800 rounded-3xl max-w-xl w-full p-6 space-y-6 shadow-2xl animate-in fade-in zoom-in duration-200 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-slate-800 pb-4">
-              <h2 className="text-lg font-bold text-white">
-                {editingItem ? "Edit Artikel" : "Tulis Artikel Baru"}
+              <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                <FileText className="w-5 h-5 text-blue-500" />
+                <span>{editingItem ? "Edit Artikel" : "Tulis Artikel Baru"}</span>
               </h2>
               <button
                 onClick={() => setIsModalOpen(false)}
@@ -176,7 +274,9 @@ export default function ArticlesAdminPage() {
 
             <form onSubmit={handleSave} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1">Judul Artikel</label>
+                <label className="block text-xs font-bold text-slate-300 mb-1">
+                  Judul Artikel <span className="text-red-400">*</span>
+                </label>
                 <input
                   type="text"
                   required
@@ -187,16 +287,30 @@ export default function ArticlesAdminPage() {
                 />
               </div>
 
-              <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1">Kategori Topik</label>
-                <input
-                  type="text"
-                  required
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                  placeholder="Contoh: Web Development / AI Engineering"
-                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500"
-                />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-300 mb-1">
+                    Kategori Topik <span className="text-red-400">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                    placeholder="Contoh: Web Development / AI"
+                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-300 mb-1">Estimasi Baca</label>
+                  <input
+                    type="text"
+                    value={readTime}
+                    onChange={(e) => setReadTime(e.target.value)}
+                    placeholder="Contoh: 5 menit baca"
+                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500"
+                  />
+                </div>
               </div>
 
               <div>
@@ -210,19 +324,42 @@ export default function ArticlesAdminPage() {
                 />
               </div>
 
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1">Ringkasan / Excerpt</label>
+                <textarea
+                  rows={2}
+                  value={summary}
+                  onChange={(e) => setSummary(e.target.value)}
+                  placeholder="Ringkasan isi artikel..."
+                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500 leading-relaxed"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1.5">
+                  Gambar Banner Artikel
+                </label>
+                <ImageUploader
+                  label="Upload Banner Artikel"
+                  value={image}
+                  onChange={setImage}
+                  placeholder="Upload atau masukkan URL foto banner"
+                />
+              </div>
+
               <div className="pt-4 flex justify-end gap-3 border-t border-slate-800">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold"
+                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition-colors"
                 >
                   Batal
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-lg shadow-blue-600/30"
+                  className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-lg shadow-blue-600/30 transition-all cursor-pointer"
                 >
-                  Terbitkan Artikel
+                  {editingItem ? "Simpan Perubahan" : "Terbitkan Artikel"}
                 </button>
               </div>
             </form>

@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Plus, Edit, Trash2, X, Check, Search, UserCheck } from "lucide-react";
 import ImageUploader from "@/components/ImageUploader";
+import { teamData } from "@/lib/data";
 
 interface TeamMember {
   id: string;
@@ -13,44 +14,61 @@ interface TeamMember {
   skills: string[];
 }
 
-export default function TeamAdminPage() {
-  const [members, setMembers] = useState<TeamMember[]>([
-    {
-      id: "1",
-      name: "Solvia Nova",
-      position: "Founder & CEO",
-      email: "ceo@solvianova.id",
-      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80",
-      skills: ["PHP", "System Architecture", "Business Strategy", "Project Management"],
-    },
-    {
-      id: "2",
-      name: "Dev Team Lead",
-      position: "Lead Fullstack Developer",
-      email: "dev@solvianova.id",
-      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80",
-      skills: ["Laravel", "React", "Vue.js", "MySQL", "Docker", "Redis"],
-    },
-    {
-      id: "3",
-      name: "Design Team Lead",
-      position: "UI/UX & Visual Designer",
-      email: "design@solvianova.id",
-      avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80",
-      skills: ["Figma", "Framer", "TailwindCSS", "Motion Design", "Prototyping"],
-    },
-  ]);
+const STORAGE_KEY = "solvia_team_data";
 
+export default function TeamAdminPage() {
+  const [members, setMembers] = useState<TeamMember[]>([]);
   const [search, setSearch] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<TeamMember | null>(null);
   const [toast, setToast] = useState<string | null>(null);
 
+  // Form states
   const [name, setName] = useState("");
   const [position, setPosition] = useState("");
   const [email, setEmail] = useState("");
   const [avatar, setAvatar] = useState("");
   const [skillsInput, setSkillsInput] = useState("");
+
+  // Hydrate from localStorage
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        setMembers(JSON.parse(saved));
+      } else {
+        const initial: TeamMember[] = teamData.map((t) => ({
+          id: t.id,
+          name: t.name,
+          position: t.position,
+          email: `${t.name.toLowerCase().replace(/[^a-z0-9]+/g, ".")}@solvianova.id`,
+          avatar: t.photo || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80",
+          skills: t.skills || ["Technology", "Engineering"],
+        }));
+        setMembers(initial);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(initial));
+      }
+    } catch {
+      const initial: TeamMember[] = teamData.map((t) => ({
+        id: t.id,
+        name: t.name,
+        position: t.position,
+        email: `${t.name.toLowerCase().replace(/[^a-z0-9]+/g, ".")}@solvianova.id`,
+        avatar: t.photo || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80",
+        skills: t.skills || ["Technology", "Engineering"],
+      }));
+      setMembers(initial);
+    }
+  }, []);
+
+  const saveToStorage = (updatedMembers: TeamMember[]) => {
+    setMembers(updatedMembers);
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedMembers));
+    } catch (e) {
+      console.error("Failed to save to localStorage:", e);
+    }
+  };
 
   const showToast = (msg: string) => {
     setToast(msg);
@@ -88,24 +106,23 @@ export default function TeamAdminPage() {
     const avatarUrl = avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=600&q=80";
 
     if (editingItem) {
-      setMembers(
-        members.map((m) =>
-          m.id === editingItem.id
-            ? { ...m, name, position, email, avatar: avatarUrl, skills: skillsArray }
-            : m
-        )
+      const updated = members.map((m) =>
+        m.id === editingItem.id
+          ? { ...m, name, position, email, avatar: avatarUrl, skills: skillsArray }
+          : m
       );
+      saveToStorage(updated);
       showToast("Profil anggota tim berhasil diperbarui!");
     } else {
       const newMember: TeamMember = {
-        id: Date.now().toString(),
+        id: "team-" + Date.now().toString(),
         name,
         position,
-        email: email || `${name.toLowerCase().replace(/\s+/g, "")}@solvianova.id`,
+        email: email || `${name.toLowerCase().replace(/[^a-z0-9]+/g, ".")}@solvianova.id`,
         avatar: avatarUrl,
         skills: skillsArray,
       };
-      setMembers([...members, newMember]);
+      saveToStorage([newMember, ...members]);
       showToast("Anggota tim baru berhasil ditambahkan!");
     }
     setIsModalOpen(false);
@@ -113,7 +130,8 @@ export default function TeamAdminPage() {
 
   const handleDelete = (id: string) => {
     if (confirm("Apakah Anda yakin ingin menghapus anggota tim ini?")) {
-      setMembers(members.filter((m) => m.id !== id));
+      const updated = members.filter((m) => m.id !== id);
+      saveToStorage(updated);
       showToast("Anggota tim berhasil dihapus!");
     }
   };

@@ -170,6 +170,33 @@ export default function CreateInvoicePage() {
       localStorage.setItem("solvia_signatory_name", signatory);
     }
 
+    // Persist new invoice to invoices list
+    try {
+      const savedInvoices = localStorage.getItem("solvia_invoices_data");
+      const currentList = savedInvoices ? JSON.parse(savedInvoices) : [];
+      const newInvoiceEntry = {
+        id: "inv-" + Date.now().toString(),
+        no: invoiceNo,
+        client: clientName,
+        project: projectName,
+        date: invoiceDate,
+        total: formatRupiah(calculateTotal()),
+        status: status,
+      };
+
+      const existingIdx = currentList.findIndex((item: any) => item.no === invoiceNo);
+      let updatedList = [];
+      if (existingIdx >= 0) {
+        updatedList = [...currentList];
+        updatedList[existingIdx] = newInvoiceEntry;
+      } else {
+        updatedList = [newInvoiceEntry, ...currentList];
+      }
+      localStorage.setItem("solvia_invoices_data", JSON.stringify(updatedList));
+    } catch (err) {
+      console.error("Failed to save invoice to solvia_invoices_data:", err);
+    }
+
     setToast("Invoice baru berhasil dibuat dan disimpan!");
     setTimeout(() => {
       setIsPreviewOpen(true);

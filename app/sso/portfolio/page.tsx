@@ -1,16 +1,42 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Plus, Edit, Trash2, X, Check, Search, Image as ImageIcon, ExternalLink } from "lucide-react";
 import { portfolioData, Portfolio } from "@/lib/data";
 import ImageUploader from "@/components/ImageUploader";
 
+const STORAGE_KEY = "solvia_portfolio_data";
+
 export default function PortfolioAdminPage() {
-  const [items, setItems] = useState<Portfolio[]>(portfolioData);
+  const [items, setItems] = useState<Portfolio[]>([]);
   const [search, setSearch] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<Portfolio | null>(null);
   const [toast, setToast] = useState<string | null>(null);
+
+  // Hydrate from localStorage
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        setItems(JSON.parse(saved));
+      } else {
+        setItems(portfolioData);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(portfolioData));
+      }
+    } catch {
+      setItems(portfolioData);
+    }
+  }, []);
+
+  const saveToStorage = (updatedItems: Portfolio[]) => {
+    setItems(updatedItems);
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedItems));
+    } catch (e) {
+      console.error("Failed to save to localStorage:", e);
+    }
+  };
 
   // Form fields state
   const [name, setName] = useState("");
@@ -67,23 +93,22 @@ export default function PortfolioAdminPage() {
 
     if (editingItem) {
       // Update existing item
-      setItems(
-        items.map((i) =>
-          i.id === editingItem.id
-            ? {
-                ...i,
-                name,
-                slug,
-                category,
-                client,
-                techStack: techArray,
-                image: imageUrl,
-                status,
-                shortDesc,
-              }
-            : i
-        )
+      const updated = items.map((i) =>
+        i.id === editingItem.id
+          ? {
+              ...i,
+              name,
+              slug,
+              category,
+              client,
+              techStack: techArray,
+              image: imageUrl,
+              status,
+              shortDesc,
+            }
+          : i
       );
+      saveToStorage(updated);
       showToast("Portofolio berhasil diperbarui!");
     } else {
       // Create new item
@@ -100,7 +125,7 @@ export default function PortfolioAdminPage() {
         image: imageUrl,
         status,
       };
-      setItems([newItem, ...items]);
+      saveToStorage([newItem, ...items]);
       showToast("Portofolio baru berhasil ditambahkan!");
     }
 
@@ -109,7 +134,8 @@ export default function PortfolioAdminPage() {
 
   const handleDelete = (id: string) => {
     if (confirm("Apakah Anda yakin ingin menghapus portofolio ini?")) {
-      setItems(items.filter((i) => i.id !== id));
+      const updated = items.filter((i) => i.id !== id);
+      saveToStorage(updated);
       showToast("Portofolio berhasil dihapus!");
     }
   };

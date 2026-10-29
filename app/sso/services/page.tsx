@@ -1,63 +1,73 @@
 "use client";
 
-import { useState } from "react";
-import { Plus, Edit, Trash2, X, Check, Search, Inbox } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Plus, Edit, Trash2, X, Check, Search, Inbox, Layers, Sparkles } from "lucide-react";
+import { servicesData } from "@/lib/data";
 
 interface ServiceItem {
   id: string;
   name: string;
   category: string;
+  shortDesc?: string;
+  features?: string[];
   status: string;
 }
 
-export default function ServicesAdminPage() {
-  const [services, setServices] = useState<ServiceItem[]>([
-    {
-      id: "1",
-      name: "Website Development",
-      category: "Development",
-      status: "Active",
-    },
-    {
-      id: "2",
-      name: "System Development & ERP",
-      category: "Enterprise",
-      status: "Active",
-    },
-    {
-      id: "3",
-      name: "Sistem IoT & Smart Automation",
-      category: "IoT & Hardware Integration",
-      status: "Active",
-    },
-    {
-      id: "4",
-      name: "Mentoring & IT Coaching",
-      category: "Mentoring & Education",
-      status: "Active",
-    },
-    {
-      id: "5",
-      name: "Branding & Creative",
-      category: "Branding",
-      status: "Active",
-    },
-    {
-      id: "6",
-      name: "Automation & AI Workflow",
-      category: "Automation",
-      status: "Active",
-    },
-  ]);
+const STORAGE_KEY = "solvia_services_data";
 
+export default function ServicesAdminPage() {
+  const [services, setServices] = useState<ServiceItem[]>([]);
   const [search, setSearch] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<ServiceItem | null>(null);
   const [toast, setToast] = useState<string | null>(null);
 
+  // Form states
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
+  const [shortDesc, setShortDesc] = useState("");
+  const [featuresInput, setFeaturesInput] = useState("");
   const [status, setStatus] = useState("Active");
+
+  // Hydrate from localStorage
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        setServices(JSON.parse(saved));
+      } else {
+        const initial = servicesData.map((s) => ({
+          id: s.id,
+          name: s.name,
+          category: s.category,
+          shortDesc: s.shortDesc,
+          features: s.features || [],
+          status: "Active",
+        }));
+        setServices(initial);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(initial));
+      }
+    } catch {
+      const initial = servicesData.map((s) => ({
+        id: s.id,
+        name: s.name,
+        category: s.category,
+        shortDesc: s.shortDesc,
+        features: s.features || [],
+        status: "Active",
+      }));
+      setServices(initial);
+    }
+  }, []);
+
+  const saveToStorage = (items: ServiceItem[]) => {
+    setServices(items);
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    } catch (e) {
+      console.error("Failed to save to localStorage:", e);
+    }
+  };
 
   const showToast = (msg: string) => {
     setToast(msg);
@@ -68,6 +78,8 @@ export default function ServicesAdminPage() {
     setEditingItem(null);
     setName("");
     setCategory("");
+    setShortDesc("");
+    setFeaturesInput("");
     setStatus("Active");
     setIsModalOpen(true);
   };
@@ -76,35 +88,54 @@ export default function ServicesAdminPage() {
     setEditingItem(svc);
     setName(svc.name);
     setCategory(svc.category);
-    setStatus(svc.status);
+    setShortDesc(svc.shortDesc || "");
+    setFeaturesInput(svc.features ? svc.features.join(", ") : "");
+    setStatus(svc.status || "Active");
     setIsModalOpen(true);
   };
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !category) return;
+    if (!name.trim() || !category.trim()) return;
+
+    const featuresArray = featuresInput
+      ? featuresInput.split(",").map((f) => f.trim()).filter(Boolean)
+      : [];
 
     if (editingItem) {
-      setServices(
-        services.map((s) => (s.id === editingItem.id ? { ...s, name, category, status } : s))
+      const updated = services.map((s) =>
+        s.id === editingItem.id
+          ? {
+              ...s,
+              name: name.trim(),
+              category: category.trim(),
+              shortDesc: shortDesc.trim(),
+              features: featuresArray,
+              status,
+            }
+          : s
       );
+      saveToStorage(updated);
       showToast("Layanan berhasil diperbarui!");
     } else {
       const newSvc: ServiceItem = {
-        id: Date.now().toString(),
-        name,
-        category,
+        id: "svc-" + Date.now().toString(),
+        name: name.trim(),
+        category: category.trim(),
+        shortDesc: shortDesc.trim(),
+        features: featuresArray,
         status,
       };
-      setServices([newSvc, ...services]);
+      saveToStorage([newSvc, ...services]);
       showToast("Layanan baru berhasil ditambahkan!");
     }
     setIsModalOpen(false);
   };
 
-  const handleDelete = (id: string) => {
-    if (confirm("Apakah Anda yakin ingin menghapus layanan ini?")) {
-      setServices(services.filter((s) => s.id !== id));
+  const handleDelete = (id: string, svcName: string) => {
+    if (confirm(`Apakah Anda yakin ingin menghapus layanan "${svcName}"?`)) {
+      const updated = services.filter((s) => s.id !== id);
+      saveToStorage(updated);
       showToast("Layanan berhasil dihapus!");
     }
   };
@@ -112,7 +143,8 @@ export default function ServicesAdminPage() {
   const filteredServices = services.filter(
     (s) =>
       s.name.toLowerCase().includes(search.toLowerCase()) ||
-      s.category.toLowerCase().includes(search.toLowerCase())
+      s.category.toLowerCase().includes(search.toLowerCase()) ||
+      (s.shortDesc && s.shortDesc.toLowerCase().includes(search.toLowerCase()))
   );
 
   return (
@@ -128,8 +160,8 @@ export default function ServicesAdminPage() {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-black text-white">Services</h1>
-          <p className="text-slate-400 text-xs mt-1">Kelola layanan digital</p>
+          <h1 className="text-2xl font-black text-white">Services Management</h1>
+          <p className="text-slate-400 text-xs mt-1">Kelola portofolio paket layanan digital Solvia Nova</p>
         </div>
         <div className="flex items-center gap-3">
           <div className="relative">
@@ -144,7 +176,7 @@ export default function ServicesAdminPage() {
           </div>
           <button
             onClick={handleOpenAddModal}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-lg shadow-blue-600/25 shrink-0"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-lg shadow-blue-600/25 shrink-0 cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span>Tambah Service</span>
@@ -158,8 +190,9 @@ export default function ServicesAdminPage() {
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="border-b border-slate-800 bg-slate-900/50 text-[11px] font-extrabold text-slate-400 uppercase tracking-wider">
-                <th className="py-4 px-6">NAMA</th>
+                <th className="py-4 px-6">NAMA LAYANAN</th>
                 <th className="py-4 px-6">KATEGORI</th>
+                <th className="py-4 px-6">FITUR UTAMA</th>
                 <th className="py-4 px-6">STATUS</th>
                 <th className="py-4 px-6 text-right">AKSI</th>
               </tr>
@@ -168,11 +201,60 @@ export default function ServicesAdminPage() {
               {filteredServices.length > 0 ? (
                 filteredServices.map((svc) => (
                   <tr key={svc.id} className="hover:bg-slate-900/40 transition-colors">
-                    <td className="py-4 px-6 font-bold text-white text-sm">{svc.name}</td>
-                    <td className="py-4 px-6 text-slate-300 font-medium">{svc.category}</td>
                     <td className="py-4 px-6">
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[11px] font-bold">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 shrink-0">
+                          <Layers className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <div className="font-bold text-white text-sm">{svc.name}</div>
+                          {svc.shortDesc && (
+                            <div className="text-slate-400 text-[11px] max-w-sm truncate mt-0.5">
+                              {svc.shortDesc}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </td>
+                    <td className="py-4 px-6 text-slate-300 font-medium">
+                      <span className="px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 text-slate-300 font-semibold text-[11px]">
+                        {svc.category}
+                      </span>
+                    </td>
+                    <td className="py-4 px-6">
+                      <div className="flex flex-wrap gap-1 max-w-xs">
+                        {svc.features && svc.features.length > 0 ? (
+                          svc.features.slice(0, 3).map((f, idx) => (
+                            <span
+                              key={idx}
+                              className="px-2 py-0.5 rounded bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-medium"
+                            >
+                              {f}
+                            </span>
+                          ))
+                        ) : (
+                          <span className="text-slate-500">-</span>
+                        )}
+                        {svc.features && svc.features.length > 3 && (
+                          <span className="text-slate-500 text-[10px]">
+                            +{svc.features.length - 3} lainnya
+                          </span>
+                        )}
+                      </div>
+                    </td>
+                    <td className="py-4 px-6">
+                      <span
+                        className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold ${
+                          svc.status === "Active"
+                            ? "bg-emerald-500/10 border border-emerald-500/20 text-emerald-400"
+                            : "bg-slate-800 border border-slate-700 text-slate-400"
+                        }`}
+                      >
+                        <span
+                          className={`w-1.5 h-1.5 rounded-full ${
+                            svc.status === "Active" ? "bg-emerald-400" : "bg-slate-500"
+                          }`}
+                        ></span>
                         {svc.status}
                       </span>
                     </td>
@@ -186,7 +268,7 @@ export default function ServicesAdminPage() {
                           <Edit className="w-4 h-4" />
                         </button>
                         <button
-                          onClick={() => handleDelete(svc.id)}
+                          onClick={() => handleDelete(svc.id, svc.name)}
                           className="p-2 rounded-lg bg-red-500/10 hover:bg-red-600 text-red-400 hover:text-white transition-colors"
                           title="Hapus"
                         >
@@ -198,9 +280,9 @@ export default function ServicesAdminPage() {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={4} className="py-12 text-center text-slate-400">
+                  <td colSpan={5} className="py-12 text-center text-slate-400">
                     <Inbox className="w-8 h-8 mx-auto text-slate-600 mb-2" />
-                    <p className="font-bold">Belum ada service.</p>
+                    <p className="font-bold">Belum ada service yang sesuai pencarian.</p>
                   </td>
                 </tr>
               )}
@@ -211,11 +293,12 @@ export default function ServicesAdminPage() {
 
       {/* ADD / EDIT MODAL */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-[#0A0E1A] border border-slate-800 rounded-3xl max-w-lg w-full p-6 space-y-6 shadow-2xl animate-in fade-in zoom-in duration-200">
             <div className="flex items-center justify-between border-b border-slate-800 pb-4">
-              <h2 className="text-lg font-bold text-white">
-                {editingItem ? "Edit Service" : "Tambah Service Baru"}
+              <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                <Layers className="w-5 h-5 text-blue-500" />
+                <span>{editingItem ? "Edit Layanan" : "Tambah Layanan Baru"}</span>
               </h2>
               <button
                 onClick={() => setIsModalOpen(false)}
@@ -227,7 +310,9 @@ export default function ServicesAdminPage() {
 
             <form onSubmit={handleSave} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1">Nama Layanan</label>
+                <label className="block text-xs font-bold text-slate-300 mb-1">
+                  Nama Layanan <span className="text-red-400">*</span>
+                </label>
                 <input
                   type="text"
                   required
@@ -239,19 +324,47 @@ export default function ServicesAdminPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1">Kategori</label>
+                <label className="block text-xs font-bold text-slate-300 mb-1">
+                  Kategori <span className="text-red-400">*</span>
+                </label>
                 <input
                   type="text"
                   required
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  placeholder="Contoh: Software Development"
+                  placeholder="Contoh: Development / Enterprise / IoT"
                   className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1">Status</label>
+                <label className="block text-xs font-bold text-slate-300 mb-1">
+                  Deskripsi Singkat
+                </label>
+                <textarea
+                  rows={2}
+                  value={shortDesc}
+                  onChange={(e) => setShortDesc(e.target.value)}
+                  placeholder="Ringkasan value dan solusi layanan..."
+                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500 leading-relaxed"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1">
+                  Fitur-Fitur Utama <span className="text-slate-500 font-normal">(Pisahkan dengan koma)</span>
+                </label>
+                <input
+                  type="text"
+                  value={featuresInput}
+                  onChange={(e) => setFeaturesInput(e.target.value)}
+                  placeholder="Company Profile, E-Commerce, Portal CMS"
+                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1">Status Layanan</label>
                 <select
                   value={status}
                   onChange={(e) => setStatus(e.target.value)}
@@ -266,15 +379,15 @@ export default function ServicesAdminPage() {
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold"
+                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition-colors"
                 >
                   Batal
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-lg shadow-blue-600/30"
+                  className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-lg shadow-blue-600/30 transition-all cursor-pointer"
                 >
-                  Simpan Service
+                  {editingItem ? "Simpan Perubahan" : "Tambah Service"}
                 </button>
               </div>
             </form>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Plus, Edit, Trash2, X, Check, Search, Image as ImageIcon } from "lucide-react";
 import ImageUploader from "@/components/ImageUploader";
 
@@ -12,60 +12,88 @@ interface GalleryItem {
   image: string;
 }
 
-export default function GalleryAdminPage() {
-  const [photos, setPhotos] = useState<GalleryItem[]>([
-    {
-      id: "1",
-      title: "Solusi Reklame Profesional",
-      category: "Branding & Advertising",
-      date: "10 Sep 2026",
-      image: "https://images.unsplash.com/photo-1542744094-3a31216955a4?auto=format&fit=crop&w=600&q=80",
-    },
-    {
-      id: "2",
-      title: "NovaDex – Direktori UMKM Salatiga",
-      category: "Web Application",
-      date: "02 Sep 2026",
-      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80",
-    },
-    {
-      id: "3",
-      title: "Dapur Ceria – Sistem Manajemen Bakery",
-      category: "Point of Sale",
-      date: "25 Aug 2026",
-      image: "https://images.unsplash.com/photo-1556742049-0a675659e9cf?auto=format&fit=crop&w=600&q=80",
-    },
-    {
-      id: "4",
-      title: "DasterKu – Website Grosir Daster Wanita",
-      category: "E-Commerce",
-      date: "18 Aug 2026",
-      image: "https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&w=600&q=80",
-    },
-    {
-      id: "5",
-      title: "WorkTrack – Sistem Manajemen Karyawan dan Payroll",
-      category: "HR Management",
-      date: "10 Aug 2026",
-      image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=600&q=80",
-    },
-    {
-      id: "6",
-      title: "MitraMan – Sistem Manajemen Mitra & Honorarium",
-      category: "Enterprise System",
-      date: "01 Aug 2026",
-      image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80",
-    },
-  ]);
+const STORAGE_KEY = "solvia_gallery_data";
 
+const DEFAULT_GALLERY: GalleryItem[] = [
+  {
+    id: "1",
+    title: "Solusi Reklame Profesional",
+    category: "Branding & Advertising",
+    date: "10 Sep 2026",
+    image: "https://images.unsplash.com/photo-1542744094-3a31216955a4?auto=format&fit=crop&w=600&q=80",
+  },
+  {
+    id: "2",
+    title: "NovaDex – Direktori UMKM Salatiga",
+    category: "Web Application",
+    date: "02 Sep 2026",
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80",
+  },
+  {
+    id: "3",
+    title: "Dapur Ceria – Sistem Manajemen Bakery",
+    category: "Point of Sale",
+    date: "25 Aug 2026",
+    image: "https://images.unsplash.com/photo-1556742049-0a675659e9cf?auto=format&fit=crop&w=600&q=80",
+  },
+  {
+    id: "4",
+    title: "DasterKu – Website Grosir Daster Wanita",
+    category: "E-Commerce",
+    date: "18 Aug 2026",
+    image: "https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&w=600&q=80",
+  },
+  {
+    id: "5",
+    title: "WorkTrack – Sistem Manajemen Karyawan dan Payroll",
+    category: "HR Management",
+    date: "10 Aug 2026",
+    image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=600&q=80",
+  },
+  {
+    id: "6",
+    title: "MitraMan – Sistem Manajemen Mitra & Honorarium",
+    category: "Enterprise System",
+    date: "01 Aug 2026",
+    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80",
+  },
+];
+
+export default function GalleryAdminPage() {
+  const [photos, setPhotos] = useState<GalleryItem[]>([]);
   const [search, setSearch] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<GalleryItem | null>(null);
   const [toast, setToast] = useState<string | null>(null);
 
+  // Form states
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
   const [image, setImage] = useState("");
+
+  // Hydrate from localStorage
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        setPhotos(JSON.parse(saved));
+      } else {
+        setPhotos(DEFAULT_GALLERY);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_GALLERY));
+      }
+    } catch {
+      setPhotos(DEFAULT_GALLERY);
+    }
+  }, []);
+
+  const saveToStorage = (updatedPhotos: GalleryItem[]) => {
+    setPhotos(updatedPhotos);
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedPhotos));
+    } catch (e) {
+      console.error("Failed to save to localStorage:", e);
+    }
+  };
 
   const showToast = (msg: string) => {
     setToast(msg);
@@ -95,21 +123,20 @@ export default function GalleryAdminPage() {
     const imgUrl = image || "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80";
 
     if (editingItem) {
-      setPhotos(
-        photos.map((p) =>
-          p.id === editingItem.id ? { ...p, title, category, image: imgUrl } : p
-        )
+      const updated = photos.map((p) =>
+        p.id === editingItem.id ? { ...p, title, category, image: imgUrl } : p
       );
+      saveToStorage(updated);
       showToast("Foto galeri berhasil diperbarui!");
     } else {
       const newPhoto: GalleryItem = {
-        id: Date.now().toString(),
+        id: "gal-" + Date.now().toString(),
         title,
         category,
         date: new Date().toLocaleDateString("id-ID", { day: "2-digit", month: "short", year: "numeric" }),
         image: imgUrl,
       };
-      setPhotos([newPhoto, ...photos]);
+      saveToStorage([newPhoto, ...photos]);
       showToast("Foto galeri baru berhasil diupload!");
     }
     setIsModalOpen(false);
@@ -117,7 +144,8 @@ export default function GalleryAdminPage() {
 
   const handleDelete = (id: string) => {
     if (confirm("Apakah Anda yakin ingin menghapus foto galeri ini?")) {
-      setPhotos(photos.filter((p) => p.id !== id));
+      const updated = photos.filter((p) => p.id !== id);
+      saveToStorage(updated);
       showToast("Foto galeri berhasil dihapus!");
     }
   };

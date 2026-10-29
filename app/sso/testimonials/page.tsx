@@ -1,15 +1,41 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Plus, Edit, Trash2, Star, X, Check, Search, Quote } from "lucide-react";
 import { testimonialsData, Testimonial } from "@/lib/data";
 
+const STORAGE_KEY = "solvia_testimonials_data";
+
 export default function TestimonialsAdminPage() {
-  const [list, setList] = useState<Testimonial[]>(testimonialsData);
+  const [list, setList] = useState<Testimonial[]>([]);
   const [search, setSearch] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<Testimonial | null>(null);
   const [toast, setToast] = useState<string | null>(null);
+
+  // Hydrate from localStorage
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        setList(JSON.parse(saved));
+      } else {
+        setList(testimonialsData);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(testimonialsData));
+      }
+    } catch {
+      setList(testimonialsData);
+    }
+  }, []);
+
+  const saveToStorage = (updatedList: Testimonial[]) => {
+    setList(updatedList);
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedList));
+    } catch (e) {
+      console.error("Failed to save to localStorage:", e);
+    }
+  };
 
   // Form state
   const [clientName, setClientName] = useState("");
@@ -46,23 +72,22 @@ export default function TestimonialsAdminPage() {
     if (!clientName || !testimonial) return;
 
     if (editingItem) {
-      setList(
-        list.map((t) =>
-          t.id === editingItem.id
-            ? { ...t, clientName, company: company || "Klien Solvia Nova", testimonial, rating }
-            : t
-        )
+      const updated = list.map((t) =>
+        t.id === editingItem.id
+          ? { ...t, clientName, company: company || "Klien Solvia Nova", testimonial, rating }
+          : t
       );
+      saveToStorage(updated);
       showToast("Testimoni & rating berhasil diperbarui!");
     } else {
       const newItem: Testimonial = {
-        id: Date.now().toString(),
+        id: "testi-" + Date.now().toString(),
         clientName,
         company: company || "Klien Solvia Nova",
         testimonial,
         rating,
       };
-      setList([newItem, ...list]);
+      saveToStorage([newItem, ...list]);
       showToast("Testimoni & rating baru berhasil ditambahkan!");
     }
     setIsModalOpen(false);
@@ -70,7 +95,8 @@ export default function TestimonialsAdminPage() {
 
   const handleDelete = (id: string) => {
     if (confirm("Apakah Anda yakin ingin menghapus testimoni ini?")) {
-      setList(list.filter((t) => t.id !== id));
+      const updated = list.filter((t) => t.id !== id);
+      saveToStorage(updated);
       showToast("Testimoni berhasil dihapus!");
     }
   };
