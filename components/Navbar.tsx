@@ -57,8 +57,12 @@ export default function Navbar() {
         {/* Brand Logo */}
         <Link href="/" className="group flex items-center gap-2 sm:gap-2.5 shrink-0">
           <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-tr from-blue-700 via-blue-500 to-[#61adff] p-0.5 shadow-lg shadow-blue-500/30 group-hover:scale-105 transition-transform duration-200">
-            <div className="w-full h-full bg-[#020611] rounded-[10px] flex items-center justify-center">
-              <Sparkles className="w-4 h-4 text-[#4c91ff]" />
+            <div className="w-full h-full bg-[#020611] rounded-[10px] flex items-center justify-center overflow-hidden p-1">
+              <img
+                src="/assets/images/Solvia.png"
+                alt="Solvia Nova Logo"
+                className="w-full h-full object-contain"
+              />
             </div>
           </div>
           <span className="text-lg sm:text-xl font-extrabold text-white tracking-tight">

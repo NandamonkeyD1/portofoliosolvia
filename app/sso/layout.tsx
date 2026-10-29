@@ -112,8 +112,12 @@ export default function SSOLayout({ children }: { children: React.ReactNode }) {
           {/* Sidebar Header Brand */}
           <div className="p-4 sm:p-5 flex items-center justify-between border-b border-slate-800">
             <Link href="/sso/dashboard" className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white shadow-md shadow-blue-500/20 shrink-0">
-                <Sparkles className="w-4 h-4 text-white" />
+              <div className="w-8 h-8 rounded-lg bg-slate-900 border border-slate-800 p-1 flex items-center justify-center shadow-md shadow-blue-500/20 shrink-0">
+                <img
+                  src="/assets/images/Solvia.png"
+                  alt="Solvia Nova Logo"
+                  className="w-full h-full object-contain"
+                />
               </div>
               <div className="flex flex-col">
                 <span className="text-base font-bold text-white tracking-tight leading-tight">
@@ -230,9 +234,13 @@ export default function SSOLayout({ children }: { children: React.ReactNode }) {
             <Link
               href="/sso/settings"
               title="Pengaturan Admin Solvia Nova"
-              className="w-8 h-8 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center justify-center shadow-md transition-colors cursor-pointer shrink-0"
+              className="w-8 h-8 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700/80 p-1 flex items-center justify-center shadow-md transition-colors cursor-pointer shrink-0"
             >
-              S
+              <img
+                src="/assets/images/Solvia.png"
+                alt="Solvia Admin Settings"
+                className="w-full h-full object-contain"
+              />
             </Link>
           </div>
         </header>

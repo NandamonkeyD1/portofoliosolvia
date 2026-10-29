@@ -56,8 +56,12 @@ export default function SSOLoginPage() {
         <div className="text-center space-y-3">
           <Link href="/" className="inline-flex items-center gap-2.5 group">
             <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-blue-700 via-blue-500 to-[#61adff] p-0.5 shadow-xl shadow-blue-500/30 group-hover:scale-105 transition-transform duration-200">
-              <div className="w-full h-full bg-[#020611] rounded-[14px] flex items-center justify-center">
-                <Sparkles className="w-5 h-5 text-[#61adff]" />
+              <div className="w-full h-full bg-[#020611] rounded-[14px] flex items-center justify-center p-1.5 overflow-hidden">
+                <img
+                  src="/assets/images/Solvia.png"
+                  alt="Solvia Nova Logo"
+                  className="w-full h-full object-contain"
+                />
               </div>
             </div>
             <span className="text-2xl sm:text-3xl font-black text-white tracking-tight">

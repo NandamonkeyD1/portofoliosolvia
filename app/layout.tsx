@@ -15,7 +15,9 @@ export const metadata: Metadata = {
   title: "Solvia.Nova — 3D Digital Solution Studio",
   description: "Understand Problems First, Build Solutions. Konsep, teknologi, dan solusi digital dalam satu ekosistem yang dirancang untuk berkembang.",
   icons: {
-    icon: "/favicon.ico",
+    icon: "/assets/images/Solvia.png",
+    shortcut: "/assets/images/Solvia.png",
+    apple: "/assets/images/Solvia.png",
   },
 };
 
