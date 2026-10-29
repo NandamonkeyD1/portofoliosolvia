@@ -673,8 +673,8 @@ export default function CreateLetterPage() {
         </div>
 
         {/* RIGHT COLUMN: LIVE A4 PRINTABLE PREVIEW CANVAS */}
-        <div className="lg:col-span-7 print:col-span-12 print:w-full">
-          <div className="sticky top-20 bg-white text-slate-900 rounded-3xl shadow-2xl p-8 sm:p-12 font-serif min-h-[960px] border border-slate-200 print:border-none print:shadow-none print:p-8 print:m-0 print:min-h-0 print:static">
+        <div className="lg:col-span-7 print:col-span-12 print:w-full overflow-x-auto print:overflow-visible pb-6 print:pb-0">
+          <div className="min-w-[620px] sm:min-w-0 sticky top-20 bg-white text-slate-900 rounded-2xl sm:rounded-3xl shadow-2xl p-6 sm:p-12 font-serif min-h-[700px] sm:min-h-[960px] border border-slate-200 print:border-none print:shadow-none print:p-8 print:m-0 print:min-h-0 print:static">
             {/* Kop Surat Resmi */}
             <LetterHead />
 

@@ -202,8 +202,8 @@ export default function SSOLayout({ children }: { children: React.ReactNode }) {
       {/* Main Right Area */}
       <div className="flex-1 flex flex-col min-w-0 md:pl-64 min-h-screen print:pl-0 print:min-h-0 print:block">
         {/* Top Header Bar */}
-        <header className="sticky top-0 z-30 bg-[#0A0E1A]/95 backdrop-blur-md border-b border-slate-800 px-3.5 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between print:hidden">
-          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+        <header className="sticky top-0 z-30 bg-[#0A0E1A]/95 backdrop-blur-md border-b border-slate-800 px-3 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between print:hidden">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1 mr-2">
             <button
               onClick={() => setMobileSidebarOpen(true)}
               className="md:hidden p-2 rounded-xl bg-slate-800/90 text-slate-300 hover:text-white shrink-0 cursor-pointer active:scale-95 transition-transform"
@@ -211,25 +211,27 @@ export default function SSOLayout({ children }: { children: React.ReactNode }) {
             >
               <Menu className="w-5 h-5" />
             </button>
-            <div className="min-w-0">
+            <div className="min-w-0 flex-1">
               <h1 className="text-sm sm:text-base md:text-lg font-bold text-white tracking-wide truncate">
                 {getPageTitle()}
               </h1>
-              <span className="hidden xs:block md:hidden text-[10px] text-slate-400 font-mono">
+              <span className="hidden sm:block md:hidden text-[10px] text-slate-400 font-mono">
                 Solvia Nova Admin
               </span>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
             <a
               href="/"
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-xs font-semibold transition-colors"
+              className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-xs font-semibold transition-colors shrink-0"
+              title="Lihat Website Publik"
             >
               <ExternalLink className="w-3.5 h-3.5 text-cyan-400" />
               <span className="hidden sm:inline">Lihat Web</span>
+              <span className="sm:hidden text-[11px]">Web</span>
             </a>
             <Link
               href="/sso/settings"
@@ -246,7 +248,7 @@ export default function SSOLayout({ children }: { children: React.ReactNode }) {
         </header>
 
         {/* Dynamic Page Content with Responsive Padding & Bottom Spacing for Mobile Bottom Bar */}
-        <main className="relative z-10 flex-1 px-3.5 py-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto pb-24 md:pb-12 print:p-0 print:m-0 print:max-w-none print:w-full">
+        <main className="relative z-10 flex-1 px-3 sm:px-6 lg:p-8 max-w-7xl w-full mx-auto pb-28 sm:pb-24 md:pb-12 print:p-0 print:m-0 print:max-w-none print:w-full">
           {children}
         </main>
 

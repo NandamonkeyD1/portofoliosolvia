@@ -86,77 +86,77 @@ export default function SSODashboardPage() {
         </div>
       </div>
 
-      {/* 4 Stat Metric Cards (Clickable to respective pages) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+      {/* 4 Stat Metric Cards (Clickable to respective pages, 2x2 Grid on Mobile) */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-5">
         <Link
           href="/sso/portfolio"
-          className="bg-[#0E1526] hover:bg-[#131c33] border border-slate-800 hover:border-blue-500/50 rounded-2xl p-5 space-y-3 shadow-lg transition-colors cursor-pointer group"
+          className="bg-[#0E1526] hover:bg-[#131c33] border border-slate-800 hover:border-blue-500/50 rounded-2xl p-3.5 sm:p-5 space-y-2 sm:space-y-3 shadow-lg transition-colors cursor-pointer group"
         >
           <div className="flex items-center justify-between">
-            <span className="text-slate-400 text-xs font-semibold group-hover:text-white transition-colors">
+            <span className="text-slate-400 text-[11px] sm:text-xs font-semibold group-hover:text-white transition-colors truncate">
               Total Portfolio
             </span>
-            <div className="w-9 h-9 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:scale-105 transition-transform">
-              <FolderKanban className="w-5 h-5" />
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:scale-105 transition-transform shrink-0">
+              <FolderKanban className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
           </div>
-          <div className="text-3xl font-black text-white font-mono">{portfolioCount}</div>
-          <div className="text-emerald-400 text-[11px] font-medium flex items-center gap-1">
-            <span>Lihat & kelola semua proyek →</span>
+          <div className="text-2xl sm:text-3xl font-black text-white font-mono">{portfolioCount}</div>
+          <div className="text-emerald-400 text-[10px] sm:text-[11px] font-medium truncate">
+            <span>Kelola proyek →</span>
           </div>
         </Link>
 
         <Link
           href="/sso/seo"
-          className="bg-[#0E1526] hover:bg-[#131c33] border border-slate-800 hover:border-purple-500/50 rounded-2xl p-5 space-y-3 shadow-lg transition-colors cursor-pointer group"
+          className="bg-[#0E1526] hover:bg-[#131c33] border border-slate-800 hover:border-purple-500/50 rounded-2xl p-3.5 sm:p-5 space-y-2 sm:space-y-3 shadow-lg transition-colors cursor-pointer group"
         >
           <div className="flex items-center justify-between">
-            <span className="text-slate-400 text-xs font-semibold group-hover:text-white transition-colors">
-              Pengunjung Bulan Ini
+            <span className="text-slate-400 text-[11px] sm:text-xs font-semibold group-hover:text-white transition-colors truncate">
+              Pengunjung
             </span>
-            <div className="w-9 h-9 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 group-hover:scale-105 transition-transform">
-              <TrendingUp className="w-5 h-5" />
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 group-hover:scale-105 transition-transform shrink-0">
+              <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
           </div>
-          <div className="text-3xl font-black text-white font-mono">1,240</div>
-          <div className="text-emerald-400 text-[11px] font-semibold flex items-center gap-1">
-            <span>↑ 24% dari bulan lalu (SEO & Direct)</span>
+          <div className="text-2xl sm:text-3xl font-black text-white font-mono">1,240</div>
+          <div className="text-emerald-400 text-[10px] sm:text-[11px] font-semibold truncate">
+            <span>↑ 24% traffic</span>
           </div>
         </Link>
 
         <Link
           href="/sso/messages"
-          className="bg-[#0E1526] hover:bg-[#131c33] border border-slate-800 hover:border-cyan-500/50 rounded-2xl p-5 space-y-3 shadow-lg transition-colors cursor-pointer group"
+          className="bg-[#0E1526] hover:bg-[#131c33] border border-slate-800 hover:border-cyan-500/50 rounded-2xl p-3.5 sm:p-5 space-y-2 sm:space-y-3 shadow-lg transition-colors cursor-pointer group"
         >
           <div className="flex items-center justify-between">
-            <span className="text-slate-400 text-xs font-semibold group-hover:text-white transition-colors">
-              Total Leads / Pesan
+            <span className="text-slate-400 text-[11px] sm:text-xs font-semibold group-hover:text-white transition-colors truncate">
+              Total Leads
             </span>
-            <div className="w-9 h-9 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 group-hover:scale-105 transition-transform">
-              <MessageSquare className="w-5 h-5" />
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 group-hover:scale-105 transition-transform shrink-0">
+              <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
           </div>
-          <div className="text-3xl font-black text-white font-mono">{leadsCount}</div>
-          <div className="text-slate-400 text-[11px] font-medium group-hover:text-cyan-300 transition-colors">
-            Form Konsultasi & WhatsApp →
+          <div className="text-2xl sm:text-3xl font-black text-white font-mono">{leadsCount}</div>
+          <div className="text-slate-400 text-[10px] sm:text-[11px] font-medium group-hover:text-cyan-300 transition-colors truncate">
+            <span>Form &amp; WA →</span>
           </div>
         </Link>
 
         <Link
           href="/sso/messages"
-          className="bg-[#0E1526] hover:bg-[#131c33] border border-slate-800 hover:border-emerald-500/50 rounded-2xl p-5 space-y-3 shadow-lg transition-colors cursor-pointer group"
+          className="bg-[#0E1526] hover:bg-[#131c33] border border-slate-800 hover:border-emerald-500/50 rounded-2xl p-3.5 sm:p-5 space-y-2 sm:space-y-3 shadow-lg transition-colors cursor-pointer group"
         >
           <div className="flex items-center justify-between">
-            <span className="text-slate-400 text-xs font-semibold group-hover:text-white transition-colors">
-              Status Respon Klien
+            <span className="text-slate-400 text-[11px] sm:text-xs font-semibold group-hover:text-white transition-colors truncate">
+              Respon Klien
             </span>
-            <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 group-hover:scale-105 transition-transform">
-              <CheckCircle2 className="w-5 h-5" />
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 group-hover:scale-105 transition-transform shrink-0">
+              <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
           </div>
-          <div className="text-3xl font-black text-emerald-400 font-mono">100%</div>
-          <div className="text-emerald-400/90 text-[11px] font-bold">
-            ✓ Cepat via WA & Email Direct
+          <div className="text-2xl sm:text-3xl font-black text-emerald-400 font-mono">100%</div>
+          <div className="text-emerald-400/90 text-[10px] sm:text-[11px] font-bold truncate">
+            <span>✓ Aktif &amp; Siap</span>
           </div>
         </Link>
       </div>
@@ -273,74 +273,74 @@ export default function SSODashboardPage() {
             <span className="text-slate-400 text-xs">Akses Kilat</span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
+          <div className="grid grid-cols-2 gap-2 sm:gap-3">
             <Link
               href="/sso/portfolio"
-              className="flex items-center gap-2 p-3 rounded-xl bg-blue-600/15 border border-blue-500/30 text-blue-300 hover:bg-blue-600 hover:text-white transition-colors text-xs font-bold"
+              className="flex items-center gap-1.5 sm:gap-2 p-2.5 sm:p-3 rounded-xl bg-blue-600/15 border border-blue-500/30 text-blue-300 hover:bg-blue-600 hover:text-white transition-colors text-[11px] sm:text-xs font-bold truncate"
             >
               <FolderKanban className="w-4 h-4 shrink-0" />
-              <span>+ Portfolio Proyek</span>
+              <span className="truncate">+ Portfolio</span>
             </Link>
 
             <Link
               href="/sso/services"
-              className="flex items-center gap-2 p-3 rounded-xl bg-cyan-600/15 border border-cyan-500/30 text-cyan-300 hover:bg-cyan-600 hover:text-white transition-colors text-xs font-bold"
+              className="flex items-center gap-1.5 sm:gap-2 p-2.5 sm:p-3 rounded-xl bg-cyan-600/15 border border-cyan-500/30 text-cyan-300 hover:bg-cyan-600 hover:text-white transition-colors text-[11px] sm:text-xs font-bold truncate"
             >
               <Layers className="w-4 h-4 shrink-0" />
-              <span>+ Paket Layanan</span>
+              <span className="truncate">+ Layanan</span>
             </Link>
 
             <Link
               href="/sso/categories"
-              className="flex items-center gap-2 p-3 rounded-xl bg-indigo-600/15 border border-indigo-500/30 text-indigo-300 hover:bg-indigo-600 hover:text-white transition-colors text-xs font-bold"
+              className="flex items-center gap-1.5 sm:gap-2 p-2.5 sm:p-3 rounded-xl bg-indigo-600/15 border border-indigo-500/30 text-indigo-300 hover:bg-indigo-600 hover:text-white transition-colors text-[11px] sm:text-xs font-bold truncate"
             >
               <Tag className="w-4 h-4 shrink-0" />
-              <span>+ Kategori Baru</span>
+              <span className="truncate">+ Kategori</span>
             </Link>
 
             <Link
               href="/sso/gallery"
-              className="flex items-center gap-2 p-3 rounded-xl bg-emerald-600/15 border border-emerald-500/30 text-emerald-300 hover:bg-emerald-600 hover:text-white transition-colors text-xs font-bold"
+              className="flex items-center gap-1.5 sm:gap-2 p-2.5 sm:p-3 rounded-xl bg-emerald-600/15 border border-emerald-500/30 text-emerald-300 hover:bg-emerald-600 hover:text-white transition-colors text-[11px] sm:text-xs font-bold truncate"
             >
               <ImageIcon className="w-4 h-4 shrink-0" />
-              <span>+ Upload Galeri</span>
+              <span className="truncate">+ Galeri Foto</span>
             </Link>
 
             <Link
               href="/sso/team"
-              className="flex items-center gap-2 p-3 rounded-xl bg-amber-600/15 border border-amber-500/30 text-amber-300 hover:bg-amber-600 hover:text-white transition-colors text-xs font-bold"
+              className="flex items-center gap-1.5 sm:gap-2 p-2.5 sm:p-3 rounded-xl bg-amber-600/15 border border-amber-500/30 text-amber-300 hover:bg-amber-600 hover:text-white transition-colors text-[11px] sm:text-xs font-bold truncate"
             >
               <Users className="w-4 h-4 shrink-0" />
-              <span>+ Anggota Tim</span>
+              <span className="truncate">+ Anggota Tim</span>
             </Link>
 
             <Link
               href="/sso/articles"
-              className="flex items-center gap-2 p-3 rounded-xl bg-purple-600/15 border border-purple-500/30 text-purple-300 hover:bg-purple-600 hover:text-white transition-colors text-xs font-bold"
+              className="flex items-center gap-1.5 sm:gap-2 p-2.5 sm:p-3 rounded-xl bg-purple-600/15 border border-purple-500/30 text-purple-300 hover:bg-purple-600 hover:text-white transition-colors text-[11px] sm:text-xs font-bold truncate"
             >
               <FileText className="w-4 h-4 shrink-0" />
-              <span>+ Tulis Artikel</span>
+              <span className="truncate">+ Tulis Artikel</span>
             </Link>
 
             <Link
               href="/sso/invoice/create"
-              className="flex items-center gap-2 p-3 rounded-xl bg-yellow-600/15 border border-yellow-500/30 text-yellow-300 hover:bg-yellow-600 hover:text-white transition-colors text-xs font-bold"
+              className="flex items-center gap-1.5 sm:gap-2 p-2.5 sm:p-3 rounded-xl bg-yellow-600/15 border border-yellow-500/30 text-yellow-300 hover:bg-yellow-600 hover:text-white transition-colors text-[11px] sm:text-xs font-bold truncate"
             >
               <FileSpreadsheet className="w-4 h-4 shrink-0" />
-              <span>+ Buat Invoice</span>
+              <span className="truncate">+ Buat Invoice</span>
             </Link>
 
             <Link
               href="/sso/messages"
-              className="flex items-center gap-2 p-3 rounded-xl bg-pink-600/15 border border-pink-500/30 text-pink-300 hover:bg-pink-600 hover:text-white transition-colors text-xs font-bold"
+              className="flex items-center gap-1.5 sm:gap-2 p-2.5 sm:p-3 rounded-xl bg-pink-600/15 border border-pink-500/30 text-pink-300 hover:bg-pink-600 hover:text-white transition-colors text-[11px] sm:text-xs font-bold truncate"
             >
               <MessageSquare className="w-4 h-4 shrink-0" />
-              <span>+ Catat Pesan / Lead</span>
+              <span className="truncate">+ Catat Lead</span>
             </Link>
 
             <Link
               href="/sso/letters/create"
-              className="col-span-1 sm:col-span-2 flex items-center justify-center gap-2 p-3 rounded-xl bg-gradient-to-r from-blue-600/25 to-indigo-600/25 border border-blue-500/40 text-blue-300 hover:from-blue-600 hover:to-indigo-600 hover:text-white transition-colors text-xs font-bold shadow-md"
+              className="col-span-2 flex items-center justify-center gap-2 p-2.5 sm:p-3 rounded-xl bg-gradient-to-r from-blue-600/25 to-indigo-600/25 border border-blue-500/40 text-blue-300 hover:from-blue-600 hover:to-indigo-600 hover:text-white transition-colors text-[11px] sm:text-xs font-bold shadow-md text-center"
             >
               <ScrollText className="w-4 h-4 shrink-0" />
               <span>+ Buat Dokumen &amp; Surat Resmi Berkop</span>
@@ -400,11 +400,11 @@ export default function SSODashboardPage() {
             </div>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 text-xs text-slate-300 flex items-center justify-between">
+          <div className="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 text-xs text-slate-300 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <span className="text-slate-400 text-[11px]">Respon klien cepat via integrasi tombol WhatsApp:</span>
             <Link
               href="/sso/messages"
-              className="text-emerald-400 hover:text-emerald-300 font-bold text-xs inline-flex items-center gap-1"
+              className="text-emerald-400 hover:text-emerald-300 font-bold text-xs inline-flex items-center gap-1 shrink-0"
             >
               <span>Buka Leads</span>
               <ArrowRight className="w-3.5 h-3.5" />

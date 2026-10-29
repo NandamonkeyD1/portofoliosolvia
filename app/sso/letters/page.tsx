@@ -413,37 +413,40 @@ export default function LettersAdminPage() {
         <div className="fixed inset-0 z-50 bg-black/85 overflow-y-auto p-2 sm:p-4 md:p-8 flex justify-center items-start print:p-0 print:bg-white print:static print:overflow-visible">
           <div className="relative w-full max-w-4xl bg-[#04152d] border border-blue-500/40 rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden my-3 sm:my-6 print:border-none print:shadow-none print:m-0 print:w-full print:bg-white">
             {/* Modal Controls Bar (Hidden on Print, Sticky at top) */}
-            <div className="sticky top-0 z-30 flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-[#0A0E1A] print:hidden">
-              <div className="flex items-center gap-2">
-                <FileText className="w-4 h-4 text-cyan-400" />
-                <span className="text-xs font-bold text-white">
-                  Pratinjau Resmi: <span className="font-mono text-cyan-300">{previewLetter.letterNo}</span>
+            <div className="sticky top-0 z-30 flex items-center justify-between gap-2 px-4 sm:px-6 py-3 sm:py-4 border-b border-slate-800 bg-[#0A0E1A] print:hidden">
+              <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                <FileText className="w-4 h-4 text-cyan-400 shrink-0" />
+                <span className="text-[11px] sm:text-xs font-bold text-white truncate">
+                  <span className="hidden sm:inline">Pratinjau Resmi: </span>
+                  <span className="font-mono text-cyan-300">{previewLetter.letterNo}</span>
                 </span>
               </div>
 
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 sm:gap-3 shrink-0">
                 <button
                   type="button"
                   onClick={handlePrint}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-md active:scale-95"
+                  className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-[11px] sm:text-xs font-bold transition-all shadow-md active:scale-95 cursor-pointer"
                 >
-                  <Printer className="w-3.5 h-3.5" />
-                  <span>Cetak / Simpan PDF</span>
+                  <Printer className="w-3.5 h-3.5 shrink-0" />
+                  <span className="hidden sm:inline">Cetak / Simpan PDF</span>
+                  <span className="sm:hidden">Cetak PDF</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setPreviewLetter(null)}
-                  className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors"
+                  className="p-1.5 sm:p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors cursor-pointer"
                 >
                   <X className="w-4 h-4" />
                 </button>
               </div>
             </div>
 
-            {/* A4 White Paper Canvas with Official Letterhead */}
-            <div className="p-8 sm:p-12 bg-white text-slate-900 font-serif shadow-inner min-h-[900px] print:p-8 print:min-h-0 print:shadow-none">
-              {/* Kop Surat */}
-              <LetterHead />
+            {/* A4 White Paper Canvas with Official Letterhead Wrapped for Mobile Horizontal Scroll */}
+            <div className="w-full overflow-x-auto print:overflow-visible pb-4 print:pb-0">
+              <div className="min-w-[620px] sm:min-w-0 p-6 sm:p-12 bg-white text-slate-900 font-serif shadow-inner min-h-[900px] print:p-8 print:min-h-0 print:shadow-none">
+                {/* Kop Surat */}
+                <LetterHead />
 
               {/* Letter Meta Row */}
               <div className="grid grid-cols-2 gap-4 text-xs font-sans mb-6">
@@ -553,6 +556,7 @@ export default function LettersAdminPage() {
                   <div className="text-[11px] text-slate-600">{previewLetter.sender.position}</div>
                 </div>
               </div>
+            </div>
             </div>
           </div>
         </div>

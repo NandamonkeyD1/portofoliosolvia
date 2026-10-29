@@ -557,27 +557,29 @@ export default function InvoiceAdminPage() {
         <div className="fixed inset-0 z-50 bg-black/85 overflow-y-auto p-2 sm:p-6 md:p-8 flex justify-center items-start print:p-0 print:bg-white print:static print:overflow-visible">
           <div className="w-full max-w-4xl space-y-4 my-2 sm:my-4 print:my-0">
             {/* Modal Controls Bar (Hidden on Print, Sticky at top) */}
-            <div className="sticky top-2 z-30 flex items-center justify-between px-5 sm:px-6 py-3 rounded-2xl bg-[#0A0E1A] border border-slate-700/80 text-white print:hidden shadow-2xl backdrop-blur-md">
-              <div className="flex items-center gap-2">
-                <FileSpreadsheet className="w-4 h-4 text-blue-400" />
-                <span className="text-xs font-bold text-slate-200">
-                  Pratinjau Resmi Tagihan: <span className="font-mono text-cyan-400">{previewInvoice.no}</span>
+            <div className="sticky top-2 z-30 flex items-center justify-between gap-2 px-3 sm:px-6 py-2.5 sm:py-3 rounded-2xl bg-[#0A0E1A] border border-slate-700/80 text-white print:hidden shadow-2xl backdrop-blur-md">
+              <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                <FileSpreadsheet className="w-4 h-4 text-blue-400 shrink-0" />
+                <span className="text-[11px] sm:text-xs font-bold text-slate-200 truncate">
+                  <span className="hidden sm:inline">Pratinjau Tagihan: </span>
+                  <span className="font-mono text-cyan-400">{previewInvoice.no}</span>
                 </span>
               </div>
 
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 sm:gap-3 shrink-0">
                 <button
                   type="button"
                   onClick={() => window.print()}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-md active:scale-95 cursor-pointer"
+                  className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-[11px] sm:text-xs font-bold transition-all shadow-md active:scale-95 cursor-pointer"
                 >
-                  <Printer className="w-3.5 h-3.5" />
-                  <span>Cetak / Simpan PDF</span>
+                  <Printer className="w-3.5 h-3.5 shrink-0" />
+                  <span className="hidden sm:inline">Cetak / Simpan PDF</span>
+                  <span className="sm:hidden">Cetak PDF</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setPreviewInvoice(null)}
-                  className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors cursor-pointer"
+                  className="p-1.5 sm:p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors cursor-pointer"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -585,25 +587,29 @@ export default function InvoiceAdminPage() {
             </div>
 
             {/* Render Official Document (Matches PDF Page 1 & 2) */}
-            <OfficialInvoiceDocument
-                invoiceNo={previewInvoice.no}
-                invoiceDate={previewInvoice.date}
-                clientName={previewInvoice.client}
-                clientAddress={previewInvoice.clientAddress || "Dusun Brambang Rt 01/02, Kelurahan Blimbing, Kec. Gatak, Kab.Sukoharjo"}
-                clientEmail={previewInvoice.clientEmail || ""}
-                clientPhone={previewInvoice.clientPhone || "+62 812-2661-5585"}
-                projectName={previewInvoice.project}
-                servicePackage={previewInvoice.servicePackage || "IoT System Integration, Web Dashboard Development"}
-                projectDuration={previewInvoice.projectDuration || "1 Juli - 30 Agustus"}
-                items={previewInvoice.items && previewInvoice.items.length > 0 ? previewInvoice.items : [
-                  {
-                    id: "1",
-                    description: previewInvoice.project,
-                    qty: 1,
-                    price: parseInt(previewInvoice.total.replace(/[^0-9]/g, ""), 10) || 0
-                  }
-                ]}
-              />
+            <div className="w-full overflow-x-auto pb-4 print:overflow-visible print:pb-0">
+              <div className="min-w-[680px] sm:min-w-0">
+                <OfficialInvoiceDocument
+                  invoiceNo={previewInvoice.no}
+                  invoiceDate={previewInvoice.date}
+                  clientName={previewInvoice.client}
+                  clientAddress={previewInvoice.clientAddress || "Dusun Brambang Rt 01/02, Kelurahan Blimbing, Kec. Gatak, Kab.Sukoharjo"}
+                  clientEmail={previewInvoice.clientEmail || ""}
+                  clientPhone={previewInvoice.clientPhone || "+62 812-2661-5585"}
+                  projectName={previewInvoice.project}
+                  servicePackage={previewInvoice.servicePackage || "IoT System Integration, Web Dashboard Development"}
+                  projectDuration={previewInvoice.projectDuration || "1 Juli - 30 Agustus"}
+                  items={previewInvoice.items && previewInvoice.items.length > 0 ? previewInvoice.items : [
+                    {
+                      id: "1",
+                      description: previewInvoice.project,
+                      qty: 1,
+                      price: parseInt(previewInvoice.total.replace(/[^0-9]/g, ""), 10) || 0
+                    }
+                  ]}
+                />
+              </div>
+            </div>
           </div>
         </div>
       )}
