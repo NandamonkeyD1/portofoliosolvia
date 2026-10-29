@@ -10,26 +10,28 @@ import OfficialInvoiceDocument, { LineItem, formatRupiah, DEFAULT_FILTRAZON_ITEM
 export default function CreateInvoicePage() {
   const router = useRouter();
 
-  // 1. Informasi Invoice
-  const [invoiceNo, setInvoiceNo] = useState("NO. INV/2026/10/003");
-  const [invoiceDate, setInvoiceDate] = useState("28 October 2026");
-  const [status, setStatus] = useState("Lunas");
+  // 1. Informasi Invoice (Default Kosong / Fresh)
+  const [invoiceNo, setInvoiceNo] = useState("");
+  const [invoiceDate, setInvoiceDate] = useState("");
+  const [status, setStatus] = useState("Draft");
 
-  // 2. Data Penerima
-  const [clientName, setClientName] = useState("FILTRAZON IoT 2.0");
-  const [clientAddress, setClientAddress] = useState("Dusun Brambang Rt 01/02, Kelurahan Blimbing, Kec. Gatak, Kab.Sukoharjo");
-  const [clientEmail, setClientEmail] = useState("helixxjust@gmail.com");
-  const [clientPhone, setClientPhone] = useState("+62 812-2661-5585");
+  // 2. Data Penerima (Default Kosong)
+  const [clientName, setClientName] = useState("");
+  const [clientAddress, setClientAddress] = useState("");
+  const [clientEmail, setClientEmail] = useState("");
+  const [clientPhone, setClientPhone] = useState("");
 
-  // 3. Informasi Project
-  const [projectName, setProjectName] = useState("FILTRAZON IoT 2.0");
-  const [servicePackage, setServicePackage] = useState("IoT System Integration, Web DashboardDevelopment");
-  const [projectDuration, setProjectDuration] = useState("1 Juli - 30 Agustus");
+  // 3. Informasi Project (Default Kosong)
+  const [projectName, setProjectName] = useState("");
+  const [servicePackage, setServicePackage] = useState("");
+  const [projectDuration, setProjectDuration] = useState("");
 
-  // 4. Line Items
-  const [items, setItems] = useState<LineItem[]>(DEFAULT_FILTRAZON_ITEMS);
+  // 4. Line Items (Mulai dengan 1 baris kosong siap diisi)
+  const [items, setItems] = useState<LineItem[]>([
+    { id: "item-1", description: "", qty: 1, price: 0, subDetail: "" },
+  ]);
 
-  // 5. Informasi Pembayaran
+  // 5. Informasi Pembayaran (Rekening resmi Solvia Nova)
   const [bankName, setBankName] = useState("Bank Mandiri");
   const [bankBadge, setBankBadge] = useState("BM");
   const [accountNo, setAccountNo] = useState("1360034942356");
@@ -44,8 +46,27 @@ export default function CreateInvoicePage() {
   const [toast, setToast] = useState<string | null>(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
-  // Automatically load saved global signature from localStorage
+  // Inisialisasi nomor invoice dan tanggal otomatis hari ini
   useEffect(() => {
+    const d = new Date();
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const months = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+    setInvoiceDate(`${d.getDate()} ${months[d.getMonth()]} ${year}`);
+
+    try {
+      const STORAGE_KEY = "solvia_invoices_data";
+      const existing = localStorage.getItem(STORAGE_KEY);
+      const list = existing ? JSON.parse(existing) : [];
+      const nextNo = String(list.length + 1).padStart(3, "0");
+      setInvoiceNo(`NO. INV/${year}/${month}/${nextNo}`);
+    } catch {
+      setInvoiceNo(`NO. INV/${year}/${month}/001`);
+    }
+
     const savedSig = localStorage.getItem("solvia_signature_image");
     const savedName = localStorage.getItem("solvia_signatory_name");
 
@@ -80,6 +101,36 @@ export default function CreateInvoicePage() {
     return items.reduce((acc, it) => acc + (it.qty * it.price), 0);
   };
 
+  const handleResetForm = () => {
+    if (confirm("Kosongkan seluruh isian formulir invoice baru?")) {
+      setClientName("");
+      setClientAddress("");
+      setClientEmail("");
+      setClientPhone("");
+      setProjectName("");
+      setServicePackage("");
+      setProjectDuration("");
+      setStatus("Draft");
+      setItems([{ id: "item-" + Date.now().toString(), description: "", qty: 1, price: 0, subDetail: "" }]);
+    }
+  };
+
+  const handleLoadTemplate = () => {
+    if (confirm("Muat template contoh data Filtrazon IoT 2.0 (33 item)?")) {
+      setInvoiceNo("NO. INV/2026/10/003");
+      setInvoiceDate("28 October 2026");
+      setStatus("Lunas");
+      setClientName("FILTRAZON IoT 2.0");
+      setClientAddress("Dusun Brambang Rt 01/02, Kelurahan Blimbing, Kec. Gatak, Kab.Sukoharjo");
+      setClientEmail("helixxjust@gmail.com");
+      setClientPhone("+62 812-2661-5585");
+      setProjectName("FILTRAZON IoT 2.0");
+      setServicePackage("IoT System Integration, Web DashboardDevelopment");
+      setProjectDuration("1 Juli - 30 Agustus");
+      setItems(DEFAULT_FILTRAZON_ITEMS);
+    }
+  };
+
   const handleSaveInvoice = (e: React.FormEvent) => {
     e.preventDefault();
     if (!invoiceNo || !clientName) {
@@ -90,7 +141,7 @@ export default function CreateInvoicePage() {
     const totalVal = calculateTotal();
     const formattedTotal = formatRupiah(totalVal);
 
-    // Save to localStorage list
+    // Save to localStorage list with complete metadata
     try {
       const STORAGE_KEY = "solvia_invoices_data";
       const existing = localStorage.getItem(STORAGE_KEY);
@@ -104,6 +155,20 @@ export default function CreateInvoicePage() {
         date: invoiceDate,
         total: formattedTotal,
         status: status,
+        clientAddress,
+        clientEmail,
+        clientPhone,
+        servicePackage,
+        projectDuration,
+        items,
+        bankName,
+        bankBadge,
+        accountNo,
+        accountHolder,
+        transferType,
+        signatoryName: signatory,
+        signatoryRole: signatoryTitle,
+        signatureImage,
       };
 
       localStorage.setItem(STORAGE_KEY, JSON.stringify([newInv, ...list]));
@@ -143,7 +208,23 @@ export default function CreateInvoicePage() {
           <h1 className="text-xl sm:text-2xl font-black text-white">Buat Invoice Baru (Format Resmi)</h1>
           <p className="text-slate-400 text-xs mt-1">Lengkapi rincian invoice penagihan resmi Solvia Nova</p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+          <button
+            type="button"
+            onClick={handleResetForm}
+            className="px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition-colors cursor-pointer"
+            title="Kosongkan seluruh isian form"
+          >
+            Kosongkan Form
+          </button>
+          <button
+            type="button"
+            onClick={handleLoadTemplate}
+            className="px-3.5 py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-cyan-300 border border-cyan-500/30 text-xs font-semibold transition-colors cursor-pointer"
+            title="Muat contoh template data Filtrazon IoT (33 item)"
+          >
+            Muat Template Contoh
+          </button>
           <Link
             href="/sso/invoice"
             className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition-colors"
@@ -161,7 +242,7 @@ export default function CreateInvoicePage() {
             onClick={handleSaveInvoice}
             className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-md shadow-blue-600/30 transition-colors cursor-pointer"
           >
-            Simpan & Cetak
+            Simpan &amp; Cetak
           </button>
         </div>
       </div>
@@ -178,9 +259,9 @@ export default function CreateInvoicePage() {
               onChange={(e) => setStatus(e.target.value)}
               className="bg-slate-900 border border-slate-700 text-white text-xs font-bold px-3 py-1.5 rounded-xl cursor-pointer"
             >
-              <option value="Lunas">Lunas (Paid)</option>
               <option value="Draft">Draft</option>
               <option value="Pending">Pending</option>
+              <option value="Lunas">Lunas (Paid)</option>
             </select>
           </div>
 
@@ -192,6 +273,7 @@ export default function CreateInvoicePage() {
                 required
                 value={invoiceNo}
                 onChange={(e) => setInvoiceNo(e.target.value)}
+                placeholder="NO. INV/2026/10/001"
                 className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white font-mono font-bold"
               />
             </div>
@@ -202,6 +284,7 @@ export default function CreateInvoicePage() {
                 required
                 value={invoiceDate}
                 onChange={(e) => setInvoiceDate(e.target.value)}
+                placeholder="Contoh: 29 October 2026"
                 className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white"
               />
             </div>
@@ -221,7 +304,7 @@ export default function CreateInvoicePage() {
                 required
                 value={clientName}
                 onChange={(e) => setClientName(e.target.value)}
-                placeholder="FILTRAZON IoT 2.0"
+                placeholder="Nama klien atau nama perusahaan..."
                 className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white font-bold"
               />
             </div>
@@ -231,7 +314,7 @@ export default function CreateInvoicePage() {
                 rows={2}
                 value={clientAddress}
                 onChange={(e) => setClientAddress(e.target.value)}
-                placeholder="Dusun Brambang Rt 01/02..."
+                placeholder="Alamat penagihan lengkap klien..."
                 className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-slate-200 resize-none"
               />
             </div>
@@ -242,7 +325,7 @@ export default function CreateInvoicePage() {
                   type="text"
                   value={clientEmail}
                   onChange={(e) => setClientEmail(e.target.value)}
-                  placeholder="email@domain.com"
+                  placeholder="klien@perusahaan.com"
                   className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white font-mono"
                 />
               </div>
@@ -252,7 +335,7 @@ export default function CreateInvoicePage() {
                   type="text"
                   value={clientPhone}
                   onChange={(e) => setClientPhone(e.target.value)}
-                  placeholder="+62 812..."
+                  placeholder="+62 812-3456-7890"
                   className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white font-mono"
                 />
               </div>
@@ -270,7 +353,7 @@ export default function CreateInvoicePage() {
                 required
                 value={projectName}
                 onChange={(e) => setProjectName(e.target.value)}
-                placeholder="FILTRAZON IoT 2.0"
+                placeholder="Nama proyek atau sistem digital..."
                 className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white font-bold"
               />
             </div>
@@ -280,7 +363,7 @@ export default function CreateInvoicePage() {
                 type="text"
                 value={servicePackage}
                 onChange={(e) => setServicePackage(e.target.value)}
-                placeholder="IoT System Integration, Web DashboardDevelopment"
+                placeholder="Contoh: Web Development, IoT Integration..."
                 className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white"
               />
             </div>
@@ -290,7 +373,7 @@ export default function CreateInvoicePage() {
                 type="text"
                 value={projectDuration}
                 onChange={(e) => setProjectDuration(e.target.value)}
-                placeholder="1 Juli - 30 Agustus"
+                placeholder="Contoh: 1 Bulan / 1 Nov - 30 Nov 2026"
                 className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white"
               />
             </div>
