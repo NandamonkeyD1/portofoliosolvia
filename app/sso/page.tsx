@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Sparkles, Lock, Mail, ArrowRight, ShieldCheck, AlertCircle, Key, CheckCircle2 } from "lucide-react";
+import { Sparkles, Lock, Mail, ArrowRight, ShieldCheck, AlertCircle, CheckCircle2 } from "lucide-react";
 
 export default function SSOLoginPage() {
   const router = useRouter();
@@ -16,12 +16,6 @@ export default function SSOLoginPage() {
   const defaultAdmin = {
     username: "solvianova",
     password: "Solvia230502!",
-  };
-
-  const handleAutoFill = () => {
-    setEmail(defaultAdmin.username);
-    setPassword(defaultAdmin.password);
-    setError("");
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -43,7 +37,7 @@ export default function SSOLoginPage() {
         localStorage.setItem("solvia_admin_email", "solvianova");
         router.push("/sso/dashboard");
       } else {
-        setError("Username atau Password salah. Silakan gunakan kredensial resmi di atas.");
+        setError("Username atau Password salah. Silakan periksa kembali kredensial Anda.");
         setLoading(false);
       }
     }, 600);
@@ -83,34 +77,6 @@ export default function SSOLoginPage() {
           <p className="text-blue-100 text-xs sm:text-sm font-medium">
             Masuk ke Sistem Manajemen Digital Solvia Nova
           </p>
-        </div>
-
-        {/* Credentials Info Badge & 1-Click Auto Fill */}
-        <div className="bg-blue-950/60 border border-blue-400/30 rounded-2xl p-4 space-y-2.5 shadow-lg">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1.5 text-xs font-bold text-white">
-              <Key className="w-4 h-4 text-[#ffde59]" />
-              <span>Akun Admin Resmi</span>
-            </div>
-            <button
-              type="button"
-              onClick={handleAutoFill}
-              className="text-[11px] font-bold text-blue-300 hover:text-white underline underline-offset-2 transition-colors cursor-pointer"
-            >
-              Isi Otomatis
-            </button>
-          </div>
-
-          <div className="grid grid-cols-2 gap-2 text-xs font-mono bg-[#020611]/80 p-2.5 rounded-xl border border-blue-400/20">
-            <div>
-              <span className="text-blue-400 block text-[10px] uppercase font-bold font-sans">Username Admin</span>
-              <span className="text-white font-bold break-all">solvianova</span>
-            </div>
-            <div>
-              <span className="text-blue-400 block text-[10px] uppercase font-bold font-sans">Password</span>
-              <span className="text-white font-bold">Solvia230502!</span>
-            </div>
-          </div>
         </div>
 
         {/* Error Alert */}
