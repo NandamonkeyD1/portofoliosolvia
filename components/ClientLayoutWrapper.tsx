@@ -37,7 +37,7 @@ export default function ClientLayoutWrapper({ children }: { children: React.Reac
     pathname === "/login";
 
   if (isAuthOrAdmin) {
-    return <main className="relative z-10 min-h-screen bg-[#070A12] text-slate-100 print:bg-white print:min-h-0 print:p-0 print:m-0 print:static">{children}</main>;
+    return <div className="relative z-10 min-h-screen bg-[#070A12] text-slate-100 print:bg-white print:min-h-0 print:p-0 print:m-0 print:static">{children}</div>;
   }
 
   return (
