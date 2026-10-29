@@ -298,7 +298,7 @@ export default function CreateLetterPage() {
       </div>
 
       {/* Template Quick Selection Pills (Hidden on Print) */}
-      <div className="bg-[#0E1526]/80 border border-slate-800 rounded-2xl p-4 backdrop-blur-md space-y-2 print:hidden">
+      <div className="bg-[#0E1526] border border-slate-800 rounded-2xl p-4 space-y-2 print:hidden shadow-lg">
         <div className="flex items-center justify-between">
           <span className="text-xs font-bold text-slate-300 flex items-center gap-2">
             <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
@@ -341,7 +341,7 @@ export default function CreateLetterPage() {
         {/* LEFT COLUMN: FORM CONTROLS (Hidden on Print) */}
         <div className="lg:col-span-5 space-y-6 print:hidden">
           {/* Section 1: Informasi Dasar Surat */}
-          <div className="bg-[#0E1526]/80 border border-slate-800 rounded-2xl p-5 space-y-4 backdrop-blur-md">
+          <div className="bg-[#0E1526] border border-slate-800 rounded-2xl p-5 space-y-4 shadow-lg">
             <h3 className="text-xs font-bold uppercase tracking-wider text-blue-400 flex items-center gap-2 border-b border-slate-800/80 pb-3">
               <Sliders className="w-4 h-4" />
               1. Informasi Kepala Surat
@@ -427,7 +427,7 @@ export default function CreateLetterPage() {
           </div>
 
           {/* Section 2: Data Tujuan / Penerima */}
-          <div className="bg-[#0E1526]/80 border border-slate-800 rounded-2xl p-5 space-y-4 backdrop-blur-md">
+          <div className="bg-[#0E1526] border border-slate-800 rounded-2xl p-5 space-y-4 shadow-lg">
             <h3 className="text-xs font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-2 border-b border-slate-800/80 pb-3">
               <FileText className="w-4 h-4" />
               2. Data Penerima (Kepada Yth.)
@@ -503,7 +503,7 @@ export default function CreateLetterPage() {
           </div>
 
           {/* Section 3: Isi Surat & Klausul */}
-          <div className="bg-[#0E1526]/80 border border-slate-800 rounded-2xl p-5 space-y-4 backdrop-blur-md">
+          <div className="bg-[#0E1526] border border-slate-800 rounded-2xl p-5 space-y-4 shadow-lg">
             <h3 className="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-2 border-b border-slate-800/80 pb-3">
               <FileSignature className="w-4 h-4" />
               3. Redaksi Isi Surat
@@ -599,7 +599,7 @@ export default function CreateLetterPage() {
           </div>
 
           {/* Section 4: Pengesahan & TTD */}
-          <div className="bg-[#0E1526]/80 border border-slate-800 rounded-2xl p-5 space-y-4 backdrop-blur-md">
+          <div className="bg-[#0E1526] border border-slate-800 rounded-2xl p-5 space-y-4 shadow-lg">
             <h3 className="text-xs font-bold uppercase tracking-wider text-purple-400 flex items-center gap-2 border-b border-slate-800/80 pb-3">
               <CheckCircle2 className="w-4 h-4" />
               4. Pengesahan &amp; Tanda Tangan

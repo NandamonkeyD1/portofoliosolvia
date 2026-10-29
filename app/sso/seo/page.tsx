@@ -34,7 +34,7 @@ const DEFAULT_ROUTES: RouteSEOItem[] = [
   },
   {
     id: "seo-3",
-    route: "/layanan",
+    route: "/services",
     title: "Layanan Pembuatan Website & ERP — Solvia Nova",
     description: "Paket pengembangan website custom, ERP bisnis, IoT telemetri, dan branding visual profesional.",
     keywords: "jasa pembuatan website, jasa buat erp, jasa iot salatiga, branding studio",
@@ -42,7 +42,7 @@ const DEFAULT_ROUTES: RouteSEOItem[] = [
   },
   {
     id: "seo-4",
-    route: "/tentang",
+    route: "/about",
     title: "Tentang Kami & Tim Pengembang — Solvia Nova",
     description: "Kenali filosofi, visi, dan para profesional di balik Solvia Nova Digital Solution.",
     keywords: "tentang solvia nova, tim software engineer, founder ceo solvia nova",
@@ -185,21 +185,21 @@ export default function SEOManagementPage() {
   return (
     <div className="space-y-8 max-w-5xl pb-20">
       {saved && (
-        <div className="fixed top-20 right-6 z-50 flex items-center gap-2 px-5 py-3 rounded-xl bg-emerald-600 text-white text-xs font-bold animate-bounce shadow-2xl">
+        <div className="fixed top-20 right-6 z-50 flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 text-white text-xs font-bold shadow-lg transition-opacity">
           <CheckCircle2 className="w-4 h-4" />
           <span>SEO Settings berhasil disimpan ke sistem!</span>
         </div>
       )}
 
       <div>
-        <h1 className="text-2xl font-black text-white">SEO Management & Indexing</h1>
+        <h1 className="text-xl sm:text-2xl font-black text-white">SEO Management & Indexing</h1>
         <p className="text-slate-400 text-xs mt-1">
           Kelola metadata default, tracking analitik, dan aturan SEO per-halaman rute publik
         </p>
       </div>
 
       {/* Main SEO Form Card */}
-      <div className="bg-[#0E1526]/80 border border-slate-800 rounded-3xl p-6 lg:p-8 space-y-6 shadow-xl backdrop-blur-md">
+      <div className="bg-[#0E1526] border border-slate-800 rounded-2xl sm:rounded-3xl p-5 sm:p-6 lg:p-8 space-y-6 shadow-xl">
         <h2 className="text-sm font-bold text-white uppercase tracking-wider border-b border-slate-800 pb-3 flex items-center gap-2">
           <Globe className="w-4 h-4 text-blue-400" />
           <span>Pengaturan Global Meta Tag</span>
@@ -273,7 +273,7 @@ export default function SEOManagementPage() {
       </div>
 
       {/* SECTION 2: CUSTOM PER-ROUTE SEO */}
-      <div className="bg-[#0E1526]/80 border border-slate-800 rounded-3xl p-6 lg:p-8 space-y-6 shadow-xl backdrop-blur-md">
+      <div className="bg-[#0E1526] border border-slate-800 rounded-2xl sm:rounded-3xl p-5 sm:p-6 lg:p-8 space-y-6 shadow-xl">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
           <div>
             <h2 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
@@ -286,15 +286,15 @@ export default function SEOManagementPage() {
           </div>
           <button
             onClick={handleOpenAddModal}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-lg shadow-blue-600/25 shrink-0 cursor-pointer"
+            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-colors shadow-md shadow-blue-600/30 shrink-0 cursor-pointer w-full sm:w-auto"
           >
             <Plus className="w-4 h-4" />
             <span>Tambah Route SEO</span>
           </button>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
+        <div className="overflow-x-auto w-full">
+          <table className="w-full text-left border-collapse min-w-[650px]">
             <thead>
               <tr className="border-b border-slate-800 bg-[#070A12]/80 text-slate-400 text-[11px] font-bold uppercase tracking-wider">
                 <th className="py-3 px-4">ROUTE URL</th>
@@ -384,9 +384,9 @@ export default function SEOManagementPage() {
 
       {/* MODAL TAMBAH / EDIT ROUTE SEO */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#0A0E1A] border border-slate-800 rounded-3xl max-w-lg w-full p-6 space-y-6 shadow-2xl animate-in fade-in zoom-in duration-200">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-3.5 sm:p-4">
+          <div className="bg-[#0A0E1A] border border-slate-800 rounded-2xl sm:rounded-3xl max-w-lg w-full p-4 sm:p-6 space-y-5 shadow-2xl max-h-[88vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <h2 className="text-lg font-bold text-white flex items-center gap-2">
                 <Globe className="w-5 h-5 text-blue-500" />
                 <span>{editingItem ? "Edit Route SEO" : "Tambah Route SEO Khusus"}</span>

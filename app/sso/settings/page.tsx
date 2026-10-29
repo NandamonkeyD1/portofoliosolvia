@@ -69,20 +69,20 @@ export default function SettingsAdminPage() {
   };
 
   return (
-    <div className="space-y-8 max-w-4xl pb-20">
+    <div className="space-y-6 sm:space-y-8 max-w-4xl pb-20">
       {saved && (
-        <div className="flex items-center gap-2 px-5 py-3 rounded-xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-xs font-bold animate-pulse shadow-lg">
-          <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+        <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 text-white text-xs font-bold shadow-lg transition-opacity">
+          <CheckCircle2 className="w-4 h-4 text-white" />
           <span>Pengaturan & Tanda Tangan Digital berhasil disimpan!</span>
         </div>
       )}
 
       <div>
-        <h1 className="text-2xl font-black text-white">Pengaturan Sistem & Tanda Tangan</h1>
+        <h1 className="text-xl sm:text-2xl font-black text-white">Pengaturan Sistem & Tanda Tangan</h1>
         <p className="text-slate-400 text-xs mt-1">Kelola identitas perusahaan, email, alamat, dan stempel/tanda tangan invoice</p>
       </div>
 
-      <div className="bg-[#0E1526]/80 border border-slate-800 rounded-3xl p-6 lg:p-8 space-y-8 shadow-2xl backdrop-blur-md">
+      <div className="bg-[#0E1526] border border-slate-800 rounded-2xl sm:rounded-3xl p-5 sm:p-6 lg:p-8 space-y-8 shadow-xl">
         <form onSubmit={handleSave} className="space-y-8">
           {/* SECTION 1: IDENTITAS PERUSAHAAN */}
           <div className="space-y-6">

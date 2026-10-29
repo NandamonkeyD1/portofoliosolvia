@@ -78,7 +78,7 @@ export default function SSOLoginPage() {
         </div>
 
         {/* Credentials Info Badge & 1-Click Auto Fill */}
-        <div className="bg-blue-950/60 border border-blue-400/30 rounded-2xl p-4 backdrop-blur-xl space-y-2.5 shadow-lg">
+        <div className="bg-blue-950/60 border border-blue-400/30 rounded-2xl p-4 space-y-2.5 shadow-lg">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1.5 text-xs font-bold text-white">
               <Key className="w-4 h-4 text-[#ffde59]" />
@@ -107,14 +107,14 @@ export default function SSOLoginPage() {
 
         {/* Error Alert */}
         {error && (
-          <div className="flex items-center gap-2.5 px-4 py-3 rounded-xl bg-red-500/20 border border-red-500/40 text-red-200 text-xs font-semibold animate-pulse">
+          <div className="flex items-center gap-2.5 px-4 py-3 rounded-xl bg-red-500/20 border border-red-500/40 text-red-200 text-xs font-semibold">
             <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
             <span>{error}</span>
           </div>
         )}
 
         {/* Form Card */}
-        <div className="bg-[#020611]/90 border border-blue-400/30 rounded-3xl p-6 sm:p-8 backdrop-blur-2xl shadow-2xl space-y-6">
+        <div className="bg-[#020611] border border-blue-400/30 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-2xl space-y-6">
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label className="block text-blue-200 text-xs font-bold uppercase tracking-wider mb-2">

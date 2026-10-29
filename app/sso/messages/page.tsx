@@ -182,7 +182,7 @@ export default function MessagesAdminPage() {
     <div className="space-y-6">
       {/* Toast Notification */}
       {toast && (
-        <div className="fixed top-20 right-6 z-50 bg-emerald-600 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-2 text-xs font-bold animate-bounce">
+        <div className="fixed top-20 right-6 z-50 bg-emerald-600 text-white px-4 py-2.5 rounded-xl shadow-lg flex items-center gap-2 text-xs font-bold transition-opacity">
           <Check className="w-4 h-4" />
           <span>{toast}</span>
         </div>
@@ -191,49 +191,49 @@ export default function MessagesAdminPage() {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-black text-white">Leads & Pesan Konsultasi</h1>
+          <h1 className="text-xl sm:text-2xl font-black text-white">Leads & Pesan Konsultasi</h1>
           <p className="text-slate-400 text-xs mt-1">
             Kelola pesan masuk dari calon klien. Sisa <strong className="text-amber-400 font-bold">{unreadCount} pesan belum dibaca</strong>.
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3 w-full sm:w-auto">
+          <button
+            onClick={handleOpenAddModal}
+            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-colors shadow-md shadow-blue-600/30 cursor-pointer order-1 sm:order-none flex-1 sm:flex-initial"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Tambah Lead / Pesan</span>
+          </button>
+
           {unreadCount > 0 && (
             <button
               onClick={handleMarkAllRead}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500 border border-amber-500/40 text-amber-300 hover:text-white text-xs font-bold transition-all shadow-lg cursor-pointer"
+              className="inline-flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl bg-amber-500/20 hover:bg-amber-500 border border-amber-500/40 text-amber-300 hover:text-white text-xs font-bold transition-colors shadow-md cursor-pointer order-2 sm:order-none shrink-0"
             >
               <CheckCheck className="w-4 h-4" />
               <span>Tandai Semua Dibaca</span>
             </button>
           )}
 
-          <div className="relative">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+          <div className="relative w-full sm:w-56 order-3 sm:order-none">
+            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
             <input
               type="text"
               placeholder="Cari pengirim atau email..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="bg-slate-900 border border-slate-700 rounded-xl pl-9 pr-4 py-2 text-xs text-white focus:outline-none focus:border-blue-500 w-52 sm:w-64"
+              className="w-full bg-slate-900 border border-slate-700 rounded-xl pl-9 pr-4 py-2 text-xs text-white focus:outline-none focus:border-blue-500"
             />
           </div>
-
-          <button
-            onClick={handleOpenAddModal}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-lg shadow-blue-600/25 shrink-0 cursor-pointer"
-          >
-            <Plus className="w-4 h-4" />
-            <span>Tambah Lead / Pesan</span>
-          </button>
         </div>
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex items-center gap-2 border-b border-slate-800 pb-3">
+      <div className="flex items-center gap-2 border-b border-slate-800 pb-3 overflow-x-auto">
         <button
           onClick={() => setFilterMode("all")}
-          className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+          className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-colors shrink-0 cursor-pointer ${
             filterMode === "all" ? "bg-blue-600 text-white" : "text-slate-400 hover:text-white"
           }`}
         >
@@ -241,7 +241,7 @@ export default function MessagesAdminPage() {
         </button>
         <button
           onClick={() => setFilterMode("unread")}
-          className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+          className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-colors shrink-0 cursor-pointer ${
             filterMode === "unread" ? "bg-amber-500 text-white" : "text-slate-400 hover:text-white"
           }`}
         >
@@ -249,7 +249,7 @@ export default function MessagesAdminPage() {
         </button>
         <button
           onClick={() => setFilterMode("read")}
-          className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+          className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-colors shrink-0 cursor-pointer ${
             filterMode === "read" ? "bg-emerald-600 text-white" : "text-slate-400 hover:text-white"
           }`}
         >
@@ -258,9 +258,9 @@ export default function MessagesAdminPage() {
       </div>
 
       {/* Messages Table */}
-      <div className="bg-[#0E1526]/80 border border-slate-800 rounded-2xl overflow-hidden shadow-xl backdrop-blur-md">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
+      <div className="bg-[#0E1526] border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+        <div className="overflow-x-auto w-full">
+          <table className="w-full text-left border-collapse min-w-[650px]">
             <thead>
               <tr className="border-b border-slate-800/80 bg-[#070A12]/80 text-slate-400 text-[11px] font-bold uppercase tracking-wider">
                 <th className="py-4 px-5">PENGIRIM & KONTAK</th>
@@ -343,9 +343,9 @@ export default function MessagesAdminPage() {
 
       {/* ADD LEAD MODAL */}
       {isAddModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#0A0E1A] border border-slate-800 rounded-3xl max-w-lg w-full p-6 space-y-6 shadow-2xl animate-in fade-in zoom-in duration-200">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-3.5 sm:p-4">
+          <div className="bg-[#0A0E1A] border border-slate-800 rounded-2xl sm:rounded-3xl max-w-lg w-full p-4 sm:p-6 space-y-5 shadow-2xl max-h-[88vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <h2 className="text-lg font-bold text-white flex items-center gap-2">
                 <MessageSquare className="w-5 h-5 text-blue-500" />
                 <span>Catat Lead / Pesan Konsultasi Baru</span>
@@ -446,9 +446,9 @@ export default function MessagesAdminPage() {
 
       {/* DETAIL MESSAGE MODAL */}
       {selectedMsg && (
-        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#0A0E1A] border border-slate-800 rounded-3xl max-w-lg w-full p-6 space-y-6 shadow-2xl animate-in fade-in zoom-in duration-200">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-3.5 sm:p-4">
+          <div className="bg-[#0A0E1A] border border-slate-800 rounded-2xl sm:rounded-3xl max-w-lg w-full p-4 sm:p-6 space-y-5 shadow-2xl max-h-[88vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
                 <span className="text-[10px] font-bold text-blue-400 uppercase tracking-wider">Detail Leads</span>
                 <h2 className="text-base font-bold text-white">{selectedMsg.subject}</h2>

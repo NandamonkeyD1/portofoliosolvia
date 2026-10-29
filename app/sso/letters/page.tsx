@@ -132,7 +132,7 @@ export default function LettersAdminPage() {
 
         <Link
           href="/sso/letters/create"
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-bold transition-all shadow-lg shadow-blue-600/25 active:scale-95 shrink-0"
+          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-bold transition-colors shadow-md shadow-blue-600/25 shrink-0 w-full sm:w-auto"
         >
           <Plus className="w-4 h-4" />
           <span>Buat Surat Baru</span>
@@ -140,8 +140,8 @@ export default function LettersAdminPage() {
       </div>
 
       {/* Metrics Stat Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-[#0E1526]/80 border border-slate-800/80 rounded-2xl p-4 sm:p-5 backdrop-blur-md space-y-2">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5 sm:gap-4">
+        <div className="bg-[#0E1526] border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-2 shadow-lg">
           <div className="flex items-center justify-between text-slate-400 text-xs">
             <span>Total Dokumen</span>
             <FileText className="w-4 h-4 text-blue-400" />
@@ -150,7 +150,7 @@ export default function LettersAdminPage() {
           <div className="text-[11px] text-slate-500">Arsip surat tersimpan</div>
         </div>
 
-        <div className="bg-[#0E1526]/80 border border-slate-800/80 rounded-2xl p-4 sm:p-5 backdrop-blur-md space-y-2">
+        <div className="bg-[#0E1526] border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-2 shadow-lg">
           <div className="flex items-center justify-between text-slate-400 text-xs">
             <span>Surat Penawaran</span>
             <Send className="w-4 h-4 text-cyan-400" />
@@ -161,7 +161,7 @@ export default function LettersAdminPage() {
           <div className="text-[11px] text-slate-500">Proposal &amp; Quotation</div>
         </div>
 
-        <div className="bg-[#0E1526]/80 border border-slate-800/80 rounded-2xl p-4 sm:p-5 backdrop-blur-md space-y-2">
+        <div className="bg-[#0E1526] border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-2 shadow-lg">
           <div className="flex items-center justify-between text-slate-400 text-xs">
             <span>Kontrak SPK / MOU</span>
             <FileSignature className="w-4 h-4 text-emerald-400" />
@@ -172,7 +172,7 @@ export default function LettersAdminPage() {
           <div className="text-[11px] text-slate-500">Perjanjian pengerjaan</div>
         </div>
 
-        <div className="bg-[#0E1526]/80 border border-slate-800/80 rounded-2xl p-4 sm:p-5 backdrop-blur-md space-y-2">
+        <div className="bg-[#0E1526] border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-2 shadow-lg">
           <div className="flex items-center justify-between text-slate-400 text-xs">
             <span>Tugas &amp; BAST</span>
             <FileCheck2 className="w-4 h-4 text-purple-400" />
@@ -185,7 +185,7 @@ export default function LettersAdminPage() {
       </div>
 
       {/* Filter & Search Bar */}
-      <div className="bg-[#0E1526]/80 border border-slate-800 rounded-2xl p-4 backdrop-blur-md flex flex-col md:flex-row items-center justify-between gap-3">
+      <div className="bg-[#0E1526] border border-slate-800 rounded-2xl p-3.5 sm:p-4 flex flex-col md:flex-row items-center justify-between gap-3 shadow-lg">
         {/* Search */}
         <div className="relative w-full md:w-80">
           <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -228,9 +228,9 @@ export default function LettersAdminPage() {
       </div>
 
       {/* Letters Table */}
-      <div className="bg-[#0E1526]/80 border border-slate-800 rounded-2xl overflow-hidden shadow-xl backdrop-blur-md">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
+      <div className="bg-[#0E1526] border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+        <div className="overflow-x-auto w-full">
+          <table className="w-full text-left border-collapse min-w-[700px]">
             <thead>
               <tr className="border-b border-slate-800/80 bg-[#070A12]/80 text-slate-400 text-[11px] font-bold uppercase tracking-wider">
                 <th className="py-4 px-5">NO. SURAT &amp; TANGGAL</th>
@@ -335,8 +335,8 @@ export default function LettersAdminPage() {
 
       {/* QUICK PREVIEW & PRINT MODAL */}
       {previewLetter && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm overflow-y-auto print:p-0 print:bg-white print:static">
-          <div className="relative w-full max-w-4xl bg-[#04152d] border border-blue-500/40 rounded-3xl shadow-2xl overflow-hidden my-8 print:border-none print:shadow-none print:m-0 print:w-full print:bg-white">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3.5 sm:p-4 bg-black/85 overflow-y-auto print:p-0 print:bg-white print:static">
+          <div className="relative w-full max-w-4xl bg-[#04152d] border border-blue-500/40 rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden my-6 print:border-none print:shadow-none print:m-0 print:w-full print:bg-white">
             {/* Modal Controls Bar (Hidden on Print) */}
             <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-[#0A0E1A] print:hidden">
               <div className="flex items-center gap-2">

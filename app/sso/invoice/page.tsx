@@ -186,7 +186,7 @@ export default function InvoiceAdminPage() {
     <div className="space-y-6">
       {/* Toast Notification */}
       {toast && (
-        <div className="fixed top-20 right-6 z-50 bg-emerald-600 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-2 text-xs font-bold animate-bounce">
+        <div className="fixed top-20 right-6 z-50 bg-emerald-600 text-white px-4 py-2.5 rounded-xl shadow-lg flex items-center gap-2 text-xs font-bold transition-opacity">
           <Check className="w-4 h-4" />
           <span>{toast}</span>
         </div>
@@ -195,41 +195,41 @@ export default function InvoiceAdminPage() {
       {/* Page Action Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-black text-white">Invoice Management</h1>
+          <h1 className="text-xl sm:text-2xl font-black text-white">Invoice Management</h1>
           <p className="text-slate-400 text-xs mt-0.5">Kelola data tagihan klien, status pembayaran, dan invoice resmi</p>
         </div>
-        <div className="flex flex-wrap items-center gap-3">
-          <div className="relative">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3 w-full sm:w-auto">
+          <Link
+            href="/sso/invoice/create"
+            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-colors shadow-md shadow-blue-600/30 cursor-pointer order-1 sm:order-none flex-1 sm:flex-initial"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Buat Format Resmi</span>
+          </Link>
+          <button
+            onClick={handleOpenQuickAdd}
+            className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition-colors border border-slate-700 cursor-pointer shrink-0 order-2 sm:order-none"
+          >
+            <Plus className="w-4 h-4 text-blue-400" />
+            <span>Tambah Cepat</span>
+          </button>
+          <div className="relative w-full sm:w-56 order-3 sm:order-none">
+            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
             <input
               type="text"
               placeholder="Cari invoice atau klien..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="bg-slate-900 border border-slate-700 rounded-xl pl-9 pr-4 py-2 text-xs text-white focus:outline-none focus:border-blue-500 w-48 sm:w-60"
+              className="w-full bg-slate-900 border border-slate-700 rounded-xl pl-9 pr-4 py-2 text-xs text-white focus:outline-none focus:border-blue-500"
             />
           </div>
-          <button
-            onClick={handleOpenQuickAdd}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition-all border border-slate-700 shrink-0 cursor-pointer"
-          >
-            <Plus className="w-4 h-4 text-blue-400" />
-            <span>Tambah Cepat</span>
-          </button>
-          <Link
-            href="/sso/invoice/create"
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-lg shadow-blue-600/25 shrink-0"
-          >
-            <Plus className="w-4 h-4" />
-            <span>Buat Format Resmi</span>
-          </Link>
         </div>
       </div>
 
       {/* Invoice Table Container */}
-      <div className="bg-[#0E1526]/80 border border-slate-800 rounded-2xl overflow-hidden shadow-xl backdrop-blur-md">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
+      <div className="bg-[#0E1526] border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+        <div className="overflow-x-auto w-full">
+          <table className="w-full text-left border-collapse min-w-[650px]">
             <thead>
               <tr className="border-b border-slate-800/80 bg-[#070A12]/80 text-slate-400 text-[11px] font-bold uppercase tracking-wider">
                 <th className="py-4 px-5">NO. INVOICE</th>
@@ -310,9 +310,9 @@ export default function InvoiceAdminPage() {
 
       {/* QUICK ADD / EDIT MODAL */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#0A0E1A] border border-slate-800 rounded-3xl max-w-lg w-full p-6 space-y-6 shadow-2xl animate-in fade-in zoom-in duration-200">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-3.5 sm:p-4">
+          <div className="bg-[#0A0E1A] border border-slate-800 rounded-2xl sm:rounded-3xl max-w-lg w-full p-4 sm:p-6 space-y-5 shadow-2xl max-h-[88vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <h2 className="text-lg font-bold text-white flex items-center gap-2">
                 <FileSpreadsheet className="w-5 h-5 text-blue-500" />
                 <span>{editingItem ? "Edit Data Invoice" : "Tambah Data Invoice Cepat"}</span>
@@ -426,8 +426,8 @@ export default function InvoiceAdminPage() {
 
       {/* QUICK PREVIEW & PRINT INVOICE MODAL */}
       {previewInvoice && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md overflow-y-auto print:p-0 print:bg-white print:static">
-          <div className="relative w-full max-w-3xl bg-white text-slate-900 rounded-3xl shadow-2xl overflow-hidden my-8 print:border-none print:shadow-none print:m-0 print:w-full">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3.5 sm:p-4 bg-black/85 overflow-y-auto print:p-0 print:bg-white print:static">
+          <div className="relative w-full max-w-3xl bg-white text-slate-900 rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden my-6 print:border-none print:shadow-none print:m-0 print:w-full">
             {/* Modal Controls Bar (Hidden on Print) */}
             <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-slate-50 print:hidden">
               <div className="flex items-center gap-2">

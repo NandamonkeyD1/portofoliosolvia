@@ -207,7 +207,7 @@ export default function CreateInvoicePage() {
     <div className="space-y-8 pb-20">
       {/* Toast Notification */}
       {toast && (
-        <div className="fixed top-20 right-6 z-50 bg-emerald-600 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-2 text-xs font-bold animate-bounce">
+        <div className="fixed top-20 right-6 z-50 bg-emerald-600 text-white px-4 py-2.5 rounded-xl shadow-lg flex items-center gap-2 text-xs font-bold transition-opacity">
           <Check className="w-4 h-4" />
           <span>{toast}</span>
         </div>
@@ -224,30 +224,30 @@ export default function CreateInvoicePage() {
         </Link>
       </div>
 
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-black text-white">Buat Invoice Baru (Format Resmi)</h1>
+          <h1 className="text-xl sm:text-2xl font-black text-white">Buat Invoice Baru (Format Resmi)</h1>
           <p className="text-slate-400 text-xs mt-1">Lengkapi rincian invoice penagihan resmi Solvia Nova</p>
         </div>
         <div className="flex items-center gap-3">
           <Link
             href="/sso/invoice"
-            className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold"
+            className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition-colors"
           >
             Batal
           </Link>
           <button
             onClick={handleSaveInvoice}
-            className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-lg shadow-blue-600/30 transition-all"
+            className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-md shadow-blue-600/30 transition-colors cursor-pointer"
           >
-            Buat & Preview Invoice
+            Simpan & Preview
           </button>
         </div>
       </div>
 
       <form onSubmit={handleSaveInvoice} className="space-y-8">
         {/* 1. Header & Nomor Invoice */}
-        <div className="bg-[#0E1526]/90 border border-slate-800 rounded-3xl p-6 sm:p-8 backdrop-blur-md shadow-2xl space-y-6">
+        <div className="bg-[#0E1526] border border-slate-800 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-xl space-y-6">
           <div className="flex items-center justify-between border-b border-slate-800 pb-4">
             <h2 className="text-sm font-bold text-white uppercase tracking-wider">
               Informasi Nomor & Tanggal Invoice
@@ -295,7 +295,7 @@ export default function CreateInvoicePage() {
 
         {/* 2. Data Penerima (Kepada Yth.) & Informasi Project */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-[#0E1526]/90 border border-slate-800 rounded-3xl p-6 sm:p-8 backdrop-blur-md shadow-2xl space-y-4">
+          <div className="bg-[#0E1526] border border-slate-800 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-xl space-y-4">
             <h2 className="text-sm font-bold text-white uppercase tracking-wider border-b border-slate-800 pb-3">
               KEPADA YTH.
             </h2>
@@ -344,7 +344,7 @@ export default function CreateInvoicePage() {
             </div>
           </div>
 
-          <div className="bg-[#0E1526]/90 border border-slate-800 rounded-3xl p-6 sm:p-8 backdrop-blur-md shadow-2xl space-y-4">
+          <div className="bg-[#0E1526] border border-slate-800 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-xl space-y-4">
             <h2 className="text-sm font-bold text-white uppercase tracking-wider border-b border-slate-800 pb-3">
               INFORMASI PROJECT
             </h2>
@@ -383,7 +383,7 @@ export default function CreateInvoicePage() {
         </div>
 
         {/* 3. RINCIAN LAYANAN Line Items Builder */}
-        <div className="bg-[#0E1526]/90 border border-slate-800 rounded-3xl p-6 sm:p-8 backdrop-blur-md shadow-2xl space-y-6">
+        <div className="bg-[#0E1526] border border-slate-800 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-xl space-y-6">
           <div className="flex items-center justify-between border-b border-slate-800 pb-4">
             <h2 className="text-sm font-bold text-white uppercase tracking-wider">
               RINCIAN LAYANAN & ITEM
@@ -516,7 +516,7 @@ export default function CreateInvoicePage() {
 
         {/* 4. Informasi Pembayaran, Catatan, & Tanda Tangan */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-[#0E1526]/90 border border-slate-800 rounded-3xl p-6 sm:p-8 backdrop-blur-md shadow-2xl space-y-4">
+          <div className="bg-[#0E1526] border border-slate-800 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-xl space-y-4">
             <h2 className="text-sm font-bold text-white uppercase tracking-wider border-b border-slate-800 pb-3">
               INFORMASI PEMBAYARAN
             </h2>
@@ -574,7 +574,7 @@ export default function CreateInvoicePage() {
             </div>
           </div>
 
-          <div className="bg-[#0E1526]/90 border border-slate-800 rounded-3xl p-6 sm:p-8 backdrop-blur-md shadow-2xl space-y-4">
+          <div className="bg-[#0E1526] border border-slate-800 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-xl space-y-4">
             <h2 className="text-sm font-bold text-white uppercase tracking-wider border-b border-slate-800 pb-3">
               TANDA TANGAN & CATATAN
             </h2>
@@ -637,7 +637,7 @@ export default function CreateInvoicePage() {
 
       {/* EXACT OFFICIAL SOLVIA NOVA INVOICE PRINTABLE / PDF MODAL */}
       {isPreviewOpen && (
-        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-2 sm:p-6 overflow-y-auto">
+        <div className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-2 sm:p-6 overflow-y-auto">
           <div className="bg-white text-slate-900 rounded-3xl max-w-4xl w-full p-6 sm:p-10 space-y-8 shadow-2xl relative my-8 print:m-0 print:p-0 print:shadow-none print:w-full print:max-w-none">
             {/* Action Bar Header */}
             <div className="flex items-center justify-between border-b pb-4 print:hidden">

@@ -80,23 +80,23 @@ export default function SSODashboardPage() {
         </div>
         <div className="flex items-center gap-2">
           <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+            <span className="w-2 h-2 rounded-full bg-emerald-400" />
             Live Analytics Active
           </span>
         </div>
       </div>
 
       {/* 4 Stat Metric Cards (Clickable to respective pages) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
         <Link
           href="/sso/portfolio"
-          className="bg-[#0E1526]/80 hover:bg-[#131c33] border border-slate-800/80 hover:border-blue-500/50 rounded-2xl p-5 space-y-3 backdrop-blur-md shadow-xl transition-all cursor-pointer group"
+          className="bg-[#0E1526] hover:bg-[#131c33] border border-slate-800 hover:border-blue-500/50 rounded-2xl p-5 space-y-3 shadow-lg transition-colors cursor-pointer group"
         >
           <div className="flex items-center justify-between">
             <span className="text-slate-400 text-xs font-semibold group-hover:text-white transition-colors">
               Total Portfolio
             </span>
-            <div className="w-9 h-9 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
+            <div className="w-9 h-9 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:scale-105 transition-transform">
               <FolderKanban className="w-5 h-5" />
             </div>
           </div>
@@ -108,13 +108,13 @@ export default function SSODashboardPage() {
 
         <Link
           href="/sso/seo"
-          className="bg-[#0E1526]/80 hover:bg-[#131c33] border border-slate-800/80 hover:border-purple-500/50 rounded-2xl p-5 space-y-3 backdrop-blur-md shadow-xl transition-all cursor-pointer group"
+          className="bg-[#0E1526] hover:bg-[#131c33] border border-slate-800 hover:border-purple-500/50 rounded-2xl p-5 space-y-3 shadow-lg transition-colors cursor-pointer group"
         >
           <div className="flex items-center justify-between">
             <span className="text-slate-400 text-xs font-semibold group-hover:text-white transition-colors">
               Pengunjung Bulan Ini
             </span>
-            <div className="w-9 h-9 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 group-hover:scale-110 transition-transform">
+            <div className="w-9 h-9 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 group-hover:scale-105 transition-transform">
               <TrendingUp className="w-5 h-5" />
             </div>
           </div>
@@ -126,13 +126,13 @@ export default function SSODashboardPage() {
 
         <Link
           href="/sso/messages"
-          className="bg-[#0E1526]/80 hover:bg-[#131c33] border border-slate-800/80 hover:border-cyan-500/50 rounded-2xl p-5 space-y-3 backdrop-blur-md shadow-xl transition-all cursor-pointer group"
+          className="bg-[#0E1526] hover:bg-[#131c33] border border-slate-800 hover:border-cyan-500/50 rounded-2xl p-5 space-y-3 shadow-lg transition-colors cursor-pointer group"
         >
           <div className="flex items-center justify-between">
             <span className="text-slate-400 text-xs font-semibold group-hover:text-white transition-colors">
               Total Leads / Pesan
             </span>
-            <div className="w-9 h-9 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform">
+            <div className="w-9 h-9 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 group-hover:scale-105 transition-transform">
               <MessageSquare className="w-5 h-5" />
             </div>
           </div>
@@ -144,13 +144,13 @@ export default function SSODashboardPage() {
 
         <Link
           href="/sso/messages"
-          className="bg-[#0E1526]/80 hover:bg-[#131c33] border border-slate-800/80 hover:border-emerald-500/50 rounded-2xl p-5 space-y-3 backdrop-blur-md shadow-xl transition-all cursor-pointer group"
+          className="bg-[#0E1526] hover:bg-[#131c33] border border-slate-800 hover:border-emerald-500/50 rounded-2xl p-5 space-y-3 shadow-lg transition-colors cursor-pointer group"
         >
           <div className="flex items-center justify-between">
             <span className="text-slate-400 text-xs font-semibold group-hover:text-white transition-colors">
               Status Respon Klien
             </span>
-            <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform">
+            <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 group-hover:scale-105 transition-transform">
               <CheckCircle2 className="w-5 h-5" />
             </div>
           </div>
@@ -164,7 +164,7 @@ export default function SSODashboardPage() {
       {/* ANALYTICS CHARTS SECTION */}
       <div className="grid lg:grid-cols-12 gap-6">
         {/* Left Column: Visual Bar Chart */}
-        <div className="lg:col-span-8 bg-[#0E1526]/80 border border-slate-800 rounded-3xl p-6 space-y-6 backdrop-blur-md shadow-2xl">
+        <div className="lg:col-span-8 bg-[#0E1526] border border-slate-800 rounded-2xl sm:rounded-3xl p-5 sm:p-6 space-y-6 shadow-xl">
           <div className="flex items-center justify-between border-b border-slate-800 pb-4">
             <div>
               <h3 className="text-base font-bold text-white flex items-center gap-2">
@@ -226,7 +226,7 @@ export default function SSODashboardPage() {
         </div>
 
         {/* Right Column: Traffic Sources Breakdown */}
-        <div className="lg:col-span-4 bg-[#0E1526]/80 border border-slate-800 rounded-3xl p-6 space-y-6 backdrop-blur-md shadow-2xl flex flex-col justify-between">
+        <div className="lg:col-span-4 bg-[#0E1526] border border-slate-800 rounded-2xl sm:rounded-3xl p-5 sm:p-6 space-y-6 shadow-xl flex flex-col justify-between">
           <div>
             <h3 className="text-base font-bold text-white border-b border-slate-800 pb-3 flex items-center gap-2">
               <Globe className="w-4 h-4 text-emerald-400" />
@@ -243,7 +243,7 @@ export default function SSODashboardPage() {
                   </div>
                   <div className="h-2 w-full bg-slate-900 rounded-full overflow-hidden border border-slate-800">
                     <div
-                      className={`h-full ${source.color} rounded-full transition-all duration-500`}
+                      className={`h-full ${source.color} rounded-full transition-all duration-300`}
                       style={{ width: `${source.percentage}%` }}
                     />
                   </div>
@@ -263,7 +263,7 @@ export default function SSODashboardPage() {
       {/* QUICK ACTIONS & KELOLA DATA TERPUSAT */}
       <div className="grid lg:grid-cols-12 gap-6">
         {/* Quick Actions Grid (All sub-menus represented) */}
-        <div className="lg:col-span-6 bg-[#0E1526]/80 border border-slate-800/80 rounded-3xl p-6 space-y-4 backdrop-blur-md shadow-xl">
+        <div className="lg:col-span-6 bg-[#0E1526] border border-slate-800 rounded-2xl sm:rounded-3xl p-5 sm:p-6 space-y-4 shadow-xl">
           <div className="flex items-center justify-between border-b border-slate-800 pb-3">
             <h3 className="text-base font-bold text-white flex items-center gap-2">
               <Zap className="w-4 h-4 text-yellow-400" />
@@ -272,83 +272,83 @@ export default function SSODashboardPage() {
             <span className="text-slate-400 text-xs">Akses Kilat</span>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
             <Link
               href="/sso/portfolio"
-              className="flex items-center gap-2 p-3 rounded-xl bg-blue-600/15 border border-blue-500/30 text-blue-300 hover:bg-blue-600 hover:text-white transition-all text-xs font-bold"
+              className="flex items-center gap-2 p-3 rounded-xl bg-blue-600/15 border border-blue-500/30 text-blue-300 hover:bg-blue-600 hover:text-white transition-colors text-xs font-bold"
             >
-              <FolderKanban className="w-4 h-4" />
+              <FolderKanban className="w-4 h-4 shrink-0" />
               <span>+ Portfolio Proyek</span>
             </Link>
 
             <Link
               href="/sso/services"
-              className="flex items-center gap-2 p-3 rounded-xl bg-cyan-600/15 border border-cyan-500/30 text-cyan-300 hover:bg-cyan-600 hover:text-white transition-all text-xs font-bold"
+              className="flex items-center gap-2 p-3 rounded-xl bg-cyan-600/15 border border-cyan-500/30 text-cyan-300 hover:bg-cyan-600 hover:text-white transition-colors text-xs font-bold"
             >
-              <Layers className="w-4 h-4" />
+              <Layers className="w-4 h-4 shrink-0" />
               <span>+ Paket Layanan</span>
             </Link>
 
             <Link
               href="/sso/categories"
-              className="flex items-center gap-2 p-3 rounded-xl bg-indigo-600/15 border border-indigo-500/30 text-indigo-300 hover:bg-indigo-600 hover:text-white transition-all text-xs font-bold"
+              className="flex items-center gap-2 p-3 rounded-xl bg-indigo-600/15 border border-indigo-500/30 text-indigo-300 hover:bg-indigo-600 hover:text-white transition-colors text-xs font-bold"
             >
-              <Tag className="w-4 h-4" />
+              <Tag className="w-4 h-4 shrink-0" />
               <span>+ Kategori Baru</span>
             </Link>
 
             <Link
               href="/sso/gallery"
-              className="flex items-center gap-2 p-3 rounded-xl bg-emerald-600/15 border border-emerald-500/30 text-emerald-300 hover:bg-emerald-600 hover:text-white transition-all text-xs font-bold"
+              className="flex items-center gap-2 p-3 rounded-xl bg-emerald-600/15 border border-emerald-500/30 text-emerald-300 hover:bg-emerald-600 hover:text-white transition-colors text-xs font-bold"
             >
-              <ImageIcon className="w-4 h-4" />
+              <ImageIcon className="w-4 h-4 shrink-0" />
               <span>+ Upload Galeri</span>
             </Link>
 
             <Link
               href="/sso/team"
-              className="flex items-center gap-2 p-3 rounded-xl bg-amber-600/15 border border-amber-500/30 text-amber-300 hover:bg-amber-600 hover:text-white transition-all text-xs font-bold"
+              className="flex items-center gap-2 p-3 rounded-xl bg-amber-600/15 border border-amber-500/30 text-amber-300 hover:bg-amber-600 hover:text-white transition-colors text-xs font-bold"
             >
-              <Users className="w-4 h-4" />
+              <Users className="w-4 h-4 shrink-0" />
               <span>+ Anggota Tim</span>
             </Link>
 
             <Link
               href="/sso/articles"
-              className="flex items-center gap-2 p-3 rounded-xl bg-purple-600/15 border border-purple-500/30 text-purple-300 hover:bg-purple-600 hover:text-white transition-all text-xs font-bold"
+              className="flex items-center gap-2 p-3 rounded-xl bg-purple-600/15 border border-purple-500/30 text-purple-300 hover:bg-purple-600 hover:text-white transition-colors text-xs font-bold"
             >
-              <FileText className="w-4 h-4" />
+              <FileText className="w-4 h-4 shrink-0" />
               <span>+ Tulis Artikel</span>
             </Link>
 
             <Link
               href="/sso/invoice/create"
-              className="flex items-center gap-2 p-3 rounded-xl bg-yellow-600/15 border border-yellow-500/30 text-yellow-300 hover:bg-yellow-600 hover:text-white transition-all text-xs font-bold"
+              className="flex items-center gap-2 p-3 rounded-xl bg-yellow-600/15 border border-yellow-500/30 text-yellow-300 hover:bg-yellow-600 hover:text-white transition-colors text-xs font-bold"
             >
-              <FileSpreadsheet className="w-4 h-4" />
+              <FileSpreadsheet className="w-4 h-4 shrink-0" />
               <span>+ Buat Invoice</span>
             </Link>
 
             <Link
               href="/sso/messages"
-              className="flex items-center gap-2 p-3 rounded-xl bg-pink-600/15 border border-pink-500/30 text-pink-300 hover:bg-pink-600 hover:text-white transition-all text-xs font-bold"
+              className="flex items-center gap-2 p-3 rounded-xl bg-pink-600/15 border border-pink-500/30 text-pink-300 hover:bg-pink-600 hover:text-white transition-colors text-xs font-bold"
             >
-              <MessageSquare className="w-4 h-4" />
+              <MessageSquare className="w-4 h-4 shrink-0" />
               <span>+ Catat Pesan / Lead</span>
             </Link>
 
             <Link
               href="/sso/letters/create"
-              className="col-span-2 flex items-center justify-center gap-2 p-3 rounded-xl bg-gradient-to-r from-blue-600/25 to-indigo-600/25 border border-blue-500/40 text-blue-300 hover:from-blue-600 hover:to-indigo-600 hover:text-white transition-all text-xs font-bold shadow-md"
+              className="col-span-1 sm:col-span-2 flex items-center justify-center gap-2 p-3 rounded-xl bg-gradient-to-r from-blue-600/25 to-indigo-600/25 border border-blue-500/40 text-blue-300 hover:from-blue-600 hover:to-indigo-600 hover:text-white transition-colors text-xs font-bold shadow-md"
             >
-              <ScrollText className="w-4 h-4" />
+              <ScrollText className="w-4 h-4 shrink-0" />
               <span>+ Buat Dokumen &amp; Surat Resmi Berkop</span>
             </Link>
           </div>
         </div>
 
         {/* Pesan Terbaru */}
-        <div className="lg:col-span-6 bg-[#0E1526]/80 border border-slate-800/80 rounded-3xl p-6 space-y-4 backdrop-blur-md shadow-xl flex flex-col justify-between">
+        <div className="lg:col-span-6 bg-[#0E1526] border border-slate-800 rounded-2xl sm:rounded-3xl p-5 sm:p-6 space-y-4 shadow-xl flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <h3 className="text-base font-bold text-white flex items-center gap-2">
