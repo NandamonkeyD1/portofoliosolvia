@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Plus, Edit, Trash2, X, Check, Search, Image as ImageIcon } from "lucide-react";
+import { Plus, Edit, Trash2, X, Check, Search, Image as ImageIcon, ExternalLink } from "lucide-react";
 import ImageUploader from "@/components/ImageUploader";
 
 interface GalleryItem {
@@ -173,6 +173,16 @@ export default function GalleryAdminPage() {
           <p className="text-slate-400 text-xs mt-1">Kelola galeri kegiatan & dokumentasi</p>
         </div>
         <div className="flex items-center gap-3">
+          <a
+            href="/gallery"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition-all border border-slate-700 shrink-0 cursor-pointer"
+            title="Lihat Galeri di Website Publik"
+          >
+            <ExternalLink className="w-4 h-4 text-cyan-400" />
+            <span>Lihat di Web</span>
+          </a>
           <div className="relative">
             <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
             <input
@@ -185,7 +195,7 @@ export default function GalleryAdminPage() {
           </div>
           <button
             onClick={handleOpenAddModal}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-lg shadow-blue-600/25 shrink-0"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-lg shadow-blue-600/25 shrink-0 cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span>Upload Foto</span>
@@ -207,16 +217,25 @@ export default function GalleryAdminPage() {
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               />
               <div className="absolute top-2 right-2 flex gap-1 bg-slate-950/70 backdrop-blur-md p-1 rounded-lg border border-slate-700">
+                <a
+                  href={item.image}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="p-1.5 hover:bg-slate-700 text-slate-300 hover:text-white rounded transition-colors cursor-pointer"
+                  title="Lihat Foto Full Size"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
                 <button
                   onClick={() => handleOpenEditModal(item)}
-                  className="p-1.5 hover:bg-blue-600 text-slate-300 hover:text-white rounded transition-colors"
+                  className="p-1.5 hover:bg-blue-600 text-slate-300 hover:text-white rounded transition-colors cursor-pointer"
                   title="Edit"
                 >
                   <Edit className="w-3.5 h-3.5" />
                 </button>
                 <button
                   onClick={() => handleDelete(item.id)}
-                  className="p-1.5 hover:bg-red-600 text-red-400 hover:text-white rounded transition-colors"
+                  className="p-1.5 hover:bg-red-600 text-red-400 hover:text-white rounded transition-colors cursor-pointer"
                   title="Hapus"
                 >
                   <Trash2 className="w-3.5 h-3.5" />

@@ -28,6 +28,21 @@ export default function SettingsAdminPage() {
     if (savedSig) setSignatureImage(savedSig);
     if (savedName) setSignatoryName(savedName);
     if (savedRole) setSignatoryRole(savedRole);
+
+    const savedCompany = localStorage.getItem("solvia_company_settings");
+    if (savedCompany) {
+      try {
+        const parsed = JSON.parse(savedCompany);
+        if (parsed.siteName) setSiteName(parsed.siteName);
+        if (parsed.siteEmail) setSiteEmail(parsed.siteEmail);
+        if (parsed.sitePhone) setSitePhone(parsed.sitePhone);
+        if (parsed.siteWhatsapp) setSiteWhatsapp(parsed.siteWhatsapp);
+        if (parsed.siteAddress) setSiteAddress(parsed.siteAddress);
+        if (parsed.siteInstagram) setSiteInstagram(parsed.siteInstagram);
+      } catch (e) {
+        console.error(e);
+      }
+    }
   }, []);
 
   const handleSave = (e: React.FormEvent) => {
@@ -37,6 +52,17 @@ export default function SettingsAdminPage() {
     localStorage.setItem("solvia_signature_image", signatureImage);
     localStorage.setItem("solvia_signatory_name", signatoryName);
     localStorage.setItem("solvia_signatory_role", signatoryRole);
+
+    // Persist company details
+    const companySettings = {
+      siteName,
+      siteEmail,
+      sitePhone,
+      siteWhatsapp,
+      siteAddress,
+      siteInstagram,
+    };
+    localStorage.setItem("solvia_company_settings", JSON.stringify(companySettings));
 
     setSaved(true);
     setTimeout(() => setSaved(false), 3000);

@@ -1,8 +1,27 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Globe, Cpu, Radio, Layers, GraduationCap, CheckCircle2, ArrowRight, Sparkles } from "lucide-react";
-import { servicesData } from "@/lib/data";
+import { servicesData, Service } from "@/lib/data";
 
 export default function ServicesPage() {
+  const [services, setServices] = useState<any[]>(servicesData);
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("solvia_services_data");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setServices(parsed);
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }, []);
+
   return (
     <div className="py-6 sm:py-10 pb-20 w-full space-y-10 sm:space-y-14 overflow-x-hidden">
       {/* Header Centered */}
@@ -21,18 +40,24 @@ export default function ServicesPage() {
 
       {/* Services Grid (6 Balanced Cards in 3 Columns) */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-        {servicesData.map((svc) => (
+        {services.map((svc) => (
           <div
             key={svc.id}
             className="group bg-[#020611]/90 backdrop-blur-xl border border-blue-400/30 rounded-2xl sm:rounded-3xl p-5 sm:p-8 space-y-4 sm:space-y-6 hover:border-blue-400/70 hover:bg-[#08183c]/90 transition-all duration-300 shadow-2xl flex flex-col justify-between hover:-translate-y-1"
           >
             <div className="space-y-5">
               <div className="w-14 h-14 rounded-2xl bg-blue-600/30 border border-blue-400/40 flex items-center justify-center text-[#61adff] group-hover:bg-blue-600 group-hover:text-white transition-colors shadow-lg">
-                {svc.icon === "Globe" && <Globe className="w-7 h-7" />}
-                {svc.icon === "Cpu" && <Cpu className="w-7 h-7" />}
-                {svc.icon === "Radio" && <Radio className="w-7 h-7" />}
-                {svc.icon === "Layers" && <Layers className="w-7 h-7" />}
-                {svc.icon === "GraduationCap" && <GraduationCap className="w-7 h-7" />}
+                {svc.icon === "Cpu" ? (
+                  <Cpu className="w-7 h-7" />
+                ) : svc.icon === "Radio" ? (
+                  <Radio className="w-7 h-7" />
+                ) : svc.icon === "GraduationCap" ? (
+                  <GraduationCap className="w-7 h-7" />
+                ) : svc.icon === "Layers" ? (
+                  <Layers className="w-7 h-7" />
+                ) : (
+                  <Globe className="w-7 h-7" />
+                )}
               </div>
               <div>
                 <span className="text-xs font-mono font-bold text-blue-400 uppercase tracking-wider">{svc.category}</span>
@@ -40,17 +65,19 @@ export default function ServicesPage() {
               </div>
               <p className="text-blue-100 text-xs sm:text-sm leading-relaxed font-medium">{svc.shortDesc}</p>
 
-              <div className="space-y-3 pt-4 border-t border-blue-400/15">
-                <h4 className="text-xs font-bold text-blue-300 uppercase tracking-wider">Fitur Utama:</h4>
-                <div className="space-y-2">
-                  {svc.features.map((feat) => (
-                    <div key={feat} className="flex items-center gap-2 text-xs text-white font-medium">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                      <span>{feat}</span>
-                    </div>
-                  ))}
+              {svc.features && svc.features.length > 0 && (
+                <div className="space-y-3 pt-4 border-t border-blue-400/15">
+                  <h4 className="text-xs font-bold text-blue-300 uppercase tracking-wider">Fitur Utama:</h4>
+                  <div className="space-y-2">
+                    {svc.features.map((feat: string, fIdx: number) => (
+                      <div key={fIdx} className="flex items-center gap-2 text-xs text-white font-medium">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                        <span>{feat}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
 
             <div className="pt-6">

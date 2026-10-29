@@ -164,6 +164,16 @@ export default function PortfolioAdminPage() {
           <p className="text-slate-400 text-xs mt-1">Kelola portofolio, foto visual, dan studi kasus</p>
         </div>
         <div className="flex items-center gap-3">
+          <a
+            href="/portfolio"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition-all border border-slate-700 shrink-0 cursor-pointer"
+            title="Lihat Portofolio di Web Publik"
+          >
+            <ExternalLink className="w-4 h-4 text-cyan-400" />
+            <span>Lihat di Web</span>
+          </a>
           <div className="relative">
             <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
             <input
@@ -176,7 +186,7 @@ export default function PortfolioAdminPage() {
           </div>
           <button
             onClick={handleOpenAddModal}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-lg shadow-blue-600/25 shrink-0"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-lg shadow-blue-600/25 shrink-0 cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span>Tambah Portfolio</span>
@@ -251,16 +261,25 @@ export default function PortfolioAdminPage() {
                   {/* AKSI */}
                   <td className="py-4 px-6 text-right">
                     <div className="flex items-center justify-end gap-2">
+                      <a
+                        href="/portfolio"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors cursor-pointer"
+                        title="Lihat Portofolio di Web Publik"
+                      >
+                        <ExternalLink className="w-4 h-4" />
+                      </a>
                       <button
                         onClick={() => handleOpenEditModal(item)}
-                        className="p-2 rounded-lg bg-blue-500/10 hover:bg-blue-600 text-blue-400 hover:text-white transition-colors"
+                        className="p-2 rounded-lg bg-blue-500/10 hover:bg-blue-600 text-blue-400 hover:text-white transition-colors cursor-pointer"
                         title="Edit"
                       >
                         <Edit className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => handleDelete(item.id)}
-                        className="p-2 rounded-lg bg-red-500/10 hover:bg-red-600 text-red-400 hover:text-white transition-colors"
+                        className="p-2 rounded-lg bg-red-500/10 hover:bg-red-600 text-red-400 hover:text-white transition-colors cursor-pointer"
                         title="Hapus"
                       >
                         <Trash2 className="w-4 h-4" />

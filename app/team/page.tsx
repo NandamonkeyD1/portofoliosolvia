@@ -1,8 +1,27 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Users, Mail, ArrowRight, Code, Palette, FileText, BarChart3, Sparkles } from "lucide-react";
-import { teamData } from "@/lib/data";
+import { teamData, TeamMember } from "@/lib/data";
 
 export default function TeamPage() {
+  const [members, setMembers] = useState<any[]>(teamData);
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("solvia_team_data");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setMembers(parsed);
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }, []);
+
   const getRoleIcon = (name: string, position: string) => {
     if (position.includes("Founder") || name.includes("Solvia")) return Sparkles;
     if (name.includes("Dev")) return Code;
@@ -30,9 +49,10 @@ export default function TeamPage() {
 
       {/* UNIFORM TEAM GRID */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-        {teamData.map((member) => {
+        {members.map((member) => {
           const isFounder = member.position.includes("Founder") || member.name.includes("Solvia");
           const IconComp = getRoleIcon(member.name, member.position);
+          const photoUrl = member.photo || member.avatar;
 
           return (
             <div
@@ -47,10 +67,10 @@ export default function TeamPage() {
                 {/* Header Photo / Icon & Role Tag */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    {member.photo ? (
+                    {photoUrl ? (
                       <div className="w-16 h-16 rounded-2xl overflow-hidden border-2 border-blue-400/50 shadow-lg shrink-0 bg-slate-900 group-hover:scale-105 transition-transform">
                         <img
-                          src={member.photo}
+                          src={photoUrl}
                           alt={member.name}
                           className="w-full h-full object-cover"
                         />

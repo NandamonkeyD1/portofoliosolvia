@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Plus, Eye, Edit, Trash2, Search, Check, X, FileSpreadsheet, ArrowUpRight } from "lucide-react";
+import { Plus, Eye, Edit, Trash2, Search, Check, X, FileSpreadsheet, ArrowUpRight, Printer, Sparkles } from "lucide-react";
 import Link from "next/link";
 
 interface InvoiceItem {
@@ -68,6 +68,7 @@ export default function InvoiceAdminPage() {
   const [invoices, setInvoices] = useState<InvoiceItem[]>([]);
   const [search, setSearch] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [previewInvoice, setPreviewInvoice] = useState<InvoiceItem | null>(null);
   const [editingItem, setEditingItem] = useState<InvoiceItem | null>(null);
   const [toast, setToast] = useState<string | null>(null);
 
@@ -276,13 +277,13 @@ export default function InvoiceAdminPage() {
                     </td>
                     <td className="py-4 px-5 text-right whitespace-nowrap">
                       <div className="flex items-center justify-end gap-1.5 text-slate-400">
-                        <Link
-                          href="/sso/invoice/create"
-                          className="p-1.5 rounded-lg hover:text-white hover:bg-slate-700 transition-colors"
-                          title="Buka Format Preview"
+                        <button
+                          onClick={() => setPreviewInvoice(inv)}
+                          className="p-1.5 rounded-lg hover:text-white hover:bg-slate-700 transition-colors cursor-pointer"
+                          title="Lihat & Cetak Invoice"
                         >
-                          <Eye className="w-3.5 h-3.5" />
-                        </Link>
+                          <Eye className="w-3.5 h-3.5 text-cyan-400" />
+                        </button>
                         <button
                           onClick={() => handleOpenEdit(inv)}
                           className="p-1.5 rounded-lg hover:text-blue-400 hover:bg-slate-700 transition-colors cursor-pointer"
@@ -419,6 +420,121 @@ export default function InvoiceAdminPage() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* QUICK PREVIEW & PRINT INVOICE MODAL */}
+      {previewInvoice && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md overflow-y-auto print:p-0 print:bg-white print:static">
+          <div className="relative w-full max-w-3xl bg-white text-slate-900 rounded-3xl shadow-2xl overflow-hidden my-8 print:border-none print:shadow-none print:m-0 print:w-full">
+            {/* Modal Controls Bar (Hidden on Print) */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-slate-50 print:hidden">
+              <div className="flex items-center gap-2">
+                <FileSpreadsheet className="w-4 h-4 text-blue-600" />
+                <span className="text-xs font-bold text-slate-800">
+                  Pratinjau Tagihan: <span className="font-mono text-blue-700">{previewInvoice.no}</span>
+                </span>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => window.print()}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-900 hover:bg-blue-800 text-white text-xs font-bold transition-all shadow-md active:scale-95 cursor-pointer"
+                >
+                  <Printer className="w-3.5 h-3.5" />
+                  <span>Cetak / Simpan PDF</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPreviewInvoice(null)}
+                  className="p-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 transition-colors cursor-pointer"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+
+            {/* Invoice A4 Sheet Layout */}
+            <div className="p-8 sm:p-10 space-y-6 font-sans text-xs">
+              {/* Header Kop */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b pb-4 gap-4">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-lg bg-blue-900 text-white font-black flex items-center justify-center text-sm">
+                      S
+                    </div>
+                    <span className="text-xl font-black text-blue-950 tracking-tight">SOLVIA.NOVA</span>
+                  </div>
+                  <div className="text-[10px] font-bold text-blue-800 uppercase tracking-wider">
+                    Digital Solution & Software House
+                  </div>
+                  <div className="text-slate-500 text-[11px]">Jl. Gumukrejo RT 05 RW 05, Nanggulan Salatiga • 083148801578</div>
+                </div>
+
+                <div className="text-left sm:text-right space-y-1">
+                  <div className="text-2xl font-black text-blue-950">INVOICE</div>
+                  <div className="font-mono font-bold text-slate-700">{previewInvoice.no}</div>
+                  <div className="text-slate-500">Tanggal: {previewInvoice.date}</div>
+                </div>
+              </div>
+
+              {/* Klien & Project Meta */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                <div className="space-y-1">
+                  <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">DITUJUKAN KEPADA:</span>
+                  <div className="font-bold text-slate-900 text-sm">{previewInvoice.client}</div>
+                  <div className="text-slate-600">Proyek: <strong className="text-slate-800">{previewInvoice.project}</strong></div>
+                </div>
+                <div className="space-y-1 sm:text-right">
+                  <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">STATUS TAGIHAN:</span>
+                  <span className="inline-block px-3 py-1 rounded-full text-xs font-black bg-blue-100 text-blue-900 border border-blue-200">
+                    {previewInvoice.status}
+                  </span>
+                </div>
+              </div>
+
+              {/* Rincian Ringkas Tagihan */}
+              <div className="border border-slate-200 rounded-2xl overflow-hidden">
+                <table className="w-full text-left border-collapse">
+                  <thead className="bg-slate-100 border-b border-slate-200 text-slate-700 text-[11px] font-bold uppercase">
+                    <tr>
+                      <th className="py-3 px-4">Deskripsi Layanan / Proyek</th>
+                      <th className="py-3 px-4 text-right">Subtotal</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-b border-slate-100">
+                      <td className="py-3.5 px-4">
+                        <div className="font-bold text-slate-900">{previewInvoice.project}</div>
+                        <div className="text-slate-500 text-[11px] mt-0.5">Pengembangan sistem digital, implementasi & pengujian terpadu</div>
+                      </td>
+                      <td className="py-3.5 px-4 text-right font-bold text-slate-900 font-mono text-sm">
+                        {previewInvoice.total}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Pembayaran & Tanda Tangan */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
+                <div className="bg-blue-50/60 border border-blue-200 rounded-2xl p-4 space-y-1">
+                  <span className="text-[10px] font-bold text-blue-900 uppercase tracking-wider block">INFORMASI PEMBAYARAN:</span>
+                  <div className="font-bold text-slate-900">Bank Mandiri</div>
+                  <div className="font-mono font-black text-blue-900 text-sm">1360034942356</div>
+                  <div className="text-slate-600 text-[11px]">a.n. Nanda Ari Wahyu Widagdo</div>
+                </div>
+
+                <div className="text-center sm:text-right space-y-2 flex flex-col justify-end">
+                  <div className="text-slate-600">Hormat Kami,</div>
+                  <div className="font-serif italic text-xl text-blue-900 font-bold">Nanda A. W.</div>
+                  <div className="font-bold text-slate-900">Solvia Nova Official</div>
+                  <div className="text-slate-500 text-[10px] uppercase font-bold">Direktur Utama / CEO</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}

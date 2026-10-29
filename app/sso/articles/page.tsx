@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Plus, Edit, Trash2, X, Check, Search, FileText, Image as ImageIcon } from "lucide-react";
+import { Plus, Edit, Trash2, X, Check, Search, FileText, Image as ImageIcon, ExternalLink } from "lucide-react";
 import { articlesData, Article } from "@/lib/data";
 import ImageUploader from "@/components/ImageUploader";
 
@@ -174,6 +174,16 @@ export default function ArticlesAdminPage() {
           <p className="text-slate-400 text-xs mt-1">Kelola artikel wawasan teknologi, tutorial, dan riset Solvia Nova</p>
         </div>
         <div className="flex items-center gap-3">
+          <a
+            href="/articles"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition-all border border-slate-700 shrink-0 cursor-pointer"
+            title="Lihat Artikel di Website Publik"
+          >
+            <ExternalLink className="w-4 h-4 text-cyan-400" />
+            <span>Lihat di Web</span>
+          </a>
           <div className="relative">
             <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
             <input
@@ -235,6 +245,16 @@ export default function ArticlesAdminPage() {
               </div>
 
               <div className="flex gap-2 shrink-0 md:self-center">
+                <a
+                  href="/articles"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer"
+                  title="Lihat Artikel di Website Publik"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                  <span>Lihat Web</span>
+                </a>
                 <button
                   onClick={() => handleOpenEditModal(art)}
                   className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-blue-600 text-slate-200 text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer"

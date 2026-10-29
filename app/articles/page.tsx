@@ -1,8 +1,27 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowRight, BookOpen } from "lucide-react";
-import { articlesData } from "@/lib/data";
+import { articlesData, Article } from "@/lib/data";
 
 export default function ArticlesPage() {
+  const [articles, setArticles] = useState<any[]>(articlesData);
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("solvia_articles_data");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setArticles(parsed);
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }, []);
+
   return (
     <div className="py-6 sm:py-10 pb-20 w-full space-y-10 sm:space-y-14 overflow-x-hidden">
       <div className="text-center space-y-4 max-w-3xl mx-auto">
@@ -19,7 +38,7 @@ export default function ArticlesPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-        {articlesData.map((art) => (
+        {articles.map((art) => (
           <div
             key={art.id}
             className="group bg-gradient-to-b from-[#0a274d] to-[#04152d] border border-blue-400/30 hover:border-cyan-400/70 rounded-2xl sm:rounded-3xl p-6 sm:p-8 space-y-4 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-300 flex flex-col justify-between"

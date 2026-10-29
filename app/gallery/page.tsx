@@ -1,12 +1,27 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Sparkles, Image as ImageIcon, X, Calendar, Tag, Box, Layers } from "lucide-react";
 import { galleryData, GalleryItem } from "@/lib/data";
 import Model3DViewer from "@/components/Model3DViewer";
 
 export default function GalleryPage() {
+  const [photos, setPhotos] = useState<GalleryItem[]>(galleryData);
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("solvia_gallery_data");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setPhotos(parsed);
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }, []);
 
   return (
     <div className="py-6 sm:py-10 pb-20 w-full space-y-10 sm:space-y-14 overflow-x-hidden">
@@ -26,7 +41,7 @@ export default function GalleryPage() {
 
       {/* Gallery Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-        {galleryData.map((item) => (
+        {photos.map((item) => (
           <div
             key={item.id}
             onClick={() => setSelectedItem(item)}

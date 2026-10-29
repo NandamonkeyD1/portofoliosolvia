@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Plus, Tag, Edit, Trash2, X, Check, Search, Layers, FolderKanban } from "lucide-react";
+import { Plus, Tag, Edit, Trash2, X, Check, Search, Layers, FolderKanban, ExternalLink } from "lucide-react";
 
 interface CategoryItem {
   id: string;
@@ -162,6 +162,16 @@ export default function CategoriesAdminPage() {
           </p>
         </div>
         <div className="flex items-center gap-3">
+          <a
+            href="/services"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition-all border border-slate-700 shrink-0 cursor-pointer"
+            title="Lihat Layanan & Kategori di Web Publik"
+          >
+            <ExternalLink className="w-4 h-4 text-cyan-400" />
+            <span>Lihat di Web</span>
+          </a>
           <div className="relative">
             <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
             <input

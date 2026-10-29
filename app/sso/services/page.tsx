@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Plus, Edit, Trash2, X, Check, Search, Inbox, Layers, Sparkles } from "lucide-react";
+import { Plus, Edit, Trash2, X, Check, Search, Inbox, Layers, Sparkles, ExternalLink } from "lucide-react";
 import { servicesData } from "@/lib/data";
 
 interface ServiceItem {
@@ -163,25 +163,35 @@ export default function ServicesAdminPage() {
           <h1 className="text-2xl font-black text-white">Services Management</h1>
           <p className="text-slate-400 text-xs mt-1">Kelola portofolio paket layanan digital Solvia Nova</p>
         </div>
-        <div className="flex items-center gap-3">
-          <div className="relative">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
-            <input
-              type="text"
-              placeholder="Cari service..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="bg-slate-900 border border-slate-700 rounded-xl pl-9 pr-4 py-2 text-xs text-white focus:outline-none focus:border-blue-500 w-48 sm:w-64"
-            />
+          <div className="flex items-center gap-3">
+            <a
+              href="/services"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition-all border border-slate-700 shrink-0 cursor-pointer"
+              title="Buka Halaman Layanan Publik"
+            >
+              <ExternalLink className="w-4 h-4 text-cyan-400" />
+              <span>Lihat di Web</span>
+            </a>
+            <div className="relative">
+              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+              <input
+                type="text"
+                placeholder="Cari service..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="bg-slate-900 border border-slate-700 rounded-xl pl-9 pr-4 py-2 text-xs text-white focus:outline-none focus:border-blue-500 w-48 sm:w-64"
+              />
+            </div>
+            <button
+              onClick={handleOpenAddModal}
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-lg shadow-blue-600/25 shrink-0 cursor-pointer"
+            >
+              <Plus className="w-4 h-4" />
+              <span>Tambah Service</span>
+            </button>
           </div>
-          <button
-            onClick={handleOpenAddModal}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-lg shadow-blue-600/25 shrink-0 cursor-pointer"
-          >
-            <Plus className="w-4 h-4" />
-            <span>Tambah Service</span>
-          </button>
-        </div>
       </div>
 
       {/* Services Table */}
@@ -260,16 +270,25 @@ export default function ServicesAdminPage() {
                     </td>
                     <td className="py-4 px-6 text-right">
                       <div className="flex items-center justify-end gap-2">
+                        <a
+                          href="/services"
+                          target="_blank"
+                          rel="noreferrer"
+                          className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors cursor-pointer"
+                          title="Lihat Layanan di Website Publik"
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                        </a>
                         <button
                           onClick={() => handleOpenEditModal(svc)}
-                          className="p-2 rounded-lg bg-blue-500/10 hover:bg-blue-600 text-blue-400 hover:text-white transition-colors"
+                          className="p-2 rounded-lg bg-blue-500/10 hover:bg-blue-600 text-blue-400 hover:text-white transition-colors cursor-pointer"
                           title="Edit"
                         >
                           <Edit className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => handleDelete(svc.id, svc.name)}
-                          className="p-2 rounded-lg bg-red-500/10 hover:bg-red-600 text-red-400 hover:text-white transition-colors"
+                          className="p-2 rounded-lg bg-red-500/10 hover:bg-red-600 text-red-400 hover:text-white transition-colors cursor-pointer"
                           title="Hapus"
                         >
                           <Trash2 className="w-4 h-4" />

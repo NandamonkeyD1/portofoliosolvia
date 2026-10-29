@@ -12,13 +12,28 @@ const CATEGORIES = [
 ];
 
 export default function PortfolioSlider() {
+  const [portfolioList, setPortfolioList] = useState<Portfolio[]>(portfolioData);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const touchStartX = useRef<number | null>(null);
 
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("solvia_portfolio_data");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setPortfolioList(parsed);
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }, []);
+
   // Filter items based on category
-  const filteredItems: Portfolio[] = portfolioData.filter((item) => {
+  const filteredItems: Portfolio[] = portfolioList.filter((item) => {
     if (selectedCategory === "all") return true;
     const cat = item.category.toLowerCase();
     if (selectedCategory === "web") {

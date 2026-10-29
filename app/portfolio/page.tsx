@@ -1,8 +1,27 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ExternalLink, Sparkles, FolderKanban } from "lucide-react";
-import { portfolioData } from "@/lib/data";
+import { portfolioData, Portfolio } from "@/lib/data";
 
 export default function PortfolioPage() {
+  const [projects, setProjects] = useState<Portfolio[]>(portfolioData);
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("solvia_portfolio_data");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setProjects(parsed);
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }, []);
+
   return (
     <div className="py-6 sm:py-10 pb-20 w-full space-y-10 sm:space-y-14 overflow-x-hidden">
       {/* Page Header */}
@@ -21,7 +40,7 @@ export default function PortfolioPage() {
 
       {/* Grid of Portfolio Project Cards with Photo Thumbnails */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-        {portfolioData.map((project) => (
+        {projects.map((project) => (
           <div
             key={project.id}
             className="group bg-[#020611]/90 backdrop-blur-xl border border-blue-400/30 rounded-2xl sm:rounded-3xl overflow-hidden hover:border-blue-400/70 transition-all duration-300 shadow-2xl flex flex-col justify-between hover:-translate-y-1"

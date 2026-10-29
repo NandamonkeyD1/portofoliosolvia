@@ -145,7 +145,15 @@ export default function SSOLayout({ children }: { children: React.ReactNode }) {
           <div className="p-4 border-t border-slate-800/60">
             <Link
               href="/sso"
-              className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all"
+              onClick={() => {
+                try {
+                  localStorage.removeItem("solvia_admin_logged");
+                  localStorage.removeItem("solvia_admin_email");
+                } catch (e) {
+                  console.error(e);
+                }
+              }}
+              className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all cursor-pointer"
             >
               <LogOut className="w-4 h-4 text-slate-400" />
               <span>Logout</span>
@@ -161,7 +169,7 @@ export default function SSOLayout({ children }: { children: React.ReactNode }) {
           <div className="flex items-center gap-4">
             <button
               onClick={() => setMobileSidebarOpen(true)}
-              className="md:hidden p-2 rounded-lg bg-slate-800 text-slate-300 hover:text-white"
+              className="md:hidden p-2 rounded-lg bg-slate-800 text-slate-300 hover:text-white cursor-pointer"
             >
               <Menu className="w-5 h-5" />
             </button>
@@ -178,9 +186,13 @@ export default function SSOLayout({ children }: { children: React.ReactNode }) {
               <span>View Site</span>
               <ExternalLink className="w-3.5 h-3.5" />
             </a>
-            <div className="w-8 h-8 rounded-lg bg-blue-600 text-white font-bold text-xs flex items-center justify-center shadow-md">
+            <Link
+              href="/sso/settings"
+              title="Pengaturan Admin Solvia Nova"
+              className="w-8 h-8 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center justify-center shadow-md transition-colors cursor-pointer"
+            >
               S
-            </div>
+            </Link>
           </div>
         </header>
 
