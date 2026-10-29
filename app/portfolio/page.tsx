@@ -102,7 +102,7 @@ export default function PortfolioPage() {
             {/* Action Footer */}
             <div className="p-5 sm:p-6 pt-0">
               <Link
-                href={`/portfolio/${project.slug}`}
+                href={`/portfolio/${project.slug || project.id}`}
                 className="inline-flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white text-xs font-bold transition-all shadow-lg shadow-blue-600/30"
               >
                 <span>Lihat Detail Studi Kasus</span>

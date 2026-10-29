@@ -257,7 +257,7 @@ export default function PortfolioSlider() {
                     </div>
 
                     <Link
-                      href={`/portfolio/${project.id}`}
+                      href={`/portfolio/${project.slug || project.id}`}
                       className="inline-flex items-center gap-1.5 text-xs font-bold text-cyan-400 hover:text-white transition-colors"
                     >
                       Detail Studi Kasus

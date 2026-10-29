@@ -12,14 +12,14 @@ export default function SSOLoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Default admin credentials
+  // Official admin credentials
   const defaultAdmin = {
-    email: "admin@solvianova.id",
-    password: "admin123",
+    username: "solvianova",
+    password: "Solvia230502!",
   };
 
   const handleAutoFill = () => {
-    setEmail(defaultAdmin.email);
+    setEmail(defaultAdmin.username);
     setPassword(defaultAdmin.password);
     setError("");
   };
@@ -30,16 +30,20 @@ export default function SSOLoginPage() {
     setLoading(true);
 
     setTimeout(() => {
-      // Validate credentials (allows admin@solvianova.id / admin123 OR any non-empty input for convenience)
-      if (
-        (email.trim().toLowerCase() === defaultAdmin.email.toLowerCase() && password === defaultAdmin.password) ||
-        (email.trim() && password.trim())
-      ) {
+      const inputUser = email.trim().toLowerCase();
+      const isValidUser =
+        inputUser === defaultAdmin.username.toLowerCase() ||
+        inputUser === "solvianova1@gmail.com" ||
+        inputUser === "admin@solvianova.id";
+      const isValidPass = password === defaultAdmin.password;
+
+      // Strictly validate credentials — no random logins
+      if (isValidUser && isValidPass) {
         localStorage.setItem("solvia_admin_logged", "true");
-        localStorage.setItem("solvia_admin_email", email);
+        localStorage.setItem("solvia_admin_email", "solvianova");
         router.push("/sso/dashboard");
       } else {
-        setError("Email atau Password salah. Silakan gunakan credential resmi di atas.");
+        setError("Username atau Password salah. Silakan gunakan kredensial resmi di atas.");
         setLoading(false);
       }
     }, 600);
@@ -99,12 +103,12 @@ export default function SSOLoginPage() {
 
           <div className="grid grid-cols-2 gap-2 text-xs font-mono bg-[#020611]/80 p-2.5 rounded-xl border border-blue-400/20">
             <div>
-              <span className="text-blue-400 block text-[10px] uppercase font-bold font-sans">Email Admin</span>
-              <span className="text-white font-bold break-all">admin@solvianova.id</span>
+              <span className="text-blue-400 block text-[10px] uppercase font-bold font-sans">Username Admin</span>
+              <span className="text-white font-bold break-all">solvianova</span>
             </div>
             <div>
               <span className="text-blue-400 block text-[10px] uppercase font-bold font-sans">Password</span>
-              <span className="text-white font-bold">admin123</span>
+              <span className="text-white font-bold">Solvia230502!</span>
             </div>
           </div>
         </div>
@@ -122,7 +126,7 @@ export default function SSOLoginPage() {
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label className="block text-blue-200 text-xs font-bold uppercase tracking-wider mb-2">
-                Email / Username Admin
+                Username Admin
               </label>
               <div className="relative">
                 <Mail className="w-4 h-4 text-blue-400 absolute left-4 top-1/2 -translate-y-1/2" />
@@ -130,7 +134,7 @@ export default function SSOLoginPage() {
                   type="text"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@solvianova.id"
+                  placeholder="solvianova"
                   required
                   className="w-full bg-blue-950/40 border border-blue-400/25 focus:border-blue-400 text-white placeholder-blue-300/40 rounded-xl pl-11 pr-4 py-3.5 text-sm outline-none transition-all shadow-inner"
                 />

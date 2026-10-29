@@ -14,6 +14,23 @@ export default function PortfolioAdminPage() {
   const [editingItem, setEditingItem] = useState<Portfolio | null>(null);
   const [toast, setToast] = useState<string | null>(null);
 
+  // Available categories
+  const DEFAULT_CATEGORIES = [
+    "Website",
+    "Web App",
+    "Enterprise System",
+    "Dashboard",
+    "Mobile App",
+    "Internet Of Things",
+    "E-Commerce",
+    "POS & Web App",
+    "Automation & AI",
+    "Landing Page",
+    "Branding",
+  ];
+  const [categories, setCategories] = useState<string[]>(DEFAULT_CATEGORIES);
+  const [isCustomCategory, setIsCustomCategory] = useState(false);
+
   // Hydrate from localStorage
   useEffect(() => {
     try {
@@ -26,6 +43,28 @@ export default function PortfolioAdminPage() {
       }
     } catch {
       setItems(portfolioData);
+    }
+
+    // Load existing categories from solvia_categories_data and items
+    try {
+      const savedCats = localStorage.getItem("solvia_categories_data");
+      const list: string[] = [...DEFAULT_CATEGORIES];
+      if (savedCats) {
+        const parsed = JSON.parse(savedCats);
+        if (Array.isArray(parsed)) {
+          parsed
+            .filter((c: any) => c.group === "portfolio" && c.name)
+            .forEach((c: any) => {
+              if (!list.includes(c.name)) list.push(c.name);
+            });
+        }
+      }
+      portfolioData.forEach((p) => {
+        if (p.category && !list.includes(p.category)) list.push(p.category);
+      });
+      setCategories(list);
+    } catch {
+      setCategories(DEFAULT_CATEGORIES);
     }
   }, []);
 
@@ -40,7 +79,7 @@ export default function PortfolioAdminPage() {
 
   // Form fields state
   const [name, setName] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState(DEFAULT_CATEGORIES[0]);
   const [client, setClient] = useState("");
   const [techInput, setTechInput] = useState("");
   const [image, setImage] = useState("");
@@ -55,8 +94,9 @@ export default function PortfolioAdminPage() {
   const handleOpenAddModal = () => {
     setEditingItem(null);
     setName("");
-    setCategory("");
-    setClient("Client");
+    setIsCustomCategory(false);
+    setCategory(categories[0] || "Web App");
+    setClient("Client Solvia");
     setTechInput("React, Next.js, Node.js");
     setImage("https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80");
     setStatus("Published");
@@ -67,6 +107,10 @@ export default function PortfolioAdminPage() {
   const handleOpenEditModal = (item: Portfolio) => {
     setEditingItem(item);
     setName(item.name);
+    if (item.category && !categories.includes(item.category)) {
+      setCategories((prev) => [...prev, item.category]);
+    }
+    setIsCustomCategory(false);
     setCategory(item.category);
     setClient(item.client || "Client");
     setTechInput(item.techStack ? item.techStack.join(", ") : "");
@@ -91,6 +135,11 @@ export default function PortfolioAdminPage() {
 
     const imageUrl = image || "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80";
 
+    // Add new category to choices if not present
+    if (category && !categories.includes(category)) {
+      setCategories((prev) => [...prev, category]);
+    }
+
     if (editingItem) {
       // Update existing item
       const updated = items.map((i) =>
@@ -104,7 +153,15 @@ export default function PortfolioAdminPage() {
               techStack: techArray,
               image: imageUrl,
               status,
-              shortDesc,
+              shortDesc: shortDesc || i.shortDesc,
+              description: shortDesc || i.description || `Project ${name} dikembangkan dengan teknologi modern.`,
+              caseStudy: i.caseStudy || {
+                problem: `Tantangan operasional dan kebutuhan efisiensi digital untuk ${client || "klien"}.`,
+                analysis: `Analisis arsitektur sistem dan otomasi alur kerja agar terintegrasi secara optimal.`,
+                solution: `Pengembangan solusi ${name} berbasis ${techArray.slice(0, 2).join(" & ")}.`,
+                technology: techArray.join(", "),
+                result: `Efisiensi proses meningkat signifikan dan performa sistem berjalan stabil.`
+              }
             }
           : i
       );
@@ -124,6 +181,13 @@ export default function PortfolioAdminPage() {
         techStack: techArray,
         image: imageUrl,
         status,
+        caseStudy: {
+          problem: `Tantangan operasional dan kebutuhan transformasi digital untuk ${client || "klien"}.`,
+          analysis: `Analisis arsitektur teknologi dan alur proses bisnis secara komprehensif.`,
+          solution: `Pengembangan platform ${name} berbasis ${techArray.slice(0, 3).join(", ")}.`,
+          technology: techArray.join(", "),
+          result: `Proses bisnis lebih terotomasi, performa terukur, dan kepuasan pengguna tercapai optimal.`
+        }
       };
       saveToStorage([newItem, ...items]);
       showToast("Portofolio baru berhasil ditambahkan!");
@@ -242,7 +306,7 @@ export default function PortfolioAdminPage() {
 
               <div className="flex items-center justify-between pt-2 border-t border-slate-800/80 gap-2">
                 <a
-                  href="/portfolio"
+                  href={`/portfolio/${item.slug || item.id}`}
                   target="_blank"
                   rel="noreferrer"
                   className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold"
@@ -338,7 +402,7 @@ export default function PortfolioAdminPage() {
                   <td className="py-4 px-6 text-right">
                     <div className="flex items-center justify-end gap-2">
                       <a
-                        href="/portfolio"
+                        href={`/portfolio/${item.slug || item.id}`}
                         target="_blank"
                         rel="noreferrer"
                         className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors cursor-pointer"
@@ -404,18 +468,68 @@ export default function PortfolioAdminPage() {
                 label="Foto Visual / Gambar Project"
               />
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1">Kategori</label>
-                  <input
-                    type="text"
-                    required
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                    placeholder="Contoh: Web App / Enterprise"
-                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500"
-                  />
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-xs font-bold text-slate-300">
+                      Kategori Project
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => setIsCustomCategory(!isCustomCategory)}
+                      className="text-[10px] text-cyan-400 hover:underline font-medium"
+                    >
+                      {isCustomCategory ? "Pilih dari daftar" : "+ Kategori baru"}
+                    </button>
+                  </div>
+
+                  {!isCustomCategory ? (
+                    <select
+                      required
+                      value={category}
+                      onChange={(e) => {
+                        if (e.target.value === "__NEW__") {
+                          setIsCustomCategory(true);
+                          setCategory("");
+                        } else {
+                          setCategory(e.target.value);
+                        }
+                      }}
+                      className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500 cursor-pointer"
+                    >
+                      <option value="" disabled>-- Pilih Kategori --</option>
+                      {categories.map((cat) => (
+                        <option key={cat} value={cat}>
+                          {cat}
+                        </option>
+                      ))}
+                      <option value="__NEW__">+ Input Kategori Lainnya...</option>
+                    </select>
+                  ) : (
+                    <div className="flex items-center gap-1.5">
+                      <input
+                        type="text"
+                        required
+                        value={category}
+                        onChange={(e) => setCategory(e.target.value)}
+                        placeholder="Contoh: Mobile App / AI"
+                        className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500"
+                        autoFocus
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsCustomCategory(false);
+                          setCategory(categories[0] || "Web App");
+                        }}
+                        className="px-2.5 py-2 text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl shrink-0"
+                      >
+                        Batal
+                      </button>
+                    </div>
+                  )}
                 </div>
+
                 <div>
                   <label className="block text-xs font-bold text-slate-300 mb-1">Klien / Industri</label>
                   <input
