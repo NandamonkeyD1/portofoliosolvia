@@ -194,8 +194,92 @@ export default function ServicesAdminPage() {
         </div>
       </div>
 
-      {/* Services Table */}
-      <div className="bg-[#0E1526] border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+      {/* Services Display: Mobile Cards + Desktop Table */}
+      {/* 1. Mobile Cards View (Visible on Mobile only) */}
+      <div className="block md:hidden space-y-3">
+        {filteredServices.length === 0 ? (
+          <div className="bg-[#0E1526] border border-slate-800 rounded-2xl p-8 text-center text-slate-500 text-xs">
+            Tidak ada layanan yang sesuai pencarian.
+          </div>
+        ) : (
+          filteredServices.map((svc) => (
+            <div
+              key={svc.id}
+              className="bg-[#0E1526] border border-slate-800 rounded-2xl p-4 space-y-3 shadow-lg"
+            >
+              <div className="flex items-start justify-between gap-2 border-b border-slate-800/80 pb-2.5">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-8 h-8 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 shrink-0">
+                    <Layers className="w-4 h-4" />
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="font-bold text-white text-sm truncate">{svc.name}</h3>
+                    <span className="text-[10px] text-slate-400">{svc.category}</span>
+                  </div>
+                </div>
+                <span
+                  className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold shrink-0 ${
+                    svc.status === "Active"
+                      ? "bg-emerald-500/10 border border-emerald-500/20 text-emerald-400"
+                      : "bg-slate-800 border border-slate-700 text-slate-400"
+                  }`}
+                >
+                  <span className={`w-1.5 h-1.5 rounded-full ${svc.status === "Active" ? "bg-emerald-400" : "bg-slate-500"}`} />
+                  {svc.status}
+                </span>
+              </div>
+
+              {svc.shortDesc && (
+                <p className="text-slate-300 text-xs line-clamp-2 leading-relaxed">
+                  {svc.shortDesc}
+                </p>
+              )}
+
+              {svc.features && svc.features.length > 0 && (
+                <div className="flex flex-wrap gap-1 pt-1 border-t border-slate-800/60">
+                  {svc.features.map((f, idx) => (
+                    <span
+                      key={idx}
+                      className="px-2 py-0.5 rounded bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-medium"
+                    >
+                      {f}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              <div className="flex items-center justify-between pt-2.5 border-t border-slate-800/80 gap-2">
+                <a
+                  href="/services"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold"
+                >
+                  <ExternalLink className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>Lihat Web</span>
+                </a>
+                <button
+                  onClick={() => handleOpenEditModal(svc)}
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-blue-600/15 hover:bg-blue-600 border border-blue-500/30 text-blue-400 hover:text-white text-xs font-bold transition-colors cursor-pointer"
+                >
+                  <Edit className="w-3.5 h-3.5" />
+                  <span>Edit</span>
+                </button>
+                <button
+                  onClick={() => handleDelete(svc.id, svc.name)}
+                  className="p-2 rounded-xl bg-red-500/10 hover:bg-red-600 text-red-400 hover:text-white transition-colors cursor-pointer shrink-0"
+                  title="Hapus"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* 2. Desktop Services Table (Visible on Desktop only) */}
+      <div className="hidden md:block bg-[#0E1526] border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
         <div className="overflow-x-auto w-full">
           <table className="w-full text-left border-collapse min-w-[650px]">
             <thead>

@@ -227,8 +227,83 @@ export default function LettersAdminPage() {
         </div>
       </div>
 
-      {/* Letters Table */}
-      <div className="bg-[#0E1526] border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+      {/* Letters Display: Mobile Cards + Desktop Table */}
+      {/* 1. Mobile Cards View (Visible on Mobile only) */}
+      <div className="block md:hidden space-y-3">
+        {filteredLetters.length === 0 ? (
+          <div className="bg-[#0E1526] border border-slate-800 rounded-2xl p-8 text-center text-slate-500 text-xs">
+            Tidak ada arsip surat yang sesuai pencarian.
+          </div>
+        ) : (
+          filteredLetters.map((letter) => (
+            <div
+              key={letter.id}
+              className="bg-[#0E1526] border border-slate-800 rounded-2xl p-4 space-y-3 shadow-lg"
+            >
+              <div className="flex items-center justify-between gap-2 border-b border-slate-800/80 pb-2.5">
+                <span className="font-mono text-blue-400 font-bold text-xs truncate">
+                  {letter.letterNo}
+                </span>
+                <span
+                  className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold border shrink-0 ${getTypeBadge(
+                    letter.type,
+                    letter.typeLabel
+                  )}`}
+                >
+                  {letter.typeLabel}
+                </span>
+              </div>
+
+              <div>
+                <h3 className="font-bold text-white text-sm line-clamp-1">{letter.subject}</h3>
+                <p className="text-slate-400 text-xs mt-0.5">
+                  Kepada: <strong className="text-slate-200">{letter.recipient.name}</strong> ({letter.recipient.company || letter.recipient.city})
+                </p>
+              </div>
+
+              <div className="flex items-center justify-between pt-2 border-t border-slate-800/60 text-xs">
+                <span className="text-slate-500 text-[11px] font-mono">{letter.date}</span>
+                <span
+                  className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${getStatusBadge(
+                    letter.status
+                  )}`}
+                >
+                  • {letter.status}
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between pt-2.5 border-t border-slate-800/80 gap-2">
+                <button
+                  type="button"
+                  onClick={() => setPreviewLetter(letter)}
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-blue-600/15 hover:bg-blue-600 border border-blue-500/30 text-blue-300 hover:text-white text-xs font-bold transition-colors cursor-pointer"
+                >
+                  <Eye className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>Preview & Cetak</span>
+                </button>
+                <Link
+                  href={`/sso/letters/create?id=${letter.id}`}
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold transition-colors"
+                >
+                  <Edit className="w-3.5 h-3.5 text-blue-400" />
+                  <span>Edit</span>
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => handleDelete(letter.id, letter.letterNo)}
+                  className="p-2 rounded-xl bg-red-500/10 hover:bg-red-600 text-red-400 hover:text-white transition-colors cursor-pointer shrink-0"
+                  title="Hapus"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* 2. Desktop Letters Table (Visible on Desktop only) */}
+      <div className="hidden md:block bg-[#0E1526] border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
         <div className="overflow-x-auto w-full">
           <table className="w-full text-left border-collapse min-w-[700px]">
             <thead>

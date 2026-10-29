@@ -196,42 +196,43 @@ export default function TeamAdminPage() {
             key={member.id}
             className="bg-[#0E1526] border border-slate-800 rounded-2xl p-5 flex flex-col justify-between space-y-4 shadow-lg"
           >
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-2xl overflow-hidden bg-slate-800 border-2 border-blue-500/30 shrink-0 shadow-lg">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl overflow-hidden bg-slate-800 border-2 border-blue-500/30 shrink-0 shadow-lg">
                   <img
                     src={member.avatar}
                     alt={member.name}
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <div>
-                  <h3 className="text-base font-bold text-white">{member.name}</h3>
-                  <div className="text-blue-400 text-xs font-bold mt-0.5">{member.position}</div>
-                  <div className="text-slate-400 text-[11px] font-mono mt-1">{member.email}</div>
+                <div className="min-w-0">
+                  <h3 className="text-sm sm:text-base font-bold text-white truncate">{member.name}</h3>
+                  <div className="text-blue-400 text-xs font-bold mt-0.5 truncate">{member.position}</div>
+                  <div className="text-slate-400 text-[11px] font-mono mt-0.5 truncate">{member.email}</div>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 shrink-0">
+              <div className="flex items-center justify-end gap-2 pt-2 sm:pt-0 border-t border-slate-800/80 sm:border-0 shrink-0">
                 <a
                   href="/team"
                   target="_blank"
                   rel="noreferrer"
-                  className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors cursor-pointer"
+                  className="flex-1 sm:flex-initial inline-flex items-center justify-center p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors cursor-pointer"
                   title="Lihat Tim di Website Publik"
                 >
                   <ExternalLink className="w-4 h-4" />
                 </a>
                 <button
                   onClick={() => handleOpenEditModal(member)}
-                  className="p-2 rounded-lg bg-blue-500/10 hover:bg-blue-600 text-blue-400 hover:text-white transition-colors cursor-pointer"
+                  className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-blue-500/10 hover:bg-blue-600 text-blue-400 hover:text-white text-xs font-bold transition-colors cursor-pointer"
                   title="Edit"
                 >
-                  <Edit className="w-4 h-4" />
+                  <Edit className="w-3.5 h-3.5" />
+                  <span className="sm:hidden">Edit</span>
                 </button>
                 <button
                   onClick={() => handleDelete(member.id)}
-                  className="p-2 rounded-lg bg-red-500/10 hover:bg-red-600 text-red-400 hover:text-white transition-colors cursor-pointer"
+                  className="p-2 rounded-xl bg-red-500/10 hover:bg-red-600 text-red-400 hover:text-white transition-colors cursor-pointer shrink-0"
                   title="Hapus"
                 >
                   <Trash2 className="w-4 h-4" />

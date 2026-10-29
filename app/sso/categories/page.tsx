@@ -281,7 +281,7 @@ export default function CategoriesAdminPage() {
                       <span className="text-[11px] font-mono text-slate-500 font-semibold group-hover:text-slate-400">
                         #{item.order}
                       </span>
-                      <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="flex items-center gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                         <button
                           type="button"
                           onClick={() => handleOpenEditModal(item)}

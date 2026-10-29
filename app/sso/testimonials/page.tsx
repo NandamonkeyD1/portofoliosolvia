@@ -183,14 +183,14 @@ export default function TestimonialsAdminPage() {
                 <div className="flex gap-1.5">
                   <button
                     onClick={() => handleOpenEditModal(t)}
-                    className="p-1.5 rounded-lg bg-blue-500/10 hover:bg-blue-600 text-blue-400 hover:text-white transition-colors"
+                    className="p-2 rounded-lg bg-blue-500/10 hover:bg-blue-600 text-blue-400 hover:text-white transition-colors cursor-pointer"
                     title="Edit Testimoni"
                   >
                     <Edit className="w-3.5 h-3.5" />
                   </button>
                   <button
                     onClick={() => handleDelete(t.id)}
-                    className="p-1.5 rounded-lg bg-red-500/10 hover:bg-red-600 text-red-400 hover:text-white transition-colors"
+                    className="p-2 rounded-lg bg-red-500/10 hover:bg-red-600 text-red-400 hover:text-white transition-colors cursor-pointer"
                     title="Hapus"
                   >
                     <Trash2 className="w-3.5 h-3.5" />

@@ -293,7 +293,52 @@ export default function SEOManagementPage() {
           </button>
         </div>
 
-        <div className="overflow-x-auto w-full">
+        {/* Route SEO Display: Mobile Cards + Desktop Table */}
+        {/* 1. Mobile Cards View (Visible on Mobile only) */}
+        <div className="block md:hidden space-y-3">
+          {routesList.map((item) => (
+            <div
+              key={item.id}
+              className="bg-[#070A12] border border-slate-800 rounded-2xl p-4 space-y-2.5 shadow-md"
+            >
+              <div className="flex items-center justify-between gap-2 border-b border-slate-800/80 pb-2">
+                <span className="font-mono text-cyan-400 font-bold text-xs truncate">
+                  {item.route}
+                </span>
+                <span className="px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-[10px] font-bold shrink-0">
+                  {item.robots}
+                </span>
+              </div>
+
+              <div>
+                <h3 className="font-bold text-white text-xs line-clamp-1">{item.title}</h3>
+                <p className="text-slate-400 text-[11px] line-clamp-2 mt-0.5 leading-relaxed">
+                  {item.description}
+                </p>
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800/80">
+                <button
+                  onClick={() => handleOpenEditModal(item)}
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-xl bg-blue-600/15 hover:bg-blue-600 border border-blue-500/30 text-blue-300 hover:text-white text-xs font-bold transition-colors cursor-pointer"
+                >
+                  <Edit className="w-3.5 h-3.5" />
+                  <span>Edit</span>
+                </button>
+                <button
+                  onClick={() => handleDeleteRoute(item.id, item.route)}
+                  className="p-1.5 rounded-xl bg-red-500/10 hover:bg-red-600 text-red-400 hover:text-white transition-colors cursor-pointer shrink-0"
+                  title="Hapus"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* 2. Desktop Table (Visible on Desktop only) */}
+        <div className="hidden md:block overflow-x-auto w-full">
           <table className="w-full text-left border-collapse min-w-[650px]">
             <thead>
               <tr className="border-b border-slate-800 bg-[#070A12]/80 text-slate-400 text-[11px] font-bold uppercase tracking-wider">

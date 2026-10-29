@@ -244,12 +244,12 @@ export default function ArticlesAdminPage() {
                 </div>
               </div>
 
-              <div className="flex gap-2 shrink-0 md:self-center">
+              <div className="flex items-center justify-between pt-2.5 border-t border-slate-800/80 md:border-0 md:pt-0 gap-2 shrink-0 md:self-center w-full md:w-auto">
                 <a
                   href="/articles"
                   target="_blank"
                   rel="noreferrer"
-                  className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer"
+                  className="flex-1 md:flex-none justify-center px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer"
                   title="Lihat Artikel di Website Publik"
                 >
                   <ExternalLink className="w-3.5 h-3.5" />
@@ -257,17 +257,17 @@ export default function ArticlesAdminPage() {
                 </a>
                 <button
                   onClick={() => handleOpenEditModal(art)}
-                  className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-blue-600 text-slate-200 text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer"
+                  className="flex-1 md:flex-none justify-center px-3 py-2 rounded-xl bg-blue-600/15 hover:bg-blue-600 border border-blue-500/30 text-blue-300 hover:text-white text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer"
                 >
                   <Edit className="w-3.5 h-3.5" />
                   <span>Edit</span>
                 </button>
                 <button
                   onClick={() => handleDelete(art.id, art.title)}
-                  className="px-3 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-600 text-red-300 hover:text-white text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer"
+                  className="p-2 rounded-xl bg-red-500/10 hover:bg-red-600 text-red-300 hover:text-white text-xs font-semibold transition-colors flex items-center justify-center cursor-pointer shrink-0"
+                  title="Hapus"
                 >
-                  <Trash2 className="w-3.5 h-3.5" />
-                  <span>Hapus</span>
+                  <Trash2 className="w-4 h-4" />
                 </button>
               </div>
             </div>

@@ -187,14 +187,14 @@ export default function SSODashboardPage() {
               </div>
 
               {[
-                { week: "Minggu 1", visitors: 340, leads: 5, height: "40%" },
-                { week: "Minggu 2", visitors: 520, leads: 8, height: "60%" },
-                { week: "Minggu 3", visitors: 890, leads: 12, height: "82%" },
-                { week: "Minggu 4", visitors: 1240, leads: 33, height: "100%" },
+                { week: "Minggu 1", shortWeek: "M1", visitors: 340, leads: 5, height: "40%" },
+                { week: "Minggu 2", shortWeek: "M2", visitors: 520, leads: 8, height: "60%" },
+                { week: "Minggu 3", shortWeek: "M3", visitors: 890, leads: 12, height: "82%" },
+                { week: "Minggu 4", shortWeek: "M4", visitors: 1240, leads: 33, height: "100%" },
               ].map((data, idx) => (
                 <div key={idx} className="flex-1 flex flex-col items-center gap-2 z-10 group">
-                  <div className="text-[10px] font-mono text-blue-300 opacity-0 group-hover:opacity-100 transition-opacity font-bold">
-                    {data.visitors} Visit ({data.leads} Leads)
+                  <div className="text-[10px] font-mono text-blue-300 opacity-0 group-hover:opacity-100 transition-opacity font-bold truncate max-w-full text-center">
+                    {data.visitors} <span className="hidden xs:inline">({data.leads} Leads)</span>
                   </div>
                   <div className="w-full max-w-[48px] bg-slate-900 border border-slate-700/80 rounded-xl p-1 flex items-end justify-center h-full">
                     <div
@@ -203,7 +203,8 @@ export default function SSODashboardPage() {
                     />
                   </div>
                   <span className="text-xs font-bold text-slate-400 group-hover:text-white transition-colors">
-                    {data.week}
+                    <span className="hidden sm:inline">{data.week}</span>
+                    <span className="sm:hidden">{data.shortWeek}</span>
                   </span>
                 </div>
               ))}

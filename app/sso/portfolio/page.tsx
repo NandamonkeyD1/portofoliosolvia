@@ -194,8 +194,84 @@ export default function PortfolioAdminPage() {
         </div>
       </div>
 
-      {/* Portfolio Table with Image Thumbnails */}
-      <div className="bg-[#0E1526] border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+      {/* Portfolio Display: Mobile Cards + Desktop Table */}
+      {/* 1. Mobile Cards View (Visible on Mobile only) */}
+      <div className="block md:hidden space-y-3">
+        {filteredItems.length === 0 ? (
+          <div className="bg-[#0E1526] border border-slate-800 rounded-2xl p-8 text-center text-slate-500 text-xs">
+            Tidak ada portofolio yang sesuai pencarian.
+          </div>
+        ) : (
+          filteredItems.map((item) => (
+            <div
+              key={item.id}
+              className="bg-[#0E1526] border border-slate-800 rounded-2xl p-4 space-y-3 shadow-lg"
+            >
+              <div className="flex items-start gap-3">
+                <div className="w-16 h-14 rounded-xl overflow-hidden bg-slate-800 border border-slate-700 shrink-0">
+                  {item.image ? (
+                    <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-slate-500">
+                      <ImageIcon className="w-4 h-4" />
+                    </div>
+                  )}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                      {item.status || "Published"}
+                    </span>
+                    <span className="text-[10px] text-slate-500 font-mono">{item.year || 2026}</span>
+                  </div>
+                  <h3 className="font-bold text-white text-sm mt-1 line-clamp-1">{item.name}</h3>
+                  <p className="text-slate-400 text-[11px] font-medium">{item.category} • {item.client || "Client"}</p>
+                </div>
+              </div>
+
+              {item.techStack && item.techStack.length > 0 && (
+                <div className="flex flex-wrap gap-1 pt-1 border-t border-slate-800/60">
+                  {item.techStack.map((t, idx) => (
+                    <span key={idx} className="px-2 py-0.5 rounded-md bg-slate-900 border border-slate-700/80 text-slate-300 text-[10px] font-bold">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              <div className="flex items-center justify-between pt-2 border-t border-slate-800/80 gap-2">
+                <a
+                  href="/portfolio"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                  <span>Lihat Web</span>
+                </a>
+                <button
+                  onClick={() => handleOpenEditModal(item)}
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-blue-600/15 hover:bg-blue-600 border border-blue-500/30 text-blue-400 hover:text-white text-xs font-bold transition-colors cursor-pointer"
+                >
+                  <Edit className="w-3.5 h-3.5" />
+                  <span>Edit</span>
+                </button>
+                <button
+                  onClick={() => handleDelete(item.id)}
+                  className="p-2 rounded-xl bg-red-500/10 hover:bg-red-600 text-red-400 hover:text-white transition-colors cursor-pointer shrink-0"
+                  title="Hapus"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* 2. Desktop Portfolio Table (Visible on Desktop only) */}
+      <div className="hidden md:block bg-[#0E1526] border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
         <div className="overflow-x-auto w-full">
           <table className="w-full text-left border-collapse min-w-[650px]">
             <thead>

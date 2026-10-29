@@ -272,11 +272,11 @@ export default function CreateLetterPage() {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
           <button
             type="button"
             onClick={handleSave}
-            className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all shadow-md active:scale-95 ${
+            className={`flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all shadow-md active:scale-95 cursor-pointer ${
               isSaved
                 ? "bg-emerald-600 text-white"
                 : "bg-blue-600 hover:bg-blue-500 text-white"
@@ -289,7 +289,7 @@ export default function CreateLetterPage() {
           <button
             type="button"
             onClick={handlePrint}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold transition-all border border-slate-700 shadow-md active:scale-95"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold transition-all border border-slate-700 shadow-md active:scale-95 cursor-pointer"
           >
             <Printer className="w-4 h-4" />
             <span>Cetak / PDF</span>
@@ -370,7 +370,7 @@ export default function CreateLetterPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-[11px] font-bold text-slate-400 mb-1">
                     Klasifikasi Sifat
@@ -434,7 +434,7 @@ export default function CreateLetterPage() {
             </h3>
 
             <div className="space-y-3">
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-[11px] font-bold text-slate-400 mb-1">
                     Nama Penerima
@@ -473,7 +473,7 @@ export default function CreateLetterPage() {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-[11px] font-bold text-slate-400 mb-1">
                     Alamat Lengkap

@@ -420,43 +420,47 @@ export default function CreateInvoicePage() {
                   />
                 </div>
 
-                <div className="flex items-center gap-2.5 w-full md:w-auto">
-                  <div className="w-20">
-                    <label className="block text-[10px] text-slate-400 font-semibold mb-0.5">QTY</label>
-                    <input
-                      type="number"
-                      min={1}
-                      value={item.qty}
-                      onChange={(e) => updateItem(item.id, "qty", parseInt(e.target.value) || 1)}
-                      className="w-full bg-[#070A12] border border-slate-700/80 rounded-xl px-3 py-1.5 text-xs text-white font-mono text-center"
-                    />
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 w-full md:w-auto">
+                  <div className="grid grid-cols-2 sm:flex sm:items-center gap-2.5 w-full sm:w-auto">
+                    <div className="w-full sm:w-20">
+                      <label className="block text-[10px] text-slate-400 font-semibold mb-0.5">QTY</label>
+                      <input
+                        type="number"
+                        min={1}
+                        value={item.qty}
+                        onChange={(e) => updateItem(item.id, "qty", parseInt(e.target.value) || 1)}
+                        className="w-full bg-[#070A12] border border-slate-700/80 rounded-xl px-3 py-1.5 text-xs text-white font-mono text-center"
+                      />
+                    </div>
+
+                    <div className="w-full sm:w-36">
+                      <label className="block text-[10px] text-slate-400 font-semibold mb-0.5">Harga Satuan (Rp)</label>
+                      <input
+                        type="number"
+                        value={item.price}
+                        onChange={(e) => updateItem(item.id, "price", parseInt(e.target.value) || 0)}
+                        className="w-full bg-[#070A12] border border-slate-700/80 rounded-xl px-3 py-1.5 text-xs text-white font-mono text-right"
+                      />
+                    </div>
                   </div>
 
-                  <div className="w-36">
-                    <label className="block text-[10px] text-slate-400 font-semibold mb-0.5">Harga Satuan (Rp)</label>
-                    <input
-                      type="number"
-                      value={item.price}
-                      onChange={(e) => updateItem(item.id, "price", parseInt(e.target.value) || 0)}
-                      className="w-full bg-[#070A12] border border-slate-700/80 rounded-xl px-3 py-1.5 text-xs text-white font-mono text-right"
-                    />
-                  </div>
+                  <div className="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto pt-2 sm:pt-0 border-t border-slate-800/80 sm:border-0">
+                    <div className="text-left sm:text-right">
+                      <span className="block text-[10px] text-slate-400 font-semibold mb-0.5">Subtotal</span>
+                      <span className="text-xs font-mono font-bold text-cyan-400">
+                        {formatRupiah(item.qty * item.price)}
+                      </span>
+                    </div>
 
-                  <div className="w-36 text-right">
-                    <span className="block text-[10px] text-slate-400 font-semibold mb-0.5">Subtotal</span>
-                    <span className="text-xs font-mono font-bold text-cyan-400">
-                      {formatRupiah(item.qty * item.price)}
-                    </span>
+                    <button
+                      type="button"
+                      onClick={() => removeItem(item.id)}
+                      className="p-2 rounded-xl text-slate-500 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                      title="Hapus Baris"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
                   </div>
-
-                  <button
-                    type="button"
-                    onClick={() => removeItem(item.id)}
-                    className="p-2 rounded-xl text-slate-500 hover:text-red-400 hover:bg-red-500/10 transition-colors mt-3 md:mt-0"
-                    title="Hapus Baris"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
                 </div>
               </div>
             ))}
@@ -559,6 +563,31 @@ export default function CreateInvoicePage() {
                 />
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Mobile Floating Action Bar */}
+        <div className="md:hidden sticky bottom-14 inset-x-0 z-30 bg-[#0A0E1A]/95 backdrop-blur-md border border-slate-700/80 rounded-2xl p-3 flex items-center justify-between gap-3 shadow-2xl print:hidden">
+          <div className="min-w-0">
+            <span className="text-[10px] text-slate-400 block font-mono">Total Invoice</span>
+            <span className="text-xs font-bold text-cyan-400 font-mono truncate block">
+              {formatRupiah(calculateTotal())}
+            </span>
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              type="button"
+              onClick={() => setIsPreviewOpen(true)}
+              className="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition-colors cursor-pointer"
+            >
+              Preview
+            </button>
+            <button
+              type="submit"
+              className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-md shadow-blue-600/30 transition-colors cursor-pointer"
+            >
+              Simpan &amp; Cetak
+            </button>
           </div>
         </div>
       </form>

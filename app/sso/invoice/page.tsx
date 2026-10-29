@@ -285,8 +285,76 @@ export default function InvoiceAdminPage() {
         </div>
       </div>
 
-      {/* Invoice Table Container */}
-      <div className="bg-[#0E1526] border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+      {/* Invoice Display: Mobile Cards + Desktop Table */}
+      {/* 1. Mobile Cards View (Visible on Mobile only) */}
+      <div className="block md:hidden space-y-3">
+        {filteredInvoices.length === 0 ? (
+          <div className="bg-[#0E1526] border border-slate-800 rounded-2xl p-8 text-center text-slate-500 text-xs">
+            Tidak ada data invoice yang sesuai pencarian.
+          </div>
+        ) : (
+          filteredInvoices.map((inv) => (
+            <div
+              key={inv.id}
+              className="bg-[#0E1526] border border-slate-800 rounded-2xl p-4 space-y-3 shadow-lg"
+            >
+              <div className="flex items-center justify-between gap-2 border-b border-slate-800/80 pb-2.5">
+                <span className="font-mono text-cyan-400 font-bold text-xs">
+                  {inv.no}
+                </span>
+                <span
+                  className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${
+                    inv.status === "Lunas"
+                      ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/30"
+                      : inv.status === "Pending"
+                      ? "bg-amber-500/20 text-amber-300 border-amber-500/30"
+                      : "bg-yellow-500/20 text-yellow-300 border-yellow-500/30"
+                  }`}
+                >
+                  • {inv.status}
+                </span>
+              </div>
+
+              <div>
+                <h3 className="font-bold text-white text-sm">{inv.client}</h3>
+                <p className="text-slate-400 text-xs line-clamp-1 mt-0.5">{inv.project}</p>
+              </div>
+
+              <div className="flex items-center justify-between pt-2 border-t border-slate-800/60 text-xs">
+                <span className="text-slate-500 font-mono text-[11px]">{inv.date}</span>
+                <span className="font-mono font-bold text-white text-sm">{inv.total}</span>
+              </div>
+
+              <div className="flex items-center justify-between pt-2.5 border-t border-slate-800/80 gap-2">
+                <button
+                  onClick={() => setPreviewInvoice(inv)}
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-blue-600/15 hover:bg-blue-600 border border-blue-500/30 text-blue-300 hover:text-white text-xs font-bold transition-colors cursor-pointer"
+                >
+                  <Eye className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>Lihat & Cetak</span>
+                </button>
+                <button
+                  onClick={() => handleOpenEdit(inv)}
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold transition-colors cursor-pointer"
+                >
+                  <Edit className="w-3.5 h-3.5 text-blue-400" />
+                  <span>Edit</span>
+                </button>
+                <button
+                  onClick={() => handleDelete(inv.id, inv.no)}
+                  className="p-2 rounded-xl bg-red-500/10 hover:bg-red-600 text-red-400 hover:text-white transition-colors cursor-pointer shrink-0"
+                  title="Hapus"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* 2. Desktop Invoice Table (Visible on Desktop only) */}
+      <div className="hidden md:block bg-[#0E1526] border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
         <div className="overflow-x-auto w-full">
           <table className="w-full text-left border-collapse min-w-[650px]">
             <thead>

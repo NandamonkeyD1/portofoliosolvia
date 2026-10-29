@@ -257,8 +257,78 @@ export default function MessagesAdminPage() {
         </button>
       </div>
 
-      {/* Messages Table */}
-      <div className="bg-[#0E1526] border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+      {/* Messages Display: Mobile Cards + Desktop Table */}
+      {/* 1. Mobile Cards View (Visible on Mobile only) */}
+      <div className="block md:hidden space-y-3">
+        {filteredMessages.length === 0 ? (
+          <div className="bg-[#0E1526] border border-slate-800 rounded-2xl p-8 text-center text-slate-500 text-xs">
+            Tidak ada pesan atau leads pada tab ini.
+          </div>
+        ) : (
+          filteredMessages.map((m) => (
+            <div
+              key={m.id}
+              className={`bg-[#0E1526] border rounded-2xl p-4 space-y-3 shadow-lg transition-colors ${
+                m.unread ? "border-amber-500/40 bg-amber-500/[0.02]" : "border-slate-800"
+              }`}
+            >
+              <div className="flex items-center justify-between gap-2 border-b border-slate-800/80 pb-2.5">
+                <div className="flex items-center gap-2 min-w-0">
+                  <span
+                    className={`w-2 h-2 rounded-full shrink-0 ${
+                      m.unread ? "bg-amber-400 animate-pulse shadow-[0_0_8px_rgba(251,191,36,0.8)]" : "bg-slate-600"
+                    }`}
+                  />
+                  <span className="font-bold text-white text-xs truncate">{m.sender}</span>
+                </div>
+                <span className="text-[10px] text-slate-400 font-mono whitespace-nowrap shrink-0">{m.date}</span>
+              </div>
+
+              <div>
+                <h3 className="font-bold text-slate-200 text-xs line-clamp-1">{m.subject}</h3>
+                <p className="text-slate-400 text-xs line-clamp-2 mt-1 leading-relaxed">{m.message}</p>
+              </div>
+
+              <div className="text-[11px] font-mono text-slate-400 truncate">
+                {m.email} {m.phone ? `• +${m.phone}` : ""}
+              </div>
+
+              <div className="flex items-center justify-between pt-2.5 border-t border-slate-800/80 gap-2">
+                <button
+                  onClick={() => handleOpenMessage(m)}
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-blue-600/15 hover:bg-blue-600 border border-blue-500/30 text-blue-300 hover:text-white text-xs font-bold transition-colors cursor-pointer"
+                >
+                  <Eye className="w-3.5 h-3.5" />
+                  <span>Buka Pesan</span>
+                </button>
+
+                <a
+                  href={`https://wa.me/${m.phone || "6283148801578"}?text=${encodeURIComponent(
+                    `Halo ${m.sender}, terima kasih telah menghubungi Solvia Nova mengenai "${m.subject}". Kami siap mendiskusikan kebutuhan sistem Anda.`
+                  )}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-emerald-600/20 hover:bg-emerald-600 border border-emerald-500/30 text-emerald-300 hover:text-white text-xs font-bold transition-all"
+                >
+                  <Send className="w-3.5 h-3.5" />
+                  <span>Balas WA</span>
+                </a>
+
+                <button
+                  onClick={() => handleDelete(m.id)}
+                  className="p-2 rounded-xl bg-red-500/10 hover:bg-red-600 text-red-400 hover:text-white transition-colors cursor-pointer shrink-0"
+                  title="Hapus"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* 2. Desktop Messages Table (Visible on Desktop only) */}
+      <div className="hidden md:block bg-[#0E1526] border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
         <div className="overflow-x-auto w-full">
           <table className="w-full text-left border-collapse min-w-[650px]">
             <thead>
