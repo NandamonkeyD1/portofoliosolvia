@@ -1,12 +1,20 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import * as THREE from "three";
 
 export default function Scene3D() {
+  const pathname = usePathname();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
+  const isAuthOrAdmin =
+    pathname?.startsWith("/sso") ||
+    pathname?.startsWith("/admin") ||
+    pathname === "/login";
+
   useEffect(() => {
+    if (isAuthOrAdmin) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -323,7 +331,11 @@ export default function Scene3D() {
       particleMat.dispose();
       renderer.dispose();
     };
-  }, []);
+  }, [isAuthOrAdmin]);
+
+  if (isAuthOrAdmin) {
+    return null;
+  }
 
   return (
     <>

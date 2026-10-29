@@ -69,7 +69,7 @@ export default function SSODashboardPage() {
   ];
 
   return (
-    <div className="space-y-8 pb-12">
+    <div className="relative z-10 space-y-8 pb-12">
       {/* Top Welcome & Metrics */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>

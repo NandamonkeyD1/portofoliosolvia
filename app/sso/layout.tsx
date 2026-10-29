@@ -83,7 +83,7 @@ export default function SSOLayout({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#070A12] text-slate-100 flex flex-col md:flex-row antialiased font-sans">
+    <div className="relative z-10 min-h-screen bg-[#070A12] text-slate-100 flex flex-col md:flex-row antialiased font-sans">
       {/* Sidebar Overlay for Mobile */}
       {mobileSidebarOpen && (
         <div
@@ -201,7 +201,7 @@ export default function SSOLayout({ children }: { children: React.ReactNode }) {
         </header>
 
         {/* Dynamic Page Content */}
-        <main className="flex-1 p-3.5 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">{children}</main>
+        <main className="relative z-10 flex-1 p-3.5 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">{children}</main>
       </div>
     </div>
   );
